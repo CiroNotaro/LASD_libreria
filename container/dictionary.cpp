@@ -95,6 +95,22 @@ namespace lasd {
     {
         if(Empty())
             throw std::length_error("The container is empty!");
+
+        Data min;
+        ulong i = 0;
+        Traverse([&](const Data& data)
+        {
+            if(i == 0) min = data;
+
+            if(data < min)
+            {
+                min = data;
+            }
+
+            i++;
+        });
+
+        return min;
     }
 
     template <typename Data>
@@ -116,6 +132,22 @@ namespace lasd {
     {
         if(Empty())
             throw std::length_error("The container is empty!");
+
+        Data max;
+        ulong i = 0;
+        Traverse([&](const Data& data)
+        {
+            if(i == 0) max = data;
+
+            if(data > max)
+            {
+                max = data;
+            }
+
+            i++;
+        });
+
+        return max;
     }
 
     template <typename Data>
@@ -135,7 +167,34 @@ namespace lasd {
     template <typename Data>
     Data OrderedDictionaryContainer<Data>::Predecessor(Data& value) const
     {
+        Data x;
+        ulong i = 0;
+        Traverse([&](const Data& data)
+        {
+            if(x == data)
+                return;
 
+            i++;
+        });
+
+        ulong count = 0;
+        Traverse([&](const Data& data)
+        {
+            if(i-1 == count)
+            {
+                x = data;
+                return;
+            }
+
+            if(cout >= size)
+            {
+                throw std::length_error("Predecessor not found!");
+            }
+
+            count++;
+        });
+
+        return x;
     }
 
     template <typename Data>
@@ -153,7 +212,34 @@ namespace lasd {
     template <typename Data>
     Data OrderedDictionaryContainer<Data>::Successor(Data& value) const
     {
+        Data x;
+        ulong i = 0;
+        Traverse([&](const Data& data)
+        {
+            if(x == data)
+                return;
 
+            i++;
+        });
+
+        ulong count = 0;
+        Traverse([&](const Data& data)
+        {
+            if(i+1 == count)
+            {
+                x = data;
+                return;
+            }
+
+            if(cout >= size)
+            {
+                throw std::length_error("Successor not found!");
+            }
+
+            count++;
+        });
+
+        return x;
     }
 
     template <typename Data>

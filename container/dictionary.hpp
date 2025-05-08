@@ -65,12 +65,13 @@ public:
 /* ************************************************************************** */
 
 template <typename Data>
-class OrderedDictionaryContainer : virtual public DictionaryContainer<Data> {
+class OrderedDictionaryContainer : virtual public DictionaryContainer<Data>, virtual public PreOrderMappableContainer<Data> {
   // Must extend DictionaryContainer<Data>
 
 private:
 
 protected:
+  using Container::size;
 
 public:
 
@@ -110,7 +111,6 @@ public:
   Data Successor(Data& value) const; // (concrete function must throw std::length_error when not found)
   Data SuccessorNRemove(Data& value); // (concrete function must throw std::length_error when not found)
   void RemoveSuccessor(Data& value); // (concrete function must throw std::length_error when not found)
-
 };
 
 /* ************************************************************************** */

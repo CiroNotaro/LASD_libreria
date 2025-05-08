@@ -42,8 +42,8 @@ public:
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const LinearContainer<Data>& other) const noexcept = delete; // Comparison of abstract types is possible.
-  bool operator!=(const LinearContainer<Data>& other) const noexcept = delete; // Comparison of abstract types is possible.
+  bool operator==(const LinearContainer<Data>& other) const noexcept; // Comparison of abstract types is possible.
+  bool operator!=(const LinearContainer<Data>& other) const noexcept; // Comparison of abstract types is possible.
 
   /* ************************************************************************ */
 
@@ -61,19 +61,19 @@ public:
 
   using typename TraversableContainer<Data>::TraverseFun;
 
-  void Traverse(TraverseFun& fun) override; // Override TraversableContainer member
+  void Traverse(TraverseFun& fun) const override; // Override TraversableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PreOrderTraversableContainer)
 
-  void PreOrderTraverse(TraverseFun& fun) override; // Override PreOrderTraversableContainer member
+  void PreOrderTraverse(TraverseFun& fun) const override; // Override PreOrderTraversableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PostOrderTraversableContainer)
 
-  void PostOrderTraverse(TraverseFun& fun) override; // Override PostOrderTraversableContainer member
+  void PostOrderTraverse(TraverseFun& fun) const override; // Override PostOrderTraversableContainer member
 
 };
 
@@ -125,19 +125,19 @@ public:
 
   using typename MappableContainer<Data>::MapFun;
 
-  void Map(MapFun& fun) override; // Override MappableContainer member
+  void Map(MapFun& fun) const override; // Override MappableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PreOrderMappableContainer)
 
-  void PreOrderMap(MapFun& fun) override; // Override PreOrderMappableContainer member
+  void PreOrderMap(MapFun& fun) const override; // Override PreOrderMappableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PostOrderMappableContainer)
 
-  void PostOrderMap(MapFun& fun) override; // Override PostOrderMappableContainer member
+  void PostOrderMap(MapFun& fun) const override; // Override PostOrderMappableContainer member
 
 };
 
@@ -161,16 +161,16 @@ public:
   /* ************************************************************************ */
 
   // Copy assignment
-  SortableLinearContainer<Data>& operator=(const SortableLinearContainer<Data>& other); // Copy assignment of abstract types is not possible.
+  SortableLinearContainer<Data>& operator=(const SortableLinearContainer<Data>& other) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  SortableLinearContainer<Data>& operator=(SortableLinearContainer<Data>&& other); // Move assignment of abstract types is not be possible.
+  SortableLinearContainer<Data>& operator=(SortableLinearContainer<Data>&& other) = delete; // Move assignment of abstract types is not be possible.
 
   /* ************************************************************************ */
 
   // Specific member function
 
-  virtual void Sort() = 0;
+  virtual void Sort() noexcept;
 
 protected:
 
