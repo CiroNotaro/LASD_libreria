@@ -26,6 +26,8 @@ protected:
 
   using Container::size;
 
+  Data* buffer = nullptr;
+
   // ...
 
 public:
@@ -38,12 +40,12 @@ public:
   // Specific constructors
   Vector(const ulong size); // A vector with a given initial dimension
   Vector(const TraversableContainer<Data>& traversableContainer); // A vector obtained from a TraversableContainer
-  Vector(const MappableContainer<Data>& traversableContainer); // A vector obtained from a MappableContainer
+  Vector(const MappableContainer<Data>& mappableContainer); // A vector obtained from a MappableContainer
 
   /* ************************************************************************ */
 
   // Copy constructor
-  Vector(const Vector<Data>& other) const;
+  Vector(const Vector<Data>& other);
 
   // Move constructor
   Vector(Vector<Data>&& other);
