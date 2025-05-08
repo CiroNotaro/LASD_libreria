@@ -44,8 +44,8 @@ public:
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const TraversableContainer<Data>& other) const noexcept = delete;; // Comparison of abstract types might be possible.
-  bool operator!=(const TraversableContainer<Data>& other) const noexcept = delete;; // Comparison of abstract types might be possible.
+  bool operator==(const TraversableContainer<Data>& other) const noexcept = delete; // Comparison of abstract types might be possible.
+  bool operator!=(const TraversableContainer<Data>& other) const noexcept = delete; // Comparison of abstract types might be possible.
 
   /* ************************************************************************ */
 
@@ -110,11 +110,11 @@ public:
 
   virtual void PreOrderTraverse(TraverseFun& fun) const = 0;
 
-  // template <typename Accumulator>
+  template <typename Accumulator>
   using FoldFun = typename TraversableContainer<Data>::FoldFun<Accumulator>;
 
   template <typename Accumulator>
-  Accumulator PreOrderFold(FoldFun fun, Accumulator acc);
+  Accumulator PreOrderFold(FoldFun<Accumulator> fun, Accumulator acc);
 
   /* ************************************************************************ */
 
@@ -169,7 +169,7 @@ public:
   using FoldFun = typename TraversableContainer<Data>::FoldFun<Accumulator>;
 
   template <typename Accumulator>
-  Accumulator& PostOrderFold(FoldFun& fun, Accumulator& acc);
+  Accumulator PostOrderFold(FoldFun<Accumulator> fun, Accumulator acc);
 
   /* ************************************************************************ */
 

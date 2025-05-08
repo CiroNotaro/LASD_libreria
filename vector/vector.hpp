@@ -132,8 +132,8 @@ public:
 
   // Specific constructors
   SortableVector(const ulong size); // A vector with a given initial dimension
-  SortableVector(const TraversableContainer<Data>& traversableContainer) specifiers; // A vector obtained from a TraversableContainer
-  SortableVector(const MappableContainer<Data>& mapContainer) specifiers; // A vector obtained from a MappableContainer
+  SortableVector(const TraversableContainer<Data>& traversableContainer); // A vector obtained from a TraversableContainer
+  SortableVector(const MappableContainer<Data>& mapContainer); // A vector obtained from a MappableContainer
 
   /* ************************************************************************ */
 
