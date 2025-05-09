@@ -89,7 +89,7 @@ namespace lasd {
     }
 
     /**************************************************************************************************************/
-
+    /*
     template <typename Data>
     Data OrderedDictionaryContainer<Data>::Min() const
     {
@@ -253,4 +253,5 @@ namespace lasd {
     {
 
     }
+    */
 }

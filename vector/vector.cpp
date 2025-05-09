@@ -2,7 +2,6 @@
 
 namespace lasd 
 {
-
     template <typename Data>
     Vector<Data>::Vector(const ulong size)
     {

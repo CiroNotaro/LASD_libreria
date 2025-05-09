@@ -23,7 +23,7 @@ private:
 
 protected:
 
-  // using Container::???;
+  using Container::size;
 
   struct Node {
 
@@ -43,24 +43,27 @@ protected:
     /* ********************************************************************** */
 
     // Copy constructor
-    Node(const Node<Data>& node);
+    Node(const Node& node) 
+    {
+      value = node.value;
+    }
 
     // Move constructor
-    Node(Node<Data>&& node);
+    Node(Node&& node);
 
     /* ********************************************************************** */
 
     // Destructor
-    ~Node() = default;
+    virtual ~Node();
 
     /* ********************************************************************** */
 
     // Comparison operators
-    bool operator==(const Node<Data>& other) const noexcept
+    bool operator==(const Node& other) const noexcept
     {
-      return (this->value == other.value);
+      return (this->value == other.value) && (this->next == other.next);
     }
-    bool operator!=(const Node<Data>& other) const noexcept
+    bool operator!=(const Node& other) const noexcept
     {
       return !(*this == other);
     }
@@ -69,11 +72,12 @@ protected:
 
     // Specific member functions
 
-    // ...
+    virtual Node* Clone(Node* other);
 
   };
 
-  // ...
+  Node* head = nullptr;
+  Node* tail = nullptr;
 
 public:
 
@@ -84,7 +88,7 @@ public:
 
   // Specific constructor
   List(const TraversableContainer<Data>& other); // A list obtained from a TraversableContainer
-  List(TraversableContainer<Data>&& other);  // A list obtained from a MappableContainer
+  List(MappableContainer<Data>&& other);  // A list obtained from a MappableContainer
 
   /* ************************************************************************ */
 
@@ -195,7 +199,17 @@ public:
 
 protected:
 
-  // Auxiliary functions, if necessary!
+  // Auxiliary member functions (for TraversableContainer)
+
+  void PreOrderTraverse(TraverseFun fun, const Node* node) const;
+  void PostOrderTraverse(TraverseFun fun, const Node* node) const;
+
+  /* ************************************************************************ */
+
+  // Auxiliary member functions (for MappableContainer)
+
+  void PreOrderMap(MapFun fun, Node* node);
+  void PostOrderMap(MapFun fun, Node* node);
 
 };
 
