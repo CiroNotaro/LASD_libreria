@@ -25,7 +25,7 @@ namespace lasd
     }
 
     template <typename Data>
-    Vector<Data>::Vector(const MappableContainer<Data>& mappableContainer)
+    Vector<Data>::Vector(MappableContainer<Data>&& mappableContainer)
     {
         this->size = mappableContainer.Size();
         buffer = new Data[this->size];
