@@ -116,6 +116,12 @@ protected:
   // Auxiliary functions, if necessary!
   bool Search(const Data& value, ulong* index);
 
+  void Sort() noexcept;
+
+  void QuickSort(ulong p, ulong r) noexcept;
+
+  ulong Partition(ulong p, ulong r) noexcept;
+
 };
 
 /* ************************************************************************** */

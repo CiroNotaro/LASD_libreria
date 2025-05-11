@@ -302,6 +302,8 @@ namespace lasd {
     template<typename Data>
     inline void List<Data>::Clear() 
     {
+        // TODO DEALLOCA
+
         delete head;
         head = tail = nullptr;
         size = 0;
