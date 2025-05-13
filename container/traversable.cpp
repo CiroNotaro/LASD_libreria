@@ -47,7 +47,7 @@ namespace lasd {
   }
 
   template <typename Data>
-  void PreOrderTraversableContainer<Data>::Traverse(TraverseFun& fun) const
+  void PreOrderTraversableContainer<Data>::Traverse(TraverseFun fun) const
   {
     PreOrderTraverse(fun);
   }
@@ -68,7 +68,7 @@ namespace lasd {
   }
 
   template <typename Data>
-  void PostOrderTraversableContainer<Data>::Traverse(TraverseFun& fun) const
+  void PostOrderTraversableContainer<Data>::Traverse(TraverseFun fun) const
   {
     PostOrderTraverse(fun);
   }

@@ -52,7 +52,7 @@ SetLst<Data>& SetLst<Data>::operator=(const SetLst<Data>& other)
 
         if(other.tail != nullptr)
         {
-            this->tail = new Node(*other.tail);
+            this->tail = new List<Data>::Node(*other.tail);
             this->head = other.head->Clone(this->tail);
             size = other.size;
         }
@@ -305,7 +305,7 @@ bool SetLst<Data>::Insert(const Data& value)
     if(Exists(value)) return false;
     size++;
 
-    Node* node = new Node(value);
+    Node* node = new List<Data>::Node(value);
 
     if(node->value < this->head->value)
     {
@@ -344,7 +344,7 @@ bool SetLst<Data>::Insert(Data&& value)
     if(Exists(value)) return false;
     size++;
 
-    Node* node = new Node(value);
+    Node* node = new List<Data>::Node(value);
 
     if(node->value < this->head->value)
     {
@@ -385,7 +385,7 @@ bool SetLst<Data>::Remove(const Data& value)
 
     if(!found) return false;
 
-    List<Data>::Node* node = GetNodeByIndex(index);
+    Node* node = GetNodeByIndex(index);
 
     if(node == this->head)
     {
@@ -399,8 +399,8 @@ bool SetLst<Data>::Remove(const Data& value)
         return true;
     }
 
-    List<Data>::Node* current = this->head;
-    List<Data>::Node* prec = nullptr;
+    Node* current = this->head;
+    Node* prec = nullptr;
     while(current != nullptr)
     {
         if(node == current)
@@ -418,13 +418,13 @@ bool SetLst<Data>::Remove(const Data& value)
 }
 
 template <typename Data>
-const Data& SetLst<Data>::operator[](const ulong index)
+const Data& SetLst<Data>::operator[](const ulong index) const
 {
     if(index >= size)
             throw std::out_of_range("index is out of range!");
 
     ulong i = 0;
-    List<Data>::Node* current = this->head;
+    Node* current = this->head;
 
     while(current != nullptr)
     {
@@ -473,20 +473,20 @@ bool SetLst<Data>::Search(const Data& value, ulong* index)
 }
 
 template<typename Data>
-List<Data>::Node* SetLst<Data>::GetNodeByIndex(const ulong index)
+typename SetLst<Data>::Node* SetLst<Data>::GetNodeByIndex(const ulong index)
 {
     if(index >= size)
-            throw std::out_of_range("index is out of range!");
+    throw std::out_of_range("index is out of range!");
 
     ulong i = 0;
-    List<Data>::Node* current = this->head;
+    Node* current = this->head;
 
     while(current != nullptr)
     {
-        if(i == index) 
-            return current;
-        current = current->next;
-        i++;
+    if(i == index) 
+        return current;
+    current = current->next;
+    i++;
     }
 
     return nullptr;

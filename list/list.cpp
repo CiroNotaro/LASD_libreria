@@ -33,21 +33,20 @@ namespace lasd {
     template<typename Data>
     List<Data>::List(const TraversableContainer<Data>& other)
     {
-        TraverseFun lambda = [&](const Data& data)
+        Traverse([&](const Data& data)
         {
             InsertAtBack(data);
-        };
-        Traverse(lambda);
+        });
     }
 
     template<typename Data>
     List<Data>::List(MappableContainer<Data>&& other)
     {
-        TraverseFun lambda = [&](const Data& data)
+        
+        Map([&](const Data& data)
         {
             InsertAtBack(data);
-        };
-        Map(lambda);
+        });
     }
 
     template<typename Data>
@@ -226,13 +225,13 @@ namespace lasd {
     template<typename Data>
     Data& List<Data>::Front() 
     {
-        return *head;
+        return head->value;
     }
 
     template<typename Data>
     Data& List<Data>::Back() 
     {
-        return *tail;
+        return tail->value;
     }
 
     template<typename Data>
@@ -251,52 +250,54 @@ namespace lasd {
             current = current->next;
             i++;
         }
+
+        return head->value;
     }
 
     template<typename Data>
     const Data& List<Data>::Front() const 
     {
-        return *head;
+        return head->value;
     } 
 
     template<typename Data>
     const Data& List<Data>::Back() const
     {
-        return *tail;
+        return tail->value;
     }
 
     template<typename Data>
-    void List<Data>::Map(MapFun& fun) const
+    void List<Data>::Map(MapFun fun)
     {
         PreOrderMap(fun, head);
     }
 
     template<typename Data>
-    void List<Data>::PreOrderMap(MapFun& fun) const
+    void List<Data>::PreOrderMap(MapFun fun)
     {
         PreOrderMap(fun, head);
     }
 
     template<typename Data>
-    void List<Data>::PostOrderMap(MapFun& fun) const
+    void List<Data>::PostOrderMap(MapFun fun)
     {
         PostOrderMap(fun, head);
     }
 
     template<typename Data>
-    void List<Data>::Traverse(TraverseFun& fun) const
+    void List<Data>::Traverse(TraverseFun fun) const
     {
         PreOrderTraverse(fun, head);
     }
 
     template<typename Data>
-    void List<Data>::PreOrderTraverse(TraverseFun& fun) const 
+    void List<Data>::PreOrderTraverse(TraverseFun fun) const 
     {
         PreOrderTraverse(fun, head);
     }
 
     template<typename Data>
-    void List<Data>::PostOrderTraverse(TraverseFun& fun) const
+    void List<Data>::PostOrderTraverse(TraverseFun fun) const
     {
         PostOrderTraverse(fun, head);
     }

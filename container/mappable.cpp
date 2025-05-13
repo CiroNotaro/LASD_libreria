@@ -3,7 +3,7 @@
 namespace lasd {
 
     template<typename Data>
-    void PreOrderMappableContainer<Data>::Map(MapFun& fun) const
+    void PreOrderMappableContainer<Data>::Map(MapFun fun)
     {
         PreOrderMap(fun);
     }
@@ -11,7 +11,7 @@ namespace lasd {
     /* ************************************************************************** */
 
     template<typename Data>
-    void PostOrderMappableContainer<Data>::Map(MapFun& fun) const
+    void PostOrderMappableContainer<Data>::Map(MapFun fun)
     {
         PostOrderMap(fun);
     }

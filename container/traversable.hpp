@@ -52,7 +52,7 @@ public:
 
   using TraverseFun = std::function<void(const Data &)>;
 
-  virtual void Traverse(TraverseFun& fun) const = 0;
+  virtual void Traverse(TraverseFun fun) const = 0;
 
   template <typename Accumulator>
   using FoldFun = std::function<Accumulator(const Data &, const Accumulator &)>;
@@ -107,7 +107,7 @@ public:
 
   using typename TraversableContainer<Data>::TraverseFun;
 
-  virtual void PreOrderTraverse(TraverseFun& fun) const = 0;
+  virtual void PreOrderTraverse(TraverseFun fun) const = 0;
 
   template <typename Accumulator>
   using FoldFun = typename TraversableContainer<Data>::FoldFun<Accumulator>;
@@ -119,7 +119,7 @@ public:
 
   // Specific member function (inherited from TraversableContainer)
 
-  void Traverse(TraverseFun& fun) const override; // Override TraversableContainer member
+  void Traverse(TraverseFun fun) const override; // Override TraversableContainer member
 
 };
 
@@ -162,7 +162,7 @@ public:
 
   using typename TraversableContainer<Data>::TraverseFun;
 
-  virtual void PostOrderTraverse(TraverseFun& fun) const = 0;
+  virtual void PostOrderTraverse(TraverseFun fun) const = 0;
 
   template <typename Accumulator>
   using FoldFun = typename TraversableContainer<Data>::FoldFun<Accumulator>;
@@ -174,7 +174,7 @@ public:
 
   // Specific member function (inherited from TraversableContainer)
 
-  void Traverse(TraverseFun& fun) const override; // Override TraversableContainer member
+  void Traverse(TraverseFun fun) const override; // Override TraversableContainer member
 
 };
 

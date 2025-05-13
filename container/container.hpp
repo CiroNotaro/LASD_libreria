@@ -16,7 +16,7 @@ private:
 protected:
   // ...
   /* ************************************************************************ */
-  ulong size;
+  ulong size = 0;
 
 
   // Default constructor
@@ -60,7 +60,7 @@ public:
 
 /* ************************************************************************** */
 
-class ClearableContainer : Container{
+class ClearableContainer : virtual public Container{
   // Must extend Container
 
 private:
@@ -99,7 +99,7 @@ public:
 
 /* ************************************************************************** */
 
-class ResizableContainer : virtual public ClearableContainer{
+class ResizableContainer :  ClearableContainer{
   // Must extend ClearableContainer
 
 private:
