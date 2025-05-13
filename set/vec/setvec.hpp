@@ -97,7 +97,7 @@ public:
 
   // Specific member functions (inherited from LinearContainer)
 
-  Data& operator[](const ulong index) override; // Override LinearContainer member (must throw std::out_of_range when out of range)
+  Data& operator[](const ulong index) const override; // Override LinearContainer member (must throw std::out_of_range when out of range)
 
   /* ************************************************************************** */
 

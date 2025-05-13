@@ -22,7 +22,6 @@ private:
   // ...
 
 protected:
-
   using Container::size;
 
   struct Node {
@@ -157,19 +156,19 @@ public:
 
   using typename MappableContainer<Data>::MapFun;
 
-  void Map(MapFun& fun) override; // Override MappableContainer member
+  void Map(MapFun& fun) const override; // Override MappableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PreOrderMappableContainer)
 
-  void PreOrderMap(MapFun& fun) override; // Override PreOrderMappableContainer member
+  void PreOrderMap(MapFun& fun) const override; // Override PreOrderMappableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PostOrderMappableContainer)
 
-  void PostOrderMap(MapFun& fun) override;  // Override PostOrderMappableContainer member
+  void PostOrderMap(MapFun& fun) const override;  // Override PostOrderMappableContainer member
 
   /* ************************************************************************ */
 
@@ -177,7 +176,7 @@ public:
 
   using typename TraversableContainer<Data>::TraverseFun;
 
-  void Traverse(TraverseFun& fun) override; // Override TraversableContainer member
+  void Traverse(TraverseFun& fun) const override; // Override TraversableContainer member
 
   /* ************************************************************************ */
 
@@ -189,7 +188,7 @@ public:
 
   // Specific member function (inherited from PostOrderTraversableContainer)
 
-  void PostOrderTraverse(TraverseFun& fun) override; // Override PostOrderTraversableContainer member
+  void PostOrderTraverse(TraverseFun& fun) const override; // Override PostOrderTraversableContainer member
 
   /* ************************************************************************ */
 

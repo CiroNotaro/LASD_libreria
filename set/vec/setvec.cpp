@@ -21,7 +21,7 @@ SetVec<Data>::SetVec(MappableContainer<Data>&& mappableContainer)
 template <typename Data>
 SetVec<Data>::SetVec(const SetVec<Data>& setvec)
 {
-    size = setvec.Size();
+    size = setvec.size;
     for(ulong i = 0; i < size; i++)
     {
         vector[i] = setvec[i];
@@ -31,7 +31,7 @@ SetVec<Data>::SetVec(const SetVec<Data>& setvec)
 template <typename Data>
 SetVec<Data>::SetVec(SetVec<Data>&& setvec)
 {
-    size = setvec.Size();
+    size = setvec.size;
     for(ulong i = 0; i < size; i++)
     {
         vector[i] = std::move(setvec[i]);
@@ -338,7 +338,7 @@ bool SetVec<Data>::Remove(const Data& value)
 }
 
 template <typename Data>
-Data& SetVec<Data>::operator[](const ulong index)
+Data& SetVec<Data>::operator[](const ulong index) const
 {
     if(index >= size) throw std::out_of_range("Index is out of range!");
     return vector[index];

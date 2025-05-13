@@ -41,8 +41,8 @@ public:
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const DictionaryContainer<Data> other) const noexcept = delete; // Comparison of abstract types is not possible.
-  bool operator!=(const DictionaryContainer<Data> other) const noexcept = delete; // Comparison of abstract types is not possible.
+  bool operator==(const DictionaryContainer<Data>& other) const noexcept = delete; // Comparison of abstract types is not possible.
+  bool operator!=(const DictionaryContainer<Data>& other) const noexcept = delete; // Comparison of abstract types is not possible.
 
   /* ************************************************************************ */
 
@@ -71,7 +71,6 @@ class OrderedDictionaryContainer : virtual public DictionaryContainer<Data> {
 private:
 
 protected:
-  using Container::size;
 
 public:
 

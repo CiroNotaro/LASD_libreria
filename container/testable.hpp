@@ -21,7 +21,6 @@ private:
   // ...
 
 protected:
-
   // ...
 
 public:

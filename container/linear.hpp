@@ -23,9 +23,7 @@ private:
   // ...
 
 protected:
-
   // ...
-
 public:
 
   // Destructor
@@ -58,15 +56,12 @@ public:
   /* ************************************************************************ */
 
   // Specific member function (inherited from TraversableContainer)
-
   using typename TraversableContainer<Data>::TraverseFun;
-
   void Traverse(TraverseFun& fun) const override; // Override TraversableContainer member
 
   /* ************************************************************************ */
 
   // Specific member function (inherited from PreOrderTraversableContainer)
-
   void PreOrderTraverse(TraverseFun& fun) const override; // Override PreOrderTraversableContainer member
 
   /* ************************************************************************ */
@@ -93,7 +88,6 @@ private:
   // ...
 
 protected:
-
   // ...
 
 public:
@@ -150,7 +144,6 @@ private:
   // ...
 
 protected:
-
   // ...
 
 public:

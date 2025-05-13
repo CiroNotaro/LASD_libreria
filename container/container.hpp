@@ -11,14 +11,13 @@ namespace lasd {
 class Container {
 
 private:
-  ulong size;
   // ...
 
 protected:
-
   // ...
-
   /* ************************************************************************ */
+  ulong size;
+
 
   // Default constructor
   Container() = default;

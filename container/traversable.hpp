@@ -25,13 +25,12 @@ private:
   // ...
 
 protected:
-
   // ...
 
 public:
 
   // Destructor
-  virtual ~TraversableContainer() = default
+  virtual ~TraversableContainer() = default;
 
   /* ************************************************************************ */
 
@@ -39,7 +38,7 @@ public:
   TraversableContainer<Data>& operator=(const TraversableContainer<Data>&) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  TraversableContainer<Data>& operator=(const TraversableContainer<Data>&) = delete; // Move assignment of abstract types is not possible.
+  TraversableContainer<Data>& operator=(TraversableContainer<Data>&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
@@ -86,7 +85,7 @@ protected:
 public:
 
   // Destructor
-  virtual ~PreOrderTraversableContainer() = default
+  virtual ~PreOrderTraversableContainer() = default;
 
   /* ************************************************************************ */
 
@@ -163,7 +162,7 @@ public:
 
   using typename TraversableContainer<Data>::TraverseFun;
 
-  void PostOrderTraverse(TraverseFun& fun) const;
+  virtual void PostOrderTraverse(TraverseFun& fun) const = 0;
 
   template <typename Accumulator>
   using FoldFun = typename TraversableContainer<Data>::FoldFun<Accumulator>;

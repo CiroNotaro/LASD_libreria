@@ -12,25 +12,26 @@ namespace lasd
     template <typename Data>
     Vector<Data>::Vector(const TraversableContainer<Data>& traversableContainer)
     {
-        this->size = traversableContainer.Size();
-        buffer = new Data[this->size];
+        size = traversableContainer.Size();
+        buffer = new Data[size];
         ulong i = 0;
-        Traverse(
-            [&](const Data& data)
-            {
-                buffer[i] = data;size < newsize
-                i++;
-            }
+        TraverseFun lambda = [&](const Data& data)
+        {
+            buffer[i] = data;
+            i++;
+        };
+        traversableContainer.Traverse(
+            lambda
         );
     }
 
     template <typename Data>
     Vector<Data>::Vector(MappableContainer<Data>&& mappableContainer)
     {
-        this->size = mappableContainer.Size();
-        buffer = new Data[this->size];
+        size = mappableContainer.Size();
+        buffer = new Data[size];
         ulong i = 0;
-        Map(
+        mappableContainer.Map(
             [&](const Data& data)
             {
                 buffer[i] = data;
@@ -69,6 +70,11 @@ namespace lasd
         std::swap(size, other.size);
         std::swap(buffer, other.buffer);
         return *this;
+    }
+
+    template<typename Data>
+    Vector<Data>::~Vector() {
+        delete[] buffer;
     }
 
     template <typename Data>
@@ -131,7 +137,7 @@ namespace lasd
     const Data& Vector<Data>::Front() const
     {
         if(buffer == nullptr)
-        t   hrow std::length_error("The vector is not allocated!");
+            throw std::length_error("The vector is not allocated!");
 
         return buffer[0];
     }
@@ -168,5 +174,42 @@ namespace lasd
         buffer = nullptr;
         size = 0;
     }
+
+    /************************** */
+
+    template<typename Data>
+    SortableVector<Data>::SortableVector(const ulong size) 
+                    : Vector<Data>(size) {}
+
+    template<typename Data>
+    SortableVector<Data>::SortableVector(const TraversableContainer<Data>& other) 
+                    : Vector<Data>(other) {}
+
+    template<typename Data>
+    SortableVector<Data>::SortableVector(MappableContainer<Data>&& other) 
+                    : Vector<Data>(std::move(other)) {}
+
+    template<typename Data>
+    SortableVector<Data>::SortableVector(const SortableVector<Data>& other) 
+                    : Vector<Data>(other) {}
+
+    template<typename Data>
+    SortableVector<Data>::SortableVector(SortableVector<Data>&& other) 
+                    : Vector<Data>(std::move(other)) {}
+
+    template<typename Data>
+    SortableVector<Data>& SortableVector<Data>::operator=(const SortableVector<Data>& other) 
+    {
+        Vector<Data>::operator=(other);
+        return *this;
+    }
+
+    template<typename Data>
+    SortableVector<Data>& SortableVector<Data>::operator=(SortableVector<Data>&& other)
+    {
+        Vector<Data>::operator=(std::move(other));
+        return *this;
+    }
+
 
 }

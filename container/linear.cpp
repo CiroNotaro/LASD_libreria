@@ -6,8 +6,8 @@ namespace lasd {
     template<typename Data>
     bool LinearContainer<Data>::operator==(const LinearContainer<Data>& other) const noexcept 
     {
-      if (size == other.size) {
-        for (ulong index = 0; index < size; ++index) {
+      if (this->size == other.size) {
+        for (ulong index = 0; index < this->size; ++index) {
           if (operator[](index) != other.operator[](index)) {
             return false;
           }
@@ -43,23 +43,6 @@ namespace lasd {
         PreOrderTraverse(fun);
     }
 
-    template<typename Data>
-    inline void LinearContainer<Data>::PreOrderTraverse(TraverseFun& fun) const
-    {
-        for (ulong i = 0; i < size; i++) {
-          fun(operator[](i));
-        }
-    }
-
-    template<typename Data>
-    inline void LinearContainer<Data>::PostOrderTraverse(TraverseFun& fun) const
-    {
-        for (ulong i = size-1; i >= 0; i--)
-        {
-          fun(operator[](i));
-        }
-    }
-
     /* ************************************************************************** */
 
     template<typename Data>
@@ -71,7 +54,7 @@ namespace lasd {
     template<typename Data>
     void MutableLinearContainer<Data>::PreOrderMap(MapFun& fun) const
     {
-      for (ulong i = 0; i < size; i++) 
+      for (ulong i = 0; i < this->size; i++)
       {
         fun(operator[](i));
       }
@@ -80,7 +63,7 @@ namespace lasd {
     template<typename Data>
     void MutableLinearContainer<Data>::PostOrderMap(MapFun& fun) const
     {
-        for (ulong i = size-1; i >= 0; i--)
+        for (ulong i = this->size-1; i >= 0; i--)
         {
             fun(operator[](i));
         }
@@ -91,7 +74,7 @@ namespace lasd {
     template<typename Data>
     void SortableLinearContainer<Data>::Sort() noexcept 
     {
-      QuickSort(0, size - 1);
+      QuickSort(0, this->size - 1);
     }
 
     template<typename Data>

@@ -1,0 +1,579 @@
+g++ -Wall -pedantic -O3 -std=c++20 -fsanitize=address -c zlasdtest/exercise1a/simpletest.cpp -o exc1as.o
+In file included from zlasdtest/exercise1a/../container/../../container/linear.hpp:189,
+                 from zlasdtest/exercise1a/../container/linear.hpp:5,
+                 from zlasdtest/exercise1a/simpletest.cpp:10:
+zlasdtest/exercise1a/../container/../../container/linear.cpp:47:10: error: redefinition of ‘void lasd::LinearContainer<Data>::PreOrderTraverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const’
+   47 |     void LinearContainer<Data>::PreOrderTraverse(TraverseFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.cpp:28:10: note: ‘void lasd::LinearContainer<Data>::PreOrderTraverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const’ previously declared here
+   28 |     void LinearContainer<Data>::PreOrderTraverse(TraverseFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.cpp:55:10: error: redefinition of ‘void lasd::LinearContainer<Data>::PostOrderTraverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const’
+   55 |     void LinearContainer<Data>::PostOrderTraverse(TraverseFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.cpp:35:10: note: ‘void lasd::LinearContainer<Data>::PostOrderTraverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const’ previously declared here
+   35 |     void LinearContainer<Data>::PostOrderTraverse(TraverseFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~
+In file included from zlasdtest/exercise1a/../container/testable.hpp:5,
+                 from zlasdtest/exercise1a/simpletest.cpp:7:
+zlasdtest/exercise1a/../container/../../container/testable.hpp: In instantiation of ‘class lasd::TestableContainer<int>’:
+zlasdtest/exercise1a/../container/../../container/traversable.hpp:20:7:   required from ‘class lasd::TraversableContainer<int>’
+   20 | class TraversableContainer : virtual public TestableContainer<Data>{
+      |       ^~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.hpp:75:7:   required from ‘class lasd::PreOrderTraversableContainer<int>’
+   75 | class PreOrderTraversableContainer : virtual public TraversableContainer<Data>{
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:16:7:   required from ‘class lasd::LinearContainer<int>’
+   16 | class LinearContainer : virtual public PreOrderTraversableContainer<Data>, virtual public
+      |       ^~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:83:7:   required from ‘class lasd::MutableLinearContainer<int>’
+   83 | class MutableLinearContainer :virtual public
+      |       ^~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:16:7:   required from ‘class lasd::Vector<int>’
+   16 | class Vector : virtual public MutableLinearContainer<Data>,
+      |       ^~~~~~
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:113:7:   required from ‘class lasd::SortableVector<int>’
+  113 | class SortableVector : virtual public Vector<Data>,
+      |       ^~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:27:33:   required from here
+   27 |       lasd::SortableVector<int> vec;
+      |                                 ^~~
+zlasdtest/exercise1a/../container/../../container/testable.hpp:24:18: error: ‘ulong lasd::Container::size’ is private within this context
+   24 | using Container::size;
+      |                  ^~~~
+In file included from zlasdtest/exercise1a/../container/container.hpp:5,
+                 from zlasdtest/exercise1a/simpletest.cpp:6:
+zlasdtest/exercise1a/../container/../../container/container.hpp:14:9: note: declared private here
+   14 |   ulong size;
+      |         ^~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp: In instantiation of ‘class lasd::LinearContainer<int>’:
+zlasdtest/exercise1a/../container/../../container/linear.hpp:83:7:   required from ‘class lasd::MutableLinearContainer<int>’
+   83 | class MutableLinearContainer :virtual public
+      |       ^~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:16:7:   required from ‘class lasd::Vector<int>’
+   16 | class Vector : virtual public MutableLinearContainer<Data>,
+      |       ^~~~~~
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:113:7:   required from ‘class lasd::SortableVector<int>’
+  113 | class SortableVector : virtual public Vector<Data>,
+      |       ^~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:27:33:   required from here
+   27 |       lasd::SortableVector<int> vec;
+      |                                 ^~~
+zlasdtest/exercise1a/../container/../../container/linear.cpp:35:10: error: ‘void lasd::LinearContainer<Data>::PostOrderTraverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const [with Data = int; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const int&)>]’ marked ‘override’, but does not override
+   35 |     void LinearContainer<Data>::PostOrderTraverse(TraverseFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp: In instantiation of ‘class lasd::MutableLinearContainer<int>’:
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:16:7:   required from ‘class lasd::Vector<int>’
+   16 | class Vector : virtual public MutableLinearContainer<Data>,
+      |       ^~~~~~
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:113:7:   required from ‘class lasd::SortableVector<int>’
+  113 | class SortableVector : virtual public Vector<Data>,
+      |       ^~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:27:33:   required from here
+   27 |       lasd::SortableVector<int> vec;
+      |                                 ^~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:52:23: warning: ‘const Data& lasd::LinearContainer<Data>::operator[](ulong) const [with Data = int; ulong = long unsigned int]’ was hidden [-Woverloaded-virtual=]
+   52 |   virtual const Data& operator[](const ulong index) const = 0; // (non-mutable version; concrete function must throw std::out_of_range when out of range)
+      |                       ^~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:116:17: note:   by ‘Data& lasd::MutableLinearContainer<Data>::operator[](ulong) [with Data = int; ulong = long unsigned int]’
+  116 |   virtual Data& operator[](const ulong index) = 0; // (mutable version; concrete function must throw std::out_of_range when out of range)
+      |                 ^~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:56:23: warning: ‘const Data& lasd::LinearContainer<Data>::Back() const [with Data = int]’ was hidden [-Woverloaded-virtual=]
+   56 |   virtual const Data& Back() const = 0; // (non-mutable version; concrete function must throw std::length_error when empty)
+      |                       ^~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:120:17: note:   by ‘Data& lasd::MutableLinearContainer<Data>::Back() [with Data = int]’
+  120 |   virtual Data& Back() = 0; // (mutable version; concrete function must throw std::length_error when empty)
+      |                 ^~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:54:23: warning: ‘const Data& lasd::LinearContainer<Data>::Front() const [with Data = int]’ was hidden [-Woverloaded-virtual=]
+   54 |   virtual const Data& Front() const = 0; // (non-mutable version; concrete function must throw std::length_error when empty)
+      |                       ^~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:118:17: note:   by ‘Data& lasd::MutableLinearContainer<Data>::Front() [with Data = int]’
+  118 |   virtual Data& Front() = 0; // (mutable version; concrete function must throw std::length_error when empty)
+      |                 ^~~~~
+zlasdtest/exercise1a/simpletest.cpp: In function ‘void stestVectorInt(uint&, uint&)’:
+zlasdtest/exercise1a/simpletest.cpp:28:12: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::SortableVector<int>’
+   28 |       Empty(loctestnum, loctesterr, vec, true);
+      |       ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:45:12: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::SortableVector<int>’
+   45 |       Empty(loctestnum, loctesterr, vec, false);
+      |       ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:46:11: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::SortableVector<int>’
+   46 |       Size(loctestnum, loctesterr, vec, true, 3);
+      |       ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/testable.hpp: In instantiation of ‘class lasd::TestableContainer<double>’:
+zlasdtest/exercise1a/../container/../../container/traversable.hpp:20:7:   required from ‘class lasd::TraversableContainer<double>’
+   20 | class TraversableContainer : virtual public TestableContainer<Data>{
+      |       ^~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.hpp:75:7:   required from ‘class lasd::PreOrderTraversableContainer<double>’
+   75 | class PreOrderTraversableContainer : virtual public TraversableContainer<Data>{
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:16:7:   required from ‘class lasd::LinearContainer<double>’
+   16 | class LinearContainer : virtual public PreOrderTraversableContainer<Data>, virtual public
+      |       ^~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:83:7:   required from ‘class lasd::MutableLinearContainer<double>’
+   83 | class MutableLinearContainer :virtual public
+      |       ^~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:16:7:   required from ‘class lasd::Vector<double>’
+   16 | class Vector : virtual public MutableLinearContainer<Data>,
+      |       ^~~~~~
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:113:7:   required from ‘class lasd::SortableVector<double>’
+  113 | class SortableVector : virtual public Vector<Data>,
+      |       ^~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:87:37:   required from here
+   87 |     lasd::SortableVector<double> vec(3);
+      |                                     ^
+zlasdtest/exercise1a/../container/../../container/testable.hpp:24:18: error: ‘ulong lasd::Container::size’ is private within this context
+   24 | using Container::size;
+      |                  ^~~~
+zlasdtest/exercise1a/../container/../../container/container.hpp:14:9: note: declared private here
+   14 |   ulong size;
+      |         ^~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp: In instantiation of ‘class lasd::LinearContainer<double>’:
+zlasdtest/exercise1a/../container/../../container/linear.hpp:83:7:   required from ‘class lasd::MutableLinearContainer<double>’
+   83 | class MutableLinearContainer :virtual public
+      |       ^~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:16:7:   required from ‘class lasd::Vector<double>’
+   16 | class Vector : virtual public MutableLinearContainer<Data>,
+      |       ^~~~~~
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:113:7:   required from ‘class lasd::SortableVector<double>’
+  113 | class SortableVector : virtual public Vector<Data>,
+      |       ^~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:87:37:   required from here
+   87 |     lasd::SortableVector<double> vec(3);
+      |                                     ^
+zlasdtest/exercise1a/../container/../../container/linear.cpp:35:10: error: ‘void lasd::LinearContainer<Data>::PostOrderTraverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const [with Data = double; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const double&)>]’ marked ‘override’, but does not override
+   35 |     void LinearContainer<Data>::PostOrderTraverse(TraverseFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp: In instantiation of ‘class lasd::MutableLinearContainer<double>’:
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:16:7:   required from ‘class lasd::Vector<double>’
+   16 | class Vector : virtual public MutableLinearContainer<Data>,
+      |       ^~~~~~
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:113:7:   required from ‘class lasd::SortableVector<double>’
+  113 | class SortableVector : virtual public Vector<Data>,
+      |       ^~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:87:37:   required from here
+   87 |     lasd::SortableVector<double> vec(3);
+      |                                     ^
+zlasdtest/exercise1a/../container/../../container/linear.hpp:52:23: warning: ‘const Data& lasd::LinearContainer<Data>::operator[](ulong) const [with Data = double; ulong = long unsigned int]’ was hidden [-Woverloaded-virtual=]
+   52 |   virtual const Data& operator[](const ulong index) const = 0; // (non-mutable version; concrete function must throw std::out_of_range when out of range)
+      |                       ^~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:116:17: note:   by ‘Data& lasd::MutableLinearContainer<Data>::operator[](ulong) [with Data = double; ulong = long unsigned int]’
+  116 |   virtual Data& operator[](const ulong index) = 0; // (mutable version; concrete function must throw std::out_of_range when out of range)
+      |                 ^~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:56:23: warning: ‘const Data& lasd::LinearContainer<Data>::Back() const [with Data = double]’ was hidden [-Woverloaded-virtual=]
+   56 |   virtual const Data& Back() const = 0; // (non-mutable version; concrete function must throw std::length_error when empty)
+      |                       ^~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:120:17: note:   by ‘Data& lasd::MutableLinearContainer<Data>::Back() [with Data = double]’
+  120 |   virtual Data& Back() = 0; // (mutable version; concrete function must throw std::length_error when empty)
+      |                 ^~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:54:23: warning: ‘const Data& lasd::LinearContainer<Data>::Front() const [with Data = double]’ was hidden [-Woverloaded-virtual=]
+   54 |   virtual const Data& Front() const = 0; // (non-mutable version; concrete function must throw std::length_error when empty)
+      |                       ^~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:118:17: note:   by ‘Data& lasd::MutableLinearContainer<Data>::Front() [with Data = double]’
+  118 |   virtual Data& Front() = 0; // (mutable version; concrete function must throw std::length_error when empty)
+      |                 ^~~~~
+zlasdtest/exercise1a/simpletest.cpp: In function ‘void stestVectorDouble(uint&, uint&)’:
+zlasdtest/exercise1a/simpletest.cpp:88:10: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::SortableVector<double>’
+   88 |     Empty(loctestnum, loctesterr, vec, false);
+      |     ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:89:9: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::SortableVector<double>’
+   89 |     Size(loctestnum, loctesterr, vec, true, 3);
+      |     ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/testable.hpp: In instantiation of ‘class lasd::TestableContainer<std::__cxx11::basic_string<char> >’:
+zlasdtest/exercise1a/../container/../../container/traversable.hpp:20:7:   required from ‘class lasd::TraversableContainer<std::__cxx11::basic_string<char> >’
+   20 | class TraversableContainer : virtual public TestableContainer<Data>{
+      |       ^~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.hpp:75:7:   required from ‘class lasd::PreOrderTraversableContainer<std::__cxx11::basic_string<char> >’
+   75 | class PreOrderTraversableContainer : virtual public TraversableContainer<Data>{
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:16:7:   required from ‘class lasd::LinearContainer<std::__cxx11::basic_string<char> >’
+   16 | class LinearContainer : virtual public PreOrderTraversableContainer<Data>, virtual public
+      |       ^~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:83:7:   required from ‘class lasd::MutableLinearContainer<std::__cxx11::basic_string<char> >’
+   83 | class MutableLinearContainer :virtual public
+      |       ^~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:16:7:   required from ‘class lasd::Vector<std::__cxx11::basic_string<char> >’
+   16 | class Vector : virtual public MutableLinearContainer<Data>,
+      |       ^~~~~~
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:113:7:   required from ‘class lasd::SortableVector<std::__cxx11::basic_string<char> >’
+  113 | class SortableVector : virtual public Vector<Data>,
+      |       ^~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:116:37:   required from here
+  116 |     lasd::SortableVector<string> vec(2);
+      |                                     ^
+zlasdtest/exercise1a/../container/../../container/testable.hpp:24:18: error: ‘ulong lasd::Container::size’ is private within this context
+   24 | using Container::size;
+      |                  ^~~~
+zlasdtest/exercise1a/../container/../../container/container.hpp:14:9: note: declared private here
+   14 |   ulong size;
+      |         ^~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp: In instantiation of ‘class lasd::LinearContainer<std::__cxx11::basic_string<char> >’:
+zlasdtest/exercise1a/../container/../../container/linear.hpp:83:7:   required from ‘class lasd::MutableLinearContainer<std::__cxx11::basic_string<char> >’
+   83 | class MutableLinearContainer :virtual public
+      |       ^~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:16:7:   required from ‘class lasd::Vector<std::__cxx11::basic_string<char> >’
+   16 | class Vector : virtual public MutableLinearContainer<Data>,
+      |       ^~~~~~
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:113:7:   required from ‘class lasd::SortableVector<std::__cxx11::basic_string<char> >’
+  113 | class SortableVector : virtual public Vector<Data>,
+      |       ^~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:116:37:   required from here
+  116 |     lasd::SortableVector<string> vec(2);
+      |                                     ^
+zlasdtest/exercise1a/../container/../../container/linear.cpp:35:10: error: ‘void lasd::LinearContainer<Data>::PostOrderTraverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const [with Data = std::__cxx11::basic_string<char>; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const std::__cxx11::basic_string<char>&)>]’ marked ‘override’, but does not override
+   35 |     void LinearContainer<Data>::PostOrderTraverse(TraverseFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp: In instantiation of ‘class lasd::MutableLinearContainer<std::__cxx11::basic_string<char> >’:
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:16:7:   required from ‘class lasd::Vector<std::__cxx11::basic_string<char> >’
+   16 | class Vector : virtual public MutableLinearContainer<Data>,
+      |       ^~~~~~
+zlasdtest/exercise1a/../vector/../../vector/vector.hpp:113:7:   required from ‘class lasd::SortableVector<std::__cxx11::basic_string<char> >’
+  113 | class SortableVector : virtual public Vector<Data>,
+      |       ^~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:116:37:   required from here
+  116 |     lasd::SortableVector<string> vec(2);
+      |                                     ^
+zlasdtest/exercise1a/../container/../../container/linear.hpp:52:23: warning: ‘const Data& lasd::LinearContainer<Data>::operator[](ulong) const [with Data = std::__cxx11::basic_string<char>; ulong = long unsigned int]’ was hidden [-Woverloaded-virtual=]
+   52 |   virtual const Data& operator[](const ulong index) const = 0; // (non-mutable version; concrete function must throw std::out_of_range when out of range)
+      |                       ^~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:116:17: note:   by ‘Data& lasd::MutableLinearContainer<Data>::operator[](ulong) [with Data = std::__cxx11::basic_string<char>; ulong = long unsigned int]’
+  116 |   virtual Data& operator[](const ulong index) = 0; // (mutable version; concrete function must throw std::out_of_range when out of range)
+      |                 ^~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:56:23: warning: ‘const Data& lasd::LinearContainer<Data>::Back() const [with Data = std::__cxx11::basic_string<char>]’ was hidden [-Woverloaded-virtual=]
+   56 |   virtual const Data& Back() const = 0; // (non-mutable version; concrete function must throw std::length_error when empty)
+      |                       ^~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:120:17: note:   by ‘Data& lasd::MutableLinearContainer<Data>::Back() [with Data = std::__cxx11::basic_string<char>]’
+  120 |   virtual Data& Back() = 0; // (mutable version; concrete function must throw std::length_error when empty)
+      |                 ^~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:54:23: warning: ‘const Data& lasd::LinearContainer<Data>::Front() const [with Data = std::__cxx11::basic_string<char>]’ was hidden [-Woverloaded-virtual=]
+   54 |   virtual const Data& Front() const = 0; // (non-mutable version; concrete function must throw std::length_error when empty)
+      |                       ^~~~~
+zlasdtest/exercise1a/../container/../../container/linear.hpp:118:17: note:   by ‘Data& lasd::MutableLinearContainer<Data>::Front() [with Data = std::__cxx11::basic_string<char>]’
+  118 |   virtual Data& Front() = 0; // (mutable version; concrete function must throw std::length_error when empty)
+      |                 ^~~~~
+zlasdtest/exercise1a/simpletest.cpp: In function ‘void stestVectorString(uint&, uint&)’:
+zlasdtest/exercise1a/simpletest.cpp:118:10: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::SortableVector<std::__cxx11::basic_string<char> >’
+  118 |     Empty(loctestnum, loctesterr, vec, false);
+      |     ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:119:9: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::SortableVector<std::__cxx11::basic_string<char> >’
+  119 |     Size(loctestnum, loctesterr, vec, true, 2);
+      |     ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:153:10: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::SortableVector<std::__cxx11::basic_string<char> >’
+  153 |     Empty(loctestnum, loctesterr, movvec, true);
+      |     ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from zlasdtest/exercise1a/../list/../../list/list.hpp:220,
+                 from zlasdtest/exercise1a/../list/list.hpp:5,
+                 from zlasdtest/exercise1a/simpletest.cpp:14:
+zlasdtest/exercise1a/../list/../../list/list.hpp: In instantiation of ‘class lasd::List<int>’:
+zlasdtest/exercise1a/simpletest.cpp:180:21:   required from here
+  180 |     lasd::List<int> lst;
+      |                     ^~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:267:10: error: ‘void lasd::List<Data>::Map(typename lasd::MappableContainer<Data>::MapFun&) [with Data = int; typename lasd::MappableContainer<Data>::MapFun = std::function<void(int&)>]’ marked ‘override’, but does not override
+  267 |     void List<Data>::Map(MapFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:273:10: error: ‘void lasd::List<Data>::PreOrderMap(typename lasd::MappableContainer<Data>::MapFun&) [with Data = int; typename lasd::MappableContainer<Data>::MapFun = std::function<void(int&)>]’ marked ‘override’, but does not override
+  273 |     void List<Data>::PreOrderMap(MapFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:279:10: error: ‘void lasd::List<Data>::PostOrderMap(typename lasd::MappableContainer<Data>::MapFun&) [with Data = int; typename lasd::MappableContainer<Data>::MapFun = std::function<void(int&)>]’ marked ‘override’, but does not override
+  279 |     void List<Data>::PostOrderMap(MapFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: error: ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = int; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const int&)>]’ marked ‘override’, but does not override
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:297:10: error: ‘void lasd::List<Data>::PostOrderTraverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = int; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const int&)>]’ marked ‘override’, but does not override
+  297 |     void List<Data>::PostOrderTraverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.cpp:81:10: warning: ‘void lasd::MutableLinearContainer<Data>::PostOrderMap(typename lasd::MappableContainer<Data>::MapFun&) const [with Data = int; typename lasd::MappableContainer<Data>::MapFun = std::function<void(int&)>]’ was hidden [-Woverloaded-virtual=]
+   81 |     void MutableLinearContainer<Data>::PostOrderMap(MapFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:343:10: note:   by ‘lasd::List<int>::PostOrderMap’
+  343 |     void List<Data>::PostOrderMap(MapFun fun, Node* node)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.cpp:72:10: warning: ‘void lasd::MutableLinearContainer<Data>::PreOrderMap(typename lasd::MappableContainer<Data>::MapFun&) const [with Data = int; typename lasd::MappableContainer<Data>::MapFun = std::function<void(int&)>]’ was hidden [-Woverloaded-virtual=]
+   72 |     void MutableLinearContainer<Data>::PreOrderMap(MapFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:333:10: note:   by ‘lasd::List<int>::PreOrderMap’
+  333 |     void List<Data>::PreOrderMap(MapFun fun, Node* node)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.cpp:66:10: warning: ‘void lasd::MutableLinearContainer<Data>::Map(typename lasd::MappableContainer<Data>::MapFun&) const [with Data = int; typename lasd::MappableContainer<Data>::MapFun = std::function<void(int&)>]’ was hidden [-Woverloaded-virtual=]
+   66 |     void MutableLinearContainer<Data>::Map(MapFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:267:10: note:   by ‘void lasd::List<Data>::Map(typename lasd::MappableContainer<Data>::MapFun&) [with Data = int; typename lasd::MappableContainer<Data>::MapFun = std::function<void(int&)>]’
+  267 |     void List<Data>::Map(MapFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.cpp:41:10: warning: ‘void lasd::LinearContainer<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const [with Data = int; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const int&)>]’ was hidden [-Woverloaded-virtual=]
+   41 |     void LinearContainer<Data>::Traverse(TraverseFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: note:   by ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = int; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const int&)>]’
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+In file included from zlasdtest/exercise1a/../container/traversable.hpp:5,
+                 from zlasdtest/exercise1a/simpletest.cpp:8:
+zlasdtest/exercise1a/../container/../../container/traversable.hpp:56:16: warning: ‘void lasd::TraversableContainer<Data>::Traverse(TraverseFun&) const [with Data = int; TraverseFun = std::function<void(const int&)>]’ was hidden [-Woverloaded-virtual=]
+   56 |   virtual void Traverse(TraverseFun& fun) const = 0;
+      |                ^~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: note:   by ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = int; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const int&)>]’
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+In file included from zlasdtest/exercise1a/../container/../../container/traversable.hpp:186:
+zlasdtest/exercise1a/../container/../../container/traversable.cpp:47:10: warning: ‘void lasd::PreOrderTraversableContainer<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const [with Data = int; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const int&)>]’ was hidden [-Woverloaded-virtual=]
+   47 |     void PreOrderTraversableContainer<Data>::Traverse(TraverseFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: note:   by ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = int; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const int&)>]’
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.hpp:56:16: warning: ‘void lasd::TraversableContainer<Data>::Traverse(TraverseFun&) const [with Data = int; TraverseFun = std::function<void(const int&)>]’ was hidden [-Woverloaded-virtual=]
+   56 |   virtual void Traverse(TraverseFun& fun) const = 0;
+      |                ^~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: note:   by ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = int; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const int&)>]’
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.cpp:67:10: warning: ‘void lasd::PostOrderTraversableContainer<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const [with Data = int; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const int&)>]’ was hidden [-Woverloaded-virtual=]
+   67 |     void PostOrderTraversableContainer<Data>::Traverse(TraverseFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: note:   by ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = int; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const int&)>]’
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp: In function ‘void stestListInt(uint&, uint&)’:
+zlasdtest/exercise1a/simpletest.cpp:181:10: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::List<int>’
+  181 |     Empty(loctestnum, loctesterr, lst, true);
+      |     ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:182:9: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::List<int>’
+  182 |     Size(loctestnum, loctesterr, lst, true, 0);
+      |     ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:250:10: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::List<int>’
+  250 |     Empty(loctestnum, loctesterr, movlst, true);
+      |     ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:251:9: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::List<int>’
+  251 |     Size(loctestnum, loctesterr, movlst, true, 0);
+      |     ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.hpp: In instantiation of ‘class lasd::List<double>’:
+zlasdtest/exercise1a/simpletest.cpp:266:24:   required from here
+  266 |     lasd::List<double> lst;
+      |                        ^~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:267:10: error: ‘void lasd::List<Data>::Map(typename lasd::MappableContainer<Data>::MapFun&) [with Data = double; typename lasd::MappableContainer<Data>::MapFun = std::function<void(double&)>]’ marked ‘override’, but does not override
+  267 |     void List<Data>::Map(MapFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:273:10: error: ‘void lasd::List<Data>::PreOrderMap(typename lasd::MappableContainer<Data>::MapFun&) [with Data = double; typename lasd::MappableContainer<Data>::MapFun = std::function<void(double&)>]’ marked ‘override’, but does not override
+  273 |     void List<Data>::PreOrderMap(MapFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:279:10: error: ‘void lasd::List<Data>::PostOrderMap(typename lasd::MappableContainer<Data>::MapFun&) [with Data = double; typename lasd::MappableContainer<Data>::MapFun = std::function<void(double&)>]’ marked ‘override’, but does not override
+  279 |     void List<Data>::PostOrderMap(MapFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: error: ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = double; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const double&)>]’ marked ‘override’, but does not override
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:297:10: error: ‘void lasd::List<Data>::PostOrderTraverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = double; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const double&)>]’ marked ‘override’, but does not override
+  297 |     void List<Data>::PostOrderTraverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.cpp:81:10: warning: ‘void lasd::MutableLinearContainer<Data>::PostOrderMap(typename lasd::MappableContainer<Data>::MapFun&) const [with Data = double; typename lasd::MappableContainer<Data>::MapFun = std::function<void(double&)>]’ was hidden [-Woverloaded-virtual=]
+   81 |     void MutableLinearContainer<Data>::PostOrderMap(MapFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:343:10: note:   by ‘lasd::List<double>::PostOrderMap’
+  343 |     void List<Data>::PostOrderMap(MapFun fun, Node* node)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.cpp:72:10: warning: ‘void lasd::MutableLinearContainer<Data>::PreOrderMap(typename lasd::MappableContainer<Data>::MapFun&) const [with Data = double; typename lasd::MappableContainer<Data>::MapFun = std::function<void(double&)>]’ was hidden [-Woverloaded-virtual=]
+   72 |     void MutableLinearContainer<Data>::PreOrderMap(MapFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:333:10: note:   by ‘lasd::List<double>::PreOrderMap’
+  333 |     void List<Data>::PreOrderMap(MapFun fun, Node* node)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.cpp:66:10: warning: ‘void lasd::MutableLinearContainer<Data>::Map(typename lasd::MappableContainer<Data>::MapFun&) const [with Data = double; typename lasd::MappableContainer<Data>::MapFun = std::function<void(double&)>]’ was hidden [-Woverloaded-virtual=]
+   66 |     void MutableLinearContainer<Data>::Map(MapFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:267:10: note:   by ‘void lasd::List<Data>::Map(typename lasd::MappableContainer<Data>::MapFun&) [with Data = double; typename lasd::MappableContainer<Data>::MapFun = std::function<void(double&)>]’
+  267 |     void List<Data>::Map(MapFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.cpp:41:10: warning: ‘void lasd::LinearContainer<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const [with Data = double; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const double&)>]’ was hidden [-Woverloaded-virtual=]
+   41 |     void LinearContainer<Data>::Traverse(TraverseFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: note:   by ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = double; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const double&)>]’
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.hpp:56:16: warning: ‘void lasd::TraversableContainer<Data>::Traverse(TraverseFun&) const [with Data = double; TraverseFun = std::function<void(const double&)>]’ was hidden [-Woverloaded-virtual=]
+   56 |   virtual void Traverse(TraverseFun& fun) const = 0;
+      |                ^~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: note:   by ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = double; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const double&)>]’
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.cpp:47:10: warning: ‘void lasd::PreOrderTraversableContainer<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const [with Data = double; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const double&)>]’ was hidden [-Woverloaded-virtual=]
+   47 |     void PreOrderTraversableContainer<Data>::Traverse(TraverseFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: note:   by ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = double; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const double&)>]’
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.hpp:56:16: warning: ‘void lasd::TraversableContainer<Data>::Traverse(TraverseFun&) const [with Data = double; TraverseFun = std::function<void(const double&)>]’ was hidden [-Woverloaded-virtual=]
+   56 |   virtual void Traverse(TraverseFun& fun) const = 0;
+      |                ^~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: note:   by ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = double; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const double&)>]’
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.cpp:67:10: warning: ‘void lasd::PostOrderTraversableContainer<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const [with Data = double; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const double&)>]’ was hidden [-Woverloaded-virtual=]
+   67 |     void PostOrderTraversableContainer<Data>::Traverse(TraverseFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: note:   by ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = double; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const double&)>]’
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp: In function ‘void stestListDouble(uint&, uint&)’:
+zlasdtest/exercise1a/simpletest.cpp:267:10: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::List<double>’
+  267 |     Empty(loctestnum, loctesterr, lst, true);
+      |     ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:268:9: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::List<double>’
+  268 |     Size(loctestnum, loctesterr, lst, true, 0);
+      |     ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.hpp: In instantiation of ‘class lasd::List<std::__cxx11::basic_string<char> >’:
+zlasdtest/exercise1a/simpletest.cpp:303:24:   required from here
+  303 |     lasd::List<string> lst;
+      |                        ^~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:267:10: error: ‘void lasd::List<Data>::Map(typename lasd::MappableContainer<Data>::MapFun&) [with Data = std::__cxx11::basic_string<char>; typename lasd::MappableContainer<Data>::MapFun = std::function<void(std::__cxx11::basic_string<char>&)>]’ marked ‘override’, but does not override
+  267 |     void List<Data>::Map(MapFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:273:10: error: ‘void lasd::List<Data>::PreOrderMap(typename lasd::MappableContainer<Data>::MapFun&) [with Data = std::__cxx11::basic_string<char>; typename lasd::MappableContainer<Data>::MapFun = std::function<void(std::__cxx11::basic_string<char>&)>]’ marked ‘override’, but does not override
+  273 |     void List<Data>::PreOrderMap(MapFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:279:10: error: ‘void lasd::List<Data>::PostOrderMap(typename lasd::MappableContainer<Data>::MapFun&) [with Data = std::__cxx11::basic_string<char>; typename lasd::MappableContainer<Data>::MapFun = std::function<void(std::__cxx11::basic_string<char>&)>]’ marked ‘override’, but does not override
+  279 |     void List<Data>::PostOrderMap(MapFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: error: ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = std::__cxx11::basic_string<char>; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const std::__cxx11::basic_string<char>&)>]’ marked ‘override’, but does not override
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:297:10: error: ‘void lasd::List<Data>::PostOrderTraverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = std::__cxx11::basic_string<char>; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const std::__cxx11::basic_string<char>&)>]’ marked ‘override’, but does not override
+  297 |     void List<Data>::PostOrderTraverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.cpp:81:10: warning: ‘void lasd::MutableLinearContainer<Data>::PostOrderMap(typename lasd::MappableContainer<Data>::MapFun&) const [with Data = std::__cxx11::basic_string<char>; typename lasd::MappableContainer<Data>::MapFun = std::function<void(std::__cxx11::basic_string<char>&)>]’ was hidden [-Woverloaded-virtual=]
+   81 |     void MutableLinearContainer<Data>::PostOrderMap(MapFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:343:10: note:   by ‘lasd::List<std::__cxx11::basic_string<char> >::PostOrderMap’
+  343 |     void List<Data>::PostOrderMap(MapFun fun, Node* node)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.cpp:72:10: warning: ‘void lasd::MutableLinearContainer<Data>::PreOrderMap(typename lasd::MappableContainer<Data>::MapFun&) const [with Data = std::__cxx11::basic_string<char>; typename lasd::MappableContainer<Data>::MapFun = std::function<void(std::__cxx11::basic_string<char>&)>]’ was hidden [-Woverloaded-virtual=]
+   72 |     void MutableLinearContainer<Data>::PreOrderMap(MapFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:333:10: note:   by ‘lasd::List<std::__cxx11::basic_string<char> >::PreOrderMap’
+  333 |     void List<Data>::PreOrderMap(MapFun fun, Node* node)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.cpp:66:10: warning: ‘void lasd::MutableLinearContainer<Data>::Map(typename lasd::MappableContainer<Data>::MapFun&) const [with Data = std::__cxx11::basic_string<char>; typename lasd::MappableContainer<Data>::MapFun = std::function<void(std::__cxx11::basic_string<char>&)>]’ was hidden [-Woverloaded-virtual=]
+   66 |     void MutableLinearContainer<Data>::Map(MapFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:267:10: note:   by ‘void lasd::List<Data>::Map(typename lasd::MappableContainer<Data>::MapFun&) [with Data = std::__cxx11::basic_string<char>; typename lasd::MappableContainer<Data>::MapFun = std::function<void(std::__cxx11::basic_string<char>&)>]’
+  267 |     void List<Data>::Map(MapFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/linear.cpp:41:10: warning: ‘void lasd::LinearContainer<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const [with Data = std::__cxx11::basic_string<char>; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const std::__cxx11::basic_string<char>&)>]’ was hidden [-Woverloaded-virtual=]
+   41 |     void LinearContainer<Data>::Traverse(TraverseFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: note:   by ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = std::__cxx11::basic_string<char>; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const std::__cxx11::basic_string<char>&)>]’
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.hpp:56:16: warning: ‘void lasd::TraversableContainer<Data>::Traverse(TraverseFun&) const [with Data = std::__cxx11::basic_string<char>; TraverseFun = std::function<void(const std::__cxx11::basic_string<char>&)>]’ was hidden [-Woverloaded-virtual=]
+   56 |   virtual void Traverse(TraverseFun& fun) const = 0;
+      |                ^~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: note:   by ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = std::__cxx11::basic_string<char>; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const std::__cxx11::basic_string<char>&)>]’
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.cpp:47:10: warning: ‘void lasd::PreOrderTraversableContainer<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const [with Data = std::__cxx11::basic_string<char>; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const std::__cxx11::basic_string<char>&)>]’ was hidden [-Woverloaded-virtual=]
+   47 |     void PreOrderTraversableContainer<Data>::Traverse(TraverseFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: note:   by ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = std::__cxx11::basic_string<char>; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const std::__cxx11::basic_string<char>&)>]’
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.hpp:56:16: warning: ‘void lasd::TraversableContainer<Data>::Traverse(TraverseFun&) const [with Data = std::__cxx11::basic_string<char>; TraverseFun = std::function<void(const std::__cxx11::basic_string<char>&)>]’ was hidden [-Woverloaded-virtual=]
+   56 |   virtual void Traverse(TraverseFun& fun) const = 0;
+      |                ^~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: note:   by ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = std::__cxx11::basic_string<char>; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const std::__cxx11::basic_string<char>&)>]’
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.cpp:67:10: warning: ‘void lasd::PostOrderTraversableContainer<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const [with Data = std::__cxx11::basic_string<char>; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const std::__cxx11::basic_string<char>&)>]’ was hidden [-Woverloaded-virtual=]
+   67 |     void PostOrderTraversableContainer<Data>::Traverse(TraverseFun& fun) const
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../list/../../list/list.cpp:285:10: note:   by ‘void lasd::List<Data>::Traverse(typename lasd::TraversableContainer<Data>::TraverseFun&) [with Data = std::__cxx11::basic_string<char>; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const std::__cxx11::basic_string<char>&)>]’
+  285 |     void List<Data>::Traverse(TraverseFun& fun)
+      |          ^~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp: In function ‘void stestListString(uint&, uint&)’:
+zlasdtest/exercise1a/simpletest.cpp:304:10: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::List<std::__cxx11::basic_string<char> >’
+  304 |     Empty(loctestnum, loctesterr, lst, true);
+      |     ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:305:9: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::List<std::__cxx11::basic_string<char> >’
+  305 |     Size(loctestnum, loctesterr, lst, true, 0);
+      |     ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp: In function ‘void stestVectorListString(uint&, uint&)’:
+zlasdtest/exercise1a/simpletest.cpp:453:9: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::SortableVector<std::__cxx11::basic_string<char> >’
+  453 |     Size(loctestnum, loctesterr, vec, true, 3);
+      |     ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:455:9: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::SortableVector<std::__cxx11::basic_string<char> >’
+  455 |     Size(loctestnum, loctesterr, copvec, true, 3);
+      |     ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:460:9: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::SortableVector<std::__cxx11::basic_string<char> >’
+  460 |     Size(loctestnum, loctesterr, vec, true, 3);
+      |     ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:465:9: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::List<std::__cxx11::basic_string<char> >’
+  465 |     Size(loctestnum, loctesterr, lst, true, 3);
+      |     ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:467:9: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::List<std::__cxx11::basic_string<char> >’
+  467 |     Size(loctestnum, loctesterr, coplst, true, 3);
+      |     ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:472:9: error: ‘lasd::Container’ is an ambiguous base of ‘lasd::List<std::__cxx11::basic_string<char> >’
+  472 |     Size(loctestnum, loctesterr, lst, true, 3);
+      |     ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.cpp: In instantiation of ‘Accumulator lasd::PostOrderTraversableContainer<Data>::PostOrderFold(FoldFun<Accumulator>, Accumulator) const [with Accumulator = int; Data = int; FoldFun<Accumulator> = std::function<int(const int&, const int&)>]’:
+zlasdtest/exercise1a/../container/traversable.hpp:121:34:   required from ‘void FoldPostOrder(uint&, uint&, const lasd::PostOrderTraversableContainer<Data>&, bool, typename lasd::TraversableContainer<Data>::FoldFun<Value>, const Value&, const Value&) [with Data = int; Value = int; uint = unsigned int; typename lasd::TraversableContainer<Data>::FoldFun<Value> = std::function<int(const int&, const int&)>]’
+  121 |     Value val = con.PostOrderFold(fun, inival);
+      |                 ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:41:20:   required from here
+   41 |       FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldAdd<int>, 0, 0);
+      |       ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.cpp:59:13: error: cannot bind non-const lvalue reference of type ‘lasd::TraversableContainer<int>::TraverseFun&’ {aka ‘std::function<void(const int&)>&’} to an rvalue of type ‘lasd::TraversableContainer<int>::TraverseFun’ {aka ‘std::function<void(const int&)>’}
+   59 |             [&](const Data& data) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~
+   60 |               acc = fun(data, acc);
+      |               ~~~~~~~~~~~~~~~~~~~~~
+   61 |             }
+      |             ~
+In file included from /usr/include/c++/14.2.1/functional:59,
+                 from zlasdtest/exercise1a/../container/../../container/traversable.hpp:7:
+/usr/include/c++/14.2.1/bits/std_function.h:435:9: note:   after user-defined conversion: ‘std::function<_Res(_ArgTypes ...)>::function(_Functor&&) [with _Functor = lasd::PostOrderTraversableContainer<int>::PostOrderFold<int>(FoldFun<int>, int) const::<lambda(const int&)>; _Constraints = void; _Res = void; _ArgTypes = {const int&}]’
+  435 |         function(_Functor&& __f)
+      |         ^~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.hpp:166:39: note:   initializing argument 1 of ‘void lasd::PostOrderTraversableContainer<Data>::PostOrderTraverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const [with Data = int; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const int&)>]’
+  166 |   void PostOrderTraverse(TraverseFun& fun) const;
+      |                          ~~~~~~~~~~~~~^~~
+zlasdtest/exercise1a/../container/../../container/traversable.cpp: In instantiation of ‘Accumulator lasd::PostOrderTraversableContainer<Data>::PostOrderFold(FoldFun<Accumulator>, Accumulator) const [with Accumulator = double; Data = double; FoldFun<Accumulator> = std::function<double(const double&, const double&)>]’:
+zlasdtest/exercise1a/../container/traversable.hpp:121:34:   required from ‘void FoldPostOrder(uint&, uint&, const lasd::PostOrderTraversableContainer<Data>&, bool, typename lasd::TraversableContainer<Data>::FoldFun<Value>, const Value&, const Value&) [with Data = double; Value = double; uint = unsigned int; typename lasd::TraversableContainer<Data>::FoldFun<Value> = std::function<double(const double&, const double&)>]’
+  121 |     Value val = con.PostOrderFold(fun, inival);
+      |                 ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:101:18:   required from here
+  101 |     FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldMultiply<double>, 1.0, 19.965);
+      |     ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.cpp:59:13: error: cannot bind non-const lvalue reference of type ‘lasd::TraversableContainer<double>::TraverseFun&’ {aka ‘std::function<void(const double&)>&’} to an rvalue of type ‘lasd::TraversableContainer<double>::TraverseFun’ {aka ‘std::function<void(const double&)>’}
+   59 |             [&](const Data& data) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~
+   60 |               acc = fun(data, acc);
+      |               ~~~~~~~~~~~~~~~~~~~~~
+   61 |             }
+      |             ~
+/usr/include/c++/14.2.1/bits/std_function.h:435:9: note:   after user-defined conversion: ‘std::function<_Res(_ArgTypes ...)>::function(_Functor&&) [with _Functor = lasd::PostOrderTraversableContainer<double>::PostOrderFold<double>(FoldFun<double>, double) const::<lambda(const double&)>; _Constraints = void; _Res = void; _ArgTypes = {const double&}]’
+  435 |         function(_Functor&& __f)
+      |         ^~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.hpp:166:39: note:   initializing argument 1 of ‘void lasd::PostOrderTraversableContainer<Data>::PostOrderTraverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const [with Data = double; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const double&)>]’
+  166 |   void PostOrderTraverse(TraverseFun& fun) const;
+      |                          ~~~~~~~~~~~~~^~~
+zlasdtest/exercise1a/../container/../../container/traversable.cpp: In instantiation of ‘Accumulator lasd::PostOrderTraversableContainer<Data>::PostOrderFold(FoldFun<Accumulator>, Accumulator) const [with Accumulator = std::__cxx11::basic_string<char>; Data = std::__cxx11::basic_string<char>; FoldFun<Accumulator> = std::function<std::__cxx11::basic_string<char>(const std::__cxx11::basic_string<char>&, const std::__cxx11::basic_string<char>&)>]’:
+zlasdtest/exercise1a/../container/traversable.hpp:121:34:   required from ‘void FoldPostOrder(uint&, uint&, const lasd::PostOrderTraversableContainer<Data>&, bool, typename lasd::TraversableContainer<Data>::FoldFun<Value>, const Value&, const Value&) [with Data = std::__cxx11::basic_string<char>; Value = std::__cxx11::basic_string<char>; uint = unsigned int; typename lasd::TraversableContainer<Data>::FoldFun<Value> = std::function<std::__cxx11::basic_string<char>(const std::__cxx11::basic_string<char>&, const std::__cxx11::basic_string<char>&)>]’
+  121 |     Value val = con.PostOrderFold(fun, inival);
+      |                 ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~
+zlasdtest/exercise1a/simpletest.cpp:132:18:   required from here
+  132 |     FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldStringConcatenate, string("X"), string("XB A "));
+      |     ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.cpp:59:13: error: cannot bind non-const lvalue reference of type ‘lasd::TraversableContainer<std::__cxx11::basic_string<char> >::TraverseFun&’ {aka ‘std::function<void(const std::__cxx11::basic_string<char>&)>&’} to an rvalue of type ‘lasd::TraversableContainer<std::__cxx11::basic_string<char> >::TraverseFun’ {aka ‘std::function<void(const std::__cxx11::basic_string<char>&)>’}
+   59 |             [&](const Data& data) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~
+   60 |               acc = fun(data, acc);
+      |               ~~~~~~~~~~~~~~~~~~~~~
+   61 |             }
+      |             ~
+/usr/include/c++/14.2.1/bits/std_function.h:435:9: note:   after user-defined conversion: ‘std::function<_Res(_ArgTypes ...)>::function(_Functor&&) [with _Functor = lasd::PostOrderTraversableContainer<std::__cxx11::basic_string<char> >::PostOrderFold<std::__cxx11::basic_string<char> >(FoldFun<std::__cxx11::basic_string<char> >, std::__cxx11::basic_string<char>) const::<lambda(const std::__cxx11::basic_string<char>&)>; _Constraints = void; _Res = void; _ArgTypes = {const std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&}]’
+  435 |         function(_Functor&& __f)
+      |         ^~~~~~~~
+zlasdtest/exercise1a/../container/../../container/traversable.hpp:166:39: note:   initializing argument 1 of ‘void lasd::PostOrderTraversableContainer<Data>::PostOrderTraverse(typename lasd::TraversableContainer<Data>::TraverseFun&) const [with Data = std::__cxx11::basic_string<char>; typename lasd::TraversableContainer<Data>::TraverseFun = std::function<void(const std::__cxx11::basic_string<char>&)>]’
+  166 |   void PostOrderTraverse(TraverseFun& fun) const;
+      |                          ~~~~~~~~~~~~~^~~
+make: *** [makefile:34: exc1as.o] Error 1

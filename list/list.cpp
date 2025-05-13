@@ -33,19 +33,21 @@ namespace lasd {
     template<typename Data>
     List<Data>::List(const TraversableContainer<Data>& other)
     {
-        Traverse([&](const Data& data)
+        TraverseFun lambda = [&](const Data& data)
         {
             InsertAtBack(data);
-        });
+        };
+        Traverse(lambda);
     }
 
     template<typename Data>
     List<Data>::List(MappableContainer<Data>&& other)
     {
-        Map([&](Data& data)
+        TraverseFun lambda = [&](const Data& data)
         {
             InsertAtBack(data);
-        });
+        };
+        Map(lambda);
     }
 
     template<typename Data>
@@ -264,25 +266,25 @@ namespace lasd {
     }
 
     template<typename Data>
-    void List<Data>::Map(MapFun& fun) 
+    void List<Data>::Map(MapFun& fun) const
     {
         PreOrderMap(fun, head);
     }
 
     template<typename Data>
-    void List<Data>::PreOrderMap(MapFun& fun) 
+    void List<Data>::PreOrderMap(MapFun& fun) const
     {
         PreOrderMap(fun, head);
     }
 
     template<typename Data>
-    void List<Data>::PostOrderMap(MapFun& fun) 
+    void List<Data>::PostOrderMap(MapFun& fun) const
     {
         PostOrderMap(fun, head);
     }
 
     template<typename Data>
-    void List<Data>::Traverse(TraverseFun& fun) 
+    void List<Data>::Traverse(TraverseFun& fun) const
     {
         PreOrderTraverse(fun, head);
     }
@@ -294,7 +296,7 @@ namespace lasd {
     }
 
     template<typename Data>
-    void List<Data>::PostOrderTraverse(TraverseFun& fun) 
+    void List<Data>::PostOrderTraverse(TraverseFun& fun) const
     {
         PostOrderTraverse(fun, head);
     }

@@ -4,14 +4,14 @@ namespace lasd {
 
 template <typename Data>
 SetLst<Data>::SetLst(const TraversableContainer<Data>& traversableContainer)
-    : List(traversableContainer)
+    : List<Data>(traversableContainer)
 {
     size = traversableContainer.Size();
 }
 
 template <typename Data>
 SetLst<Data>::SetLst(MappableContainer<Data>&& mappableContainer)
-    : List(mappableContainer)
+    : List<Data>(mappableContainer)
 {
     size = mappableContainer.Size();
 }
@@ -52,8 +52,8 @@ SetLst<Data>& SetLst<Data>::operator=(const SetLst<Data>& other)
 
         if(other.tail != nullptr)
         {
-            tail = new Node(*other.tail);
-            head = other.head->Clone(tail);
+            this->tail = new Node(*other.tail);
+            this->head = other.head->Clone(this->tail);
             size = other.size;
         }
     }
@@ -64,8 +64,8 @@ SetLst<Data>& SetLst<Data>::operator=(const SetLst<Data>& other)
 template <typename Data>
 SetLst<Data>& SetLst<Data>::operator=(SetLst<Data>&& other)
 {
-    std::swap(head, other.head);
-    std::swap(tail, other.tail);
+    std::swap(this->head, other.head);
+    std::swap(this->tail, other.tail);
     std::swap(size, other.size);
 
     return *this;
@@ -74,7 +74,7 @@ SetLst<Data>& SetLst<Data>::operator=(SetLst<Data>&& other)
 template <typename Data>
 bool SetLst<Data>::operator==(const SetLst<Data>& other) const noexcept
 {
-    return (size == other.size) && (head == other.head);
+    return (size == other.size) && (this->head == other.head);
 }
 
 template <typename Data>
@@ -88,36 +88,20 @@ Data SetLst<Data>::Min() const
 {
     if(size == 0) throw std::length_error("The list is empty!");    
 
-    Data min = operator[](0);
-    for(ulong i = 1; i < size; i++)
-    {
-        if(operator[](i) < min)
-        {
-            min = operator[](i);
-        }
-    }
-
-    return min;
+    return this->head->value;
 }
 
 template <typename Data>
 Data SetLst<Data>::MinNRemove()
 {
-    if(size == 0) throw std::length_error("The vector is empty!");    
+    if(size == 0) throw std::length_error("The list is empty!");    
 
-    Data min = vector[0];
-    ulong index = 0;
-    for(ulong i = 1; i < size; i++)
-    {
-        if(vector[i] < min)
-        {
-            min = vector[i];
-            index = i;
-        }
-    }
+    Data min = this->head->value;
+    Node* newHead = this->head->next;
+    delete this->head;
+    this->head = newHead;
 
-    vector[index] = vector[size-1];
-    vector.Resize(--size);
+    size--;
 
     return min;
 }
@@ -125,21 +109,13 @@ Data SetLst<Data>::MinNRemove()
 template <typename Data>
 void SetLst<Data>::RemoveMin()
 {
-    if(size == 0) throw std::length_error("The vector is empty!");    
+    if(size == 0) throw std::length_error("The list is empty!");    
 
-    Data min = vector[0];
-    ulong index = 0;
-    for(ulong i = 1; i < size; i++)
-    {
-        if(vector[i] < min)
-        {
-            min = vector[i];
-            index = i;
-        }
-    }
+    Node* newHead = this->head->next;
+    delete this->head;
+    this->head = newHead;
 
-    vector[index] = vector[size-1];
-    vector.Resize(--size);
+    size--;
 }
 
 template <typename Data>
@@ -147,38 +123,22 @@ Data SetLst<Data>::Max() const
 {
     if(size == 0) throw std::length_error("The vector is empty!");    
 
-    Data max = operator[](0);
-    for(ulong i = 1; i < size; i++)
-    {
-        if(operator[](i) > max)
-        {
-            max = operator[](i);
-        }
-    }
-
-    return max;
+    return this->tail->value;
 }
 
 template <typename Data>
 Data SetLst<Data>::MaxNRemove()
 {
-    if(size == 0) throw std::length_error("The vector is empty!");    
+    if(size == 0) throw std::length_error("The list is empty!");    
 
-    Data max = vector[0];
-    ulong index = 0;
-    for(ulong i = 1; i < size; i++)
-    {   
-        if(vector[i] > max)
-        {
-            max = vector[i];
-            index = i;
-        }
-    }
+    Data max = this->tail->value;
+    Node* newTail = GetNodeByIndex(size-2);
+    newTail->next = nullptr;
+    delete this->tail;
+    this->tail = newTail;
 
-    vector[index] = vector[size-1];
-    vector.Resize(--size);
+    size--;
 
-    Sort();
     return max;
 }
 
@@ -187,21 +147,12 @@ void SetLst<Data>::RemoveMax()
 {
     if(size == 0) throw std::length_error("The vector is empty!");    
 
-    Data max = vector[0];
-    ulong index = 0;
-    for(ulong i = 1; i < size; i++)
-    {
-        if(vector[i] > max)
-        {
-            max = vector[i];
-            index = i;
-        }
-    }
+    Node* newTail = GetNodeByIndex(size-2);
+    newTail->next = nullptr;
+    delete this->tail;
+    this->tail = newTail;
 
-    vector[index] = vector[size-1];
-    vector.Resize(--size);
-
-    Sort();
+    size--;
 }
 
 template <typename Data>
@@ -224,15 +175,28 @@ Data SetLst<Data>::PredecessorNRemove(Data& value)
 
     if(!found) throw std::length_error("'value' not found!");
     if(i_found == 0) throw std::length_error("Predecessor not found!");
+    if(i_found == 1) return MinNRemove();
 
-    Data prec = vector[i_found-1];
+    ulong i = 0;
+    Node* current = this->head;
+    Data data;
+    while(current != nullptr)
+    {
+        if(i == i_found-2) 
+        {
+            data = current->next->value; //value di prec
+            Node* tmp = current->next->next; //prec->next
+            current->next = tmp; //prec di prec (current)
+            delete current->next;
+            break;
+        }
+        current = current->next;
+        i++;
+    }
 
-    vector[i_found-1] = vector[size-1];
-    vector.Resize(size-1);
     size--;
 
-    Sort();
-    return prec;
+    return data;
 }
 
 template <typename Data>
@@ -243,12 +207,24 @@ void SetLst<Data>::RemovePredecessor(Data& value)
 
     if(!found) throw std::length_error("'value' not found!");
     if(i_found == 0) throw std::length_error("Predecessor not found!");
+    if(i_found == 1) {RemoveMin(); return;}
     
-    vector[i_found-1] = vector[size-1];
-    vector.Resize(size-1);
-    size--;
+    ulong i = 0;
+    Node* current = this->head;
+    while(current != nullptr)
+    {
+        if(i == i_found-2) 
+        {
+            Node* tmp = current->next->next; //prec->next
+            current->next = tmp; //prec di prec (current)
+            delete current->next;
+            break;
+        }
+        current = current->next;
+        i++;
+    }
 
-    Sort();
+    size--;
 }
 
 template <typename Data>
@@ -271,14 +247,28 @@ Data SetLst<Data>::SuccessorNRemove(Data& value)
 
     if(!found) throw std::length_error("'value' not found!");
     if(i_found == size-1) throw std::length_error("Successor not found!");
-    
-    Data suc = vector[i_found+1];
-    vector[i_found+1] = vector[size-1];
-    vector.Resize(size-1);
+    if(i_found == size-2) return MaxNRemove();
+
+    ulong i = 0;
+    Node* current = this->head;
+    Data data;
+    while(current != nullptr)
+    {
+        if(i == i_found) 
+        {
+            data = current->next->value;
+            Node* tmp = current->next->next;
+            current->next = tmp;
+            delete current->next;
+            break;
+        }
+        current = current->next;
+        i++;
+    }
+
     size--;
 
-    Sort();
-    return suc;
+    return data;
 }
 
 template <typename Data>
@@ -289,23 +279,61 @@ void SetLst<Data>::RemoveSuccessor(Data& value)
 
     if(!found) throw std::length_error("'value' not found!");
     if(i_found == size-1) throw std::length_error("Successor not found!");
-    
-    vector[i_found+1] = vector[size-1];
-    vector.Resize(size-1);
-    size--;
+    if(i_found == size-2) {RemoveMax(); return;}
 
-    Sort();
+    ulong i = 0;
+    Node* current = this->head;
+    while(current != nullptr)
+    {
+        if(i == i_found) 
+        {
+            Node* tmp = current->next->next;
+            current->next = tmp;
+            delete current->next;
+            break;
+        }
+        current = current->next;
+        i++;
+    }
+
+    size--;
 }
 
 template <typename Data>
 bool SetLst<Data>::Insert(const Data& value)
 {
     if(Exists(value)) return false;
-
     size++;
-    vector.Resize(size);
-    vector[size-1] = value;
-    Sort();
+
+    Node* node = new Node(value);
+
+    if(node->value < this->head->value)
+    {
+        node->next = this->head;
+        this->head = node;
+
+        return true;
+    }else if(node->value > this->tail->value)
+    {
+        this->tail->next = node;
+        this->tail = node;
+
+        return true;
+    }
+
+    Node* current = this->head;
+    Node* prec = nullptr;
+    while(current != nullptr)
+    {
+        if(node->value < current->value) 
+        {
+            node->next = current;
+            prec->next = node;
+            break;
+        }
+        prec = current;
+        current = current->next;
+    }
 
     return true;
 }
@@ -314,11 +342,37 @@ template <typename Data>
 bool SetLst<Data>::Insert(Data&& value) 
 {
     if(Exists(value)) return false;
-
     size++;
-    vector.Resize(size);
-    vector[size-1] = value;
-    Sort();
+
+    Node* node = new Node(value);
+
+    if(node->value < this->head->value)
+    {
+        node->next = this->head;
+        this->head = node;
+
+        return true;
+    }else if(node->value > this->tail->value)
+    {
+        this->tail->next = node;
+        this->tail = node;
+
+        return true;
+    }
+
+    Node* current = this->head;
+    Node* prec = nullptr;
+    while(current != nullptr)
+    {
+        if(node->value < current->value) 
+        {
+            node->next = current;
+            prec->next = node;
+            break;
+        }
+        prec = current;
+        current = current->next;
+    }
 
     return true;
 }
@@ -327,30 +381,55 @@ template <typename Data>
 bool SetLst<Data>::Remove(const Data& value) 
 {
     ulong index = 0;
-    bool found = Search(value, &value);
+    bool found = Search(value, &index);
 
     if(!found) return false;
 
-    vector[index] = vector[size-1];
-    vector.Resize(size-1);
+    List<Data>::Node* node = GetNodeByIndex(index);
+
+    if(node == this->head)
+    {
+        RemoveMin();
+
+        return true;
+    }else if(node == this->tail)
+    {
+        RemoveMax();
+
+        return true;
+    }
+
+    List<Data>::Node* current = this->head;
+    List<Data>::Node* prec = nullptr;
+    while(current != nullptr)
+    {
+        if(node == current)
+        {
+            prec->next = current->next;
+            delete current;
+            break;
+        }
+        prec = current;
+        current = current->next;
+    }
+
     size--;
-    Sort();
     return true;
 }
 
 template <typename Data>
-Data& SetLst<Data>::operator[](const ulong index)
+const Data& SetLst<Data>::operator[](const ulong index)
 {
     if(index >= size)
             throw std::out_of_range("index is out of range!");
 
     ulong i = 0;
-    Node* current = head;
+    List<Data>::Node* current = this->head;
 
     while(current != nullptr)
     {
         if(i == index) 
-            return head->value;
+            return this->head->value;
         current = current->next;
         i++;
     }
@@ -372,8 +451,8 @@ inline void SetLst<Data>::Clear()
 {
     // TODO DEALLOCA
 
-    delete head;
-    head = tail = nullptr;
+    delete this->head;
+    this->head = this->tail = nullptr;
     size = 0;
 }
 
@@ -382,7 +461,7 @@ bool SetLst<Data>::Search(const Data& value, ulong* index)
 {
     for(ulong i = 0; i < size; i++)
     {
-        if(value == vector[i])
+        if(value == operator[](i))
         {
             *index = i;
             return true;
@@ -394,35 +473,22 @@ bool SetLst<Data>::Search(const Data& value, ulong* index)
 }
 
 template<typename Data>
-void SetLst<Data>::Sort() noexcept 
+List<Data>::Node* SetLst<Data>::GetNodeByIndex(const ulong index)
 {
-    QuickSort(0, size - 1);
-}
+    if(index >= size)
+            throw std::out_of_range("index is out of range!");
 
-template<typename Data>
-void SetLst<Data>::QuickSort(ulong p, ulong r) noexcept 
-{
-    if (p < r) {
-    ulong q = Partition(p, r);
-    QuickSort(p, q);
-    QuickSort(q + 1, r);
-    }
-}
+    ulong i = 0;
+    List<Data>::Node* current = this->head;
 
-template<typename Data>
-ulong SetLst<Data>::Partition(ulong p, ulong r) noexcept 
-{
-    Data x = vector[p];
-    ulong i = p - 1;
-    ulong j = r + 1;
-    do {
-    do { j--; }
-    while (x < vector[j]);
-    do { i++; }
-    while (x > vector[i]);
-    if (i < j) { std::swap(vector[i], vector[j]); }
+    while(current != nullptr)
+    {
+        if(i == index) 
+            return current;
+        current = current->next;
+        i++;
     }
-    while (i < j);
-    return j;
+
+    return nullptr;
 }
 }

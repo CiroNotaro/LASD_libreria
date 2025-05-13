@@ -70,7 +70,6 @@ private:
   // ...
 
 protected:
-
   // ...
 
 public:

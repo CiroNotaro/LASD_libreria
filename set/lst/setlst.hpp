@@ -25,6 +25,7 @@ private:
 protected:
 
   using Container::size;
+  using List<Data>::Node;
 
   // ...
 
@@ -98,7 +99,7 @@ public:
 
   // Specific member functions (inherited from LinearContainer)
 
-  Data& operator[](const ulong index) override; // Override LinearContainer member (must throw std::out_of_range when out of range)
+  const Data& operator[](const ulong index) override; // Override LinearContainer member (must throw std::out_of_range when out of range)
 
   /* ************************************************************************** */
 
@@ -117,11 +118,7 @@ protected:
   // Auxiliary functions, if necessary!
   bool Search(const Data& value, ulong* index);
 
-  void Sort() noexcept;
-
-  void QuickSort(ulong p, ulong r) noexcept;
-
-  ulong Partition(ulong p, ulong r) noexcept;  
+  List<Data>::Node* GetNodeByIndex(const ulong index);
 
 };
 
