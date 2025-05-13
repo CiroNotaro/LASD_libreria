@@ -52,11 +52,11 @@ public:
   virtual bool Insert(Data&& value) = 0;      // Move of the value
   virtual bool Remove(const Data& value) = 0;
 
-  inline virtual bool InsertAll(const TraversableContainer<Data> container);    // Copy of the value; From TraversableContainer; True if all are inserted
+  inline virtual bool InsertAll(const TraversableContainer<Data>& container);    // Copy of the value; From TraversableContainer; True if all are inserted
   inline virtual bool InsertAll(MappableContainer<Data>&& container);           // Move of the value; From MappableContainer; True if all are inserted
   inline virtual bool RemoveAll(const TraversableContainer<Data>& container);   // From TraversableContainer; True if all are removed
 
-  inline virtual bool InsertSome(const TraversableContainer<Data> container);   // Copy of the value; From TraversableContainer; True if some is inserted
+  inline virtual bool InsertSome(const TraversableContainer<Data>& container);   // Copy of the value; From TraversableContainer; True if some is inserted
   inline virtual bool InsertSome(MappableContainer<Data>&& container);          // Move of the value; From MappableContainer; True if some is inserted
   inline virtual bool RemoveSome(const TraversableContainer<Data>& container);  // From TraversableContainer; True if some is removed
 
@@ -103,13 +103,13 @@ public:
   virtual Data MaxNRemove() = 0; // (concrete function must throw std::length_error when empty)
   virtual void RemoveMax() = 0; // (concrete function must throw std::length_error when empty)
 
-  virtual Data Predecessor(Data& value) const = 0; // (concrete function must throw std::length_error when not found)
-  virtual Data PredecessorNRemove(Data& value) = 0; // (concrete function must throw std::length_error when not found)
-  virtual void RemovePredecessor(Data& value) = 0; // (concrete function must throw std::length_error when not found)
+  virtual Data Predecessor(const Data& value) const = 0; // (concrete function must throw std::length_error when not found)
+  virtual Data PredecessorNRemove(const Data& value) = 0; // (concrete function must throw std::length_error when not found)
+  virtual void RemovePredecessor(const Data& value) = 0; // (concrete function must throw std::length_error when not found)
 
-  virtual Data Successor(Data& value) const = 0; // (concrete function must throw std::length_error when not found)
-  virtual Data SuccessorNRemove(Data& value) = 0; // (concrete function must throw std::length_error when not found)
-  virtual void RemoveSuccessor(Data& value) = 0; // (concrete function must throw std::length_error when not found)
+  virtual Data Successor(const Data& value) const = 0; // (concrete function must throw std::length_error when not found)
+  virtual Data SuccessorNRemove(const Data& value) = 0; // (concrete function must throw std::length_error when not found)
+  virtual void RemoveSuccessor(const Data& value) = 0; // (concrete function must throw std::length_error when not found)
 };
 
 /* ************************************************************************** */

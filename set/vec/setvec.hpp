@@ -78,13 +78,13 @@ public:
   Data MaxNRemove() override;
   void RemoveMax() override;
 
-  Data Predecessor(Data& value) const override;
-  Data PredecessorNRemove(Data& value) override;
-  void RemovePredecessor(Data& value) override;
+  Data Predecessor(const Data& value) const override;
+  Data PredecessorNRemove(const Data& value) override;
+  void RemovePredecessor(const Data& value) override;
 
-  Data Successor(Data& value) const override;
-  Data SuccessorNRemove(Data& value) override;
-  void RemoveSuccessor(Data& value) override;
+  Data Successor(const Data& value) const override;
+  Data SuccessorNRemove(const Data& value) override;
+  void RemoveSuccessor(const Data& value) override;
   /* ************************************************************************ */
 
   // Specific member functions (inherited from DictionaryContainer)
@@ -97,7 +97,11 @@ public:
 
   // Specific member functions (inherited from LinearContainer)
 
-  Data& operator[](const ulong index) const override; // Override LinearContainer member (must throw std::out_of_range when out of range)
+  const Data& operator[](const ulong index) const override; // Override LinearContainer member (must throw std::out_of_range when out of range)
+
+  const Data& Front() const override; // Override LinearContainer member (must throw std::length_error when empty)
+
+  const Data& Back() const override; // Override LinearContainer member (must throw std::length_error when empty)
 
   /* ************************************************************************** */
 
@@ -111,10 +115,13 @@ public:
 
   inline void Clear() override; // Override ClearableContainer member
 
+  void Resize(ulong size) override;
+
 protected:
 
   // Auxiliary functions, if necessary!
-  bool Search(const Data& value, ulong* index);
+  bool Search(const Data& value, ulong* index) const;
+  bool Search(Data&& value, ulong* index) const;
 
   void Sort() noexcept;
 

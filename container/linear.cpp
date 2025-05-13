@@ -27,14 +27,24 @@ namespace lasd {
     template <typename Data>
     void LinearContainer<Data>::PreOrderTraverse(TraverseFun fun) const
     {
-        PreOrderTraverse(fun);
+        for (ulong i = 0; i < this->size; i++)
+        {
+            fun(operator[](i));
+        }
     }
   
 
     template <typename Data>
     void LinearContainer<Data>::PostOrderTraverse(TraverseFun fun) const
     {
-        PostOrderTraverse(fun);
+      if(this->size == 0)
+        return;
+
+      for (ulong i = this->size; i-- > 0;)
+      {
+        
+          fun(operator[](i));
+      }
     }
 
     template <typename Data>

@@ -79,13 +79,13 @@ public:
   Data MaxNRemove() override;
   void RemoveMax() override;
 
-  Data Predecessor(Data& value) const override;
-  Data PredecessorNRemove(Data& value) override;
-  void RemovePredecessor(Data& value) override;
+  Data Predecessor(const Data& value) const override;
+  Data PredecessorNRemove(const Data& value) override;
+  void RemovePredecessor(const Data& value) override;
 
-  Data Successor(Data& value) const override;
-  Data SuccessorNRemove(Data& value) override;
-  void RemoveSuccessor(Data& value) override;
+  Data Successor(const Data& value) const override;
+  Data SuccessorNRemove(const Data& value) override;
+  void RemoveSuccessor(const Data& value) override;
 
   /* ************************************************************************ */
 
@@ -116,7 +116,8 @@ public:
 protected:
 
   // Auxiliary functions, if necessary!
-  bool Search(const Data& value, ulong* index);
+  bool Search(const Data& value, ulong* index) const;
+  bool Search(Data& value, ulong* index) const;
 
   Node* GetNodeByIndex(const ulong index);
 

@@ -22,7 +22,7 @@ SetLst<Data>::SetLst(const SetLst<Data>& setlst)
     size = setlst.Size();
     for(ulong i = 0; i < size; i++)
     {
-        operator[](i) = setlst[i];
+        Insert(setlst[i]);
     }
 }
 
@@ -32,7 +32,7 @@ SetLst<Data>::SetLst(SetLst<Data>&& setlst)
     size = setlst.Size();
     for(ulong i = 0; i < size; i++)
     {
-        operator[](i) = std::move(setlst[i]);
+        Insert(std::move(setlst[i]));
     }
 }
 
@@ -156,7 +156,7 @@ void SetLst<Data>::RemoveMax()
 }
 
 template <typename Data>
-Data SetLst<Data>::Predecessor(Data& value) const
+Data SetLst<Data>::Predecessor(const Data& value) const
 {
     ulong i_found = 0;
     bool found = Search(value, &i_found);
@@ -168,7 +168,7 @@ Data SetLst<Data>::Predecessor(Data& value) const
 }
 
 template <typename Data>
-Data SetLst<Data>::PredecessorNRemove(Data& value)
+Data SetLst<Data>::PredecessorNRemove(const Data& value)
 {
     ulong i_found = 0;
     bool found = Search(value, &i_found);
@@ -200,7 +200,7 @@ Data SetLst<Data>::PredecessorNRemove(Data& value)
 }
 
 template <typename Data>
-void SetLst<Data>::RemovePredecessor(Data& value)
+void SetLst<Data>::RemovePredecessor(const Data& value)
 {
     ulong i_found = 0;
     bool found = Search(value, &i_found);
@@ -228,7 +228,7 @@ void SetLst<Data>::RemovePredecessor(Data& value)
 }
 
 template <typename Data>
-Data SetLst<Data>::Successor(Data& value) const
+Data SetLst<Data>::Successor(const Data& value) const
 {
     ulong i_found = 0;
     bool found = Search(value, &i_found);
@@ -240,7 +240,7 @@ Data SetLst<Data>::Successor(Data& value) const
 }
 
 template <typename Data>
-Data SetLst<Data>::SuccessorNRemove(Data& value)
+Data SetLst<Data>::SuccessorNRemove(const Data& value)
 {
     ulong i_found = 0;
     bool found = Search(value, &i_found);
@@ -272,7 +272,7 @@ Data SetLst<Data>::SuccessorNRemove(Data& value)
 }
 
 template <typename Data>
-void SetLst<Data>::RemoveSuccessor(Data& value)
+void SetLst<Data>::RemoveSuccessor(const Data& value)
 {
     ulong i_found = 0;
     bool found = Search(value, &i_found);
@@ -457,7 +457,24 @@ inline void SetLst<Data>::Clear()
 }
 
 template<typename Data>
-bool SetLst<Data>::Search(const Data& value, ulong* index)
+bool SetLst<Data>::Search(const Data& value, ulong* index) const
+{
+    for(ulong i = 0; i < size; i++)
+    {
+        if(value == operator[](i))
+        {
+            *index = i;
+            return true;
+        }
+    }
+
+    *index = 0;
+    return false;
+}
+
+
+template<typename Data>
+bool SetLst<Data>::Search(Data& value, ulong* index) const
 {
     for(ulong i = 0; i < size; i++)
     {

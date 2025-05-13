@@ -204,7 +204,7 @@ void SetVec<Data>::RemoveMax()
 }
 
 template <typename Data>
-Data SetVec<Data>::Predecessor(Data& value) const
+Data SetVec<Data>::Predecessor(const Data& value) const
 {
     ulong i_found = 0;
     bool found = Search(value, &i_found);
@@ -216,7 +216,7 @@ Data SetVec<Data>::Predecessor(Data& value) const
 }
 
 template <typename Data>
-Data SetVec<Data>::PredecessorNRemove(Data& value)
+Data SetVec<Data>::PredecessorNRemove(const Data& value)
 {
     ulong i_found = 0;
     bool found = Search(value, &i_found);
@@ -235,7 +235,7 @@ Data SetVec<Data>::PredecessorNRemove(Data& value)
 }
 
 template <typename Data>
-void SetVec<Data>::RemovePredecessor(Data& value)
+void SetVec<Data>::RemovePredecessor(const Data& value)
 {
     ulong i_found = 0;
     bool found = Search(value, &i_found);
@@ -251,7 +251,7 @@ void SetVec<Data>::RemovePredecessor(Data& value)
 }
 
 template <typename Data>
-Data SetVec<Data>::Successor(Data& value) const
+Data SetVec<Data>::Successor(const Data& value) const
 {
     ulong i_found = 0;
     bool found = Search(value, &i_found);
@@ -263,7 +263,7 @@ Data SetVec<Data>::Successor(Data& value) const
 }
 
 template <typename Data>
-Data SetVec<Data>::SuccessorNRemove(Data& value)
+Data SetVec<Data>::SuccessorNRemove(const Data& value)
 {
     ulong i_found = 0;
     bool found = Search(value, &i_found);
@@ -281,7 +281,7 @@ Data SetVec<Data>::SuccessorNRemove(Data& value)
 }
 
 template <typename Data>
-void SetVec<Data>::RemoveSuccessor(Data& value)
+void SetVec<Data>::RemoveSuccessor(const Data& value)
 {
     ulong i_found = 0;
     bool found = Search(value, &i_found);
@@ -326,7 +326,7 @@ template <typename Data>
 bool SetVec<Data>::Remove(const Data& value) 
 {
     ulong index = 0;
-    bool found = Search(value, &value);
+    bool found = Search(value, &index);
 
     if(!found) return false;
 
@@ -338,10 +338,22 @@ bool SetVec<Data>::Remove(const Data& value)
 }
 
 template <typename Data>
-Data& SetVec<Data>::operator[](const ulong index) const
+const Data& SetVec<Data>::operator[](const ulong index) const
 {
     if(index >= size) throw std::out_of_range("Index is out of range!");
     return vector[index];
+}
+
+template <typename Data>
+const Data& SetVec<Data>::Front() const
+{
+    vector.Front();
+}
+
+template <typename Data>
+const Data& SetVec<Data>::Back() const
+{
+    vector.Back();
 }
 
 template <typename Data>
@@ -363,7 +375,29 @@ inline void SetVec<Data>::Clear()
 }
 
 template <typename Data>
-bool SetVec<Data>::Search(const Data& value, ulong* index)
+void SetVec<Data>::Resize(ulong size)
+{
+  vector.Resize(size);
+}
+
+template <typename Data>
+bool SetVec<Data>::Search(const Data& value, ulong* index) const
+{
+    for(ulong i = 0; i < size; i++)
+    {
+        if(value == vector[i])
+        {
+            *index = i;
+            return true;
+        }
+    }
+
+    *index = 0;
+    return false;
+}
+
+template <typename Data>
+bool SetVec<Data>::Search(Data&& value, ulong* index) const
 {
     for(ulong i = 0; i < size; i++)
     {

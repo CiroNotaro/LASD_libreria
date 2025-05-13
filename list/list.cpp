@@ -132,6 +132,8 @@ namespace lasd {
     template<typename Data>
     void List<Data>::RemoveFromFront()
     {
+        if(size == 0) throw std::length_error("The list is empty!");
+
         Node* newHead = head->next;
         delete head;
         head = newHead;
@@ -141,6 +143,8 @@ namespace lasd {
     template<typename Data>
     Data List<Data>::FrontNRemove()
     {
+        if(size == 0) throw std::length_error("The list is empty!");
+
         Data data = head->value;
         Node* newHead = head->next;
         delete head;
@@ -158,6 +162,8 @@ namespace lasd {
             tail->next = newTail;
 
         tail = newTail;
+        if(head == nullptr)
+            head = tail;
         size++;
     }
 
@@ -170,6 +176,8 @@ namespace lasd {
             tail->next = newTail;
             
         tail = newTail;
+        if(head == nullptr)
+            head = tail;
         size++;
     }
 
@@ -207,6 +215,8 @@ namespace lasd {
     template<typename Data>
     Data& List<Data>::operator[](const ulong index) 
     {
+        if(size == 0) throw std::out_of_range("index is out of range!");
+
         if(index >= size)
             throw std::out_of_range("index is out of range!");
 
@@ -225,12 +235,14 @@ namespace lasd {
     template<typename Data>
     Data& List<Data>::Front() 
     {
+        if(size == 0) throw std::length_error("The list is empty!");
         return head->value;
     }
 
     template<typename Data>
     Data& List<Data>::Back() 
     {
+        if(size == 0) throw std::length_error("The list is empty!");
         return tail->value;
     }
 
@@ -257,12 +269,14 @@ namespace lasd {
     template<typename Data>
     const Data& List<Data>::Front() const 
     {
+        if(size == 0) throw std::length_error("The list is empty!");
         return head->value;
     } 
 
     template<typename Data>
     const Data& List<Data>::Back() const
     {
+        if(size == 0) throw std::length_error("The list is empty!");
         return tail->value;
     }
 

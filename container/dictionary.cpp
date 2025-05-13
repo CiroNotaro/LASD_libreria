@@ -5,7 +5,7 @@
 namespace lasd {
 
     template <typename Data>
-    inline bool DictionaryContainer<Data>::InsertAll(const TraversableContainer<Data> container)
+    inline bool DictionaryContainer<Data>::InsertAll(const TraversableContainer<Data>& container)
     {
         bool flag = true;
         
@@ -47,7 +47,7 @@ namespace lasd {
     }
 
     template <typename Data>
-    inline bool DictionaryContainer<Data>::InsertSome(const TraversableContainer<Data> container)
+    inline bool DictionaryContainer<Data>::InsertSome(const TraversableContainer<Data>& container)
     {
         bool flag = false;
         
