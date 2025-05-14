@@ -73,10 +73,14 @@ namespace lasd {
     template<typename Data>
     void MutableLinearContainer<Data>::PostOrderMap(MapFun fun)
     {
-        for (ulong i = this->size-1; i >= 0; i--)
-        {
-            fun(operator[](i));
-        }
+      if(this->size == 0)
+        return;
+
+      for (ulong i = this->size; i-- > 0;)
+      {
+        
+          fun(operator[](i));
+      }
     }
 
     /* ************************************************************************** */

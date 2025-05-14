@@ -133,8 +133,16 @@ namespace lasd {
     void List<Data>::RemoveFromFront()
     {
         if(size == 0) throw std::length_error("The list is empty!");
+        if(size == 1)
+        {
+            delete head;
+            head = nullptr;
+            size--;
+            return;
+        }
 
         Node* newHead = head->next;
+        head->next = nullptr;
         delete head;
         head = newHead;
         size--;
@@ -144,9 +152,18 @@ namespace lasd {
     Data List<Data>::FrontNRemove()
     {
         if(size == 0) throw std::length_error("The list is empty!");
-
+        if(size == 1)
+        {
+            Data data = head->value;
+            head->next = nullptr;
+            delete head;
+            head = nullptr;
+            size--;
+            return data;
+        }
         Data data = head->value;
         Node* newHead = head->next;
+        head->next = nullptr;
         delete head;
         head = newHead;
         size--;
@@ -226,7 +243,7 @@ namespace lasd {
         while(current != nullptr)
         {
             if(i == index) 
-                return head->value;
+                return current->value;
             current = current->next;
             i++;
         }
@@ -249,6 +266,8 @@ namespace lasd {
     template<typename Data>
     const Data& List<Data>::operator[](const ulong index) const
     {
+        if(size == 0) throw std::out_of_range("index is out of range!");
+
         if(index >= size)
         throw std::out_of_range("index is out of range!");
 
@@ -258,7 +277,7 @@ namespace lasd {
         while(current != nullptr)
         {
             if(i == index) 
-                return head->value;
+                return current->value;
             current = current->next;
             i++;
         }
