@@ -28,7 +28,7 @@ protected:
 
     // Data
     Data value;
-    Node* next;
+    Node* next = nullptr;
 
     /* ********************************************************************** */
 

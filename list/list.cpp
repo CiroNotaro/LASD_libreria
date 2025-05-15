@@ -33,7 +33,7 @@ namespace lasd {
     template<typename Data>
     List<Data>::List(const TraversableContainer<Data>& other)
     {
-        Traverse([&](const Data& data)
+        other.Traverse([&](const Data& data)
         {
             InsertAtBack(data);
         });
@@ -43,9 +43,9 @@ namespace lasd {
     List<Data>::List(MappableContainer<Data>&& other)
     {
         
-        Map([&](const Data& data)
+        other.Map([&](const Data& data)
         {
-            InsertAtBack(data);
+            InsertAtBack(std::move(data));
         });
     }
 
@@ -66,6 +66,10 @@ namespace lasd {
         std::swap(tail, other.tail);
         std::swap(head, other.head);
         std::swap(size, other.size);
+
+        other.tail = nullptr;
+        other.head = nullptr;
+        other.size = 0;
     }
 
     template<typename Data>
@@ -98,7 +102,21 @@ namespace lasd {
     template<typename Data>
     bool List<Data>::operator==(const List<Data>& other) const noexcept
     {
-        return (size == other.size) && (head == other.head);
+        if(size != other.size)
+            return false;
+
+        Node* current = head;
+        Node* currentOther = other.head;
+
+        while(current != nullptr && currentOther != nullptr)
+        {
+            if(current->value != currentOther->value)
+                return false;
+            current = current->next;
+            currentOther = currentOther->next;
+        }
+
+        return (current == nullptr && currentOther == nullptr);
     }
     
     template<typename Data>
@@ -338,10 +356,9 @@ namespace lasd {
     template<typename Data>
     inline void List<Data>::Clear() 
     {
-        // TODO DEALLOCA
-
         delete head;
-        head = tail = nullptr;
+        head = nullptr;
+        tail = nullptr;
         size = 0;
     }
 
