@@ -30,6 +30,8 @@ protected:
     Data value;
     Node* next = nullptr;
 
+    Node() = default;
+
     /* ********************************************************************** */
 
     // Specific constructors

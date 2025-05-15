@@ -10,31 +10,26 @@ namespace lasd
     }
 
     template <typename Data>
-    Vector<Data>::Vector(const TraversableContainer<Data>& traversableContainer)
+    Vector<Data>::Vector(const TraversableContainer<Data>& traversableContainer) : Vector(traversableContainer.Size())
     {
-        size = traversableContainer.Size();
-        buffer = new Data[size];
         ulong i = 0;
-        TraverseFun lambda = [&](const Data& data)
-        {
-            buffer[i] = data;
-            i++;
-        };
         traversableContainer.Traverse(
-            lambda
+            [&](const Data& data)
+            {
+                buffer[i] = data;
+                i++;
+            }
         );
     }
 
     template <typename Data>
-    Vector<Data>::Vector(MappableContainer<Data>&& mappableContainer)
+    Vector<Data>::Vector(MappableContainer<Data>&& mappableContainer) : Vector(mappableContainer.Size())
     {
-        size = mappableContainer.Size();
-        buffer = new Data[size];
         ulong i = 0;
         mappableContainer.Map(
-            [&](const Data& data)
+            [&](Data& data)
             {
-                buffer[i] = data;
+                buffer[i] = std::move(data);
                 i++;
             }
         );
@@ -51,8 +46,6 @@ namespace lasd
     template <typename Data>
     Vector<Data>::Vector(Vector<Data>&& other)
     {
-        size = 0;
-        buffer = nullptr;
         std::swap(size, other.size);
         std::swap(buffer, other.buffer);
     }
@@ -62,6 +55,7 @@ namespace lasd
     {
         Vector<Data>* tmp = new Vector<Data>(other);
         std::swap(*tmp, *this);
+        delete tmp;
         return *this;
     }
 
@@ -155,18 +149,17 @@ namespace lasd
     template <typename Data>
     void Vector<Data>::Resize(ulong size)
     {
-        if(size == 0)
-        {
+        if (size == 0) {
             Clear();
-        }else{
-            ulong newSize = (this->size < size) ? this->size : size;
-
-            Data* newBuffer = new Data[size];
-            for(ulong i = 0; i < newSize; i++)
-                newBuffer[i] = std::move(buffer[i]);
-            delete[] buffer;
-            buffer = newBuffer;
+        } else if (this->size != size) {
+            Data * tmp = new Data[size] {};
+            ulong minsize = (this->size < size) ? this->size : size;
+            for (ulong index = 0; index < minsize; ++index) {
+                std::swap(buffer[index], tmp[index]);
+            }
+            std::swap(buffer, tmp);
             this->size = size;
+            delete[] tmp;
         }
     }
 
@@ -203,18 +196,14 @@ SortableVector<Data>::SortableVector(SortableVector<Data>&& other)
 template<typename Data>
 SortableVector<Data>& SortableVector<Data>::operator=(const SortableVector<Data>& other) 
 {
-    if (this != &other) {
-        Vector<Data>::operator=(other);
-    }
+    Vector<Data>::operator=(other);
     return *this;
 }
 
 template<typename Data>
 SortableVector<Data>& SortableVector<Data>::operator=(SortableVector<Data>&& other)
 {
-    if (this != &other) {
-        Vector<Data>::operator=(std::move(other));
-    }
+    Vector<Data>::operator=(std::move(other));
     return *this;
 }
 

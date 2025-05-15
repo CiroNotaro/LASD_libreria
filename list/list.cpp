@@ -43,7 +43,7 @@ namespace lasd {
     List<Data>::List(MappableContainer<Data>&& other)
     {
         
-        other.Map([&](const Data& data)
+        other.Map([&](Data& data)
         {
             InsertAtBack(std::move(data));
         });
@@ -63,13 +63,9 @@ namespace lasd {
     template<typename Data>
     List<Data>::List(List<Data>&& other)
     {
-        std::swap(tail, other.tail);
         std::swap(head, other.head);
+        std::swap(tail, other.tail);
         std::swap(size, other.size);
-
-        other.tail = nullptr;
-        other.head = nullptr;
-        other.size = 0;
     }
 
     template<typename Data>

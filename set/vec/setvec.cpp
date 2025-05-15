@@ -9,6 +9,7 @@ SetVec<Data>::SetVec(const TraversableContainer<Data>& traversableContainer)
 {
     vector = Vector<Data>(traversableContainer);
     size = vector.Size();
+    Sort();
 }
 
 template <typename Data>
@@ -16,6 +17,7 @@ SetVec<Data>::SetVec(MappableContainer<Data>&& mappableContainer)
 {
     vector = Vector<Data>(mappableContainer);
     size = vector.Size();
+    Sort();
 }
 
 template <typename Data>
@@ -206,94 +208,107 @@ void SetVec<Data>::RemoveMax()
 template <typename Data>
 Data SetVec<Data>::Predecessor(const Data& value) const
 {
-    ulong i_found = 0;
-    bool found = Search(value, &i_found);
-
-    if(!found) throw std::length_error("'value' not found!");
-    if(i_found == 0) throw std::length_error("Predecessor not found!");
+    if(size == 0) throw std::length_error("Prececessor not found!");
     
-    return vector[i_found-1];
+    for(ulong i = size-1; i >= 0; i--)
+    {
+        if(value > vector[i])
+            return vector[i];
+    }
+
+    throw std::length_error("Prececessor not found!");
 }
 
 template <typename Data>
 Data SetVec<Data>::PredecessorNRemove(const Data& value)
 {
-    ulong i_found = 0;
-    bool found = Search(value, &i_found);
+    if(size == 0) throw std::length_error("Prececessor not found!");
+    
+    for(ulong i = size-1; i >= 0; i--)
+    {
+        if(value > vector[i])
+        {
+            Data prec = vector[i];
+            vector[i] = vector[size - 1];
+            vector.Resize(--size);
+            Sort();
+            return prec;
+        }
+    }
 
-    if(!found) throw std::length_error("'value' not found!");
-    if(i_found == 0) throw std::length_error("Predecessor not found!");
-
-    Data prec = vector[i_found-1];
-
-    vector[i_found-1] = vector[size-1];
-    vector.Resize(size-1);
-    size--;
-
-    Sort();
-    return prec;
+    throw std::length_error("Prececessor not found!");
 }
 
 template <typename Data>
 void SetVec<Data>::RemovePredecessor(const Data& value)
 {
-    ulong i_found = 0;
-    bool found = Search(value, &i_found);
-
-    if(!found) throw std::length_error("'value' not found!");
-    if(i_found == 0) throw std::length_error("Predecessor not found!");
+    if(size == 0) throw std::length_error("Prececessor not found!");
     
-    vector[i_found-1] = vector[size-1];
-    vector.Resize(size-1);
-    size--;
+    for(ulong i = size-1; i >= 0; i--)
+    {
+        if(value < vector[i])
+        {
+            vector[i] = vector[size - 1];
+            vector.Resize(--size);
+            Sort();
+            return;
+        }
+    }
 
-    Sort();
+    throw std::length_error("Prececessor not found!");
 }
 
 template <typename Data>
 Data SetVec<Data>::Successor(const Data& value) const
 {
-    ulong i_found = 0;
-    bool found = Search(value, &i_found);
+    if(size == 0) throw std::length_error("Sucessor not found!");
+    
+    for(ulong i = 0; i < size; i++)
+    {
+        if(value < vector[i])
+            return vector[i];
+    }
 
-    if(!found) throw std::length_error("'value' not found!");
-    if(i_found == size-1) throw std::length_error("Successor not found!");
-
-    return vector[i_found+1];
+    throw std::length_error("Sucessor not found!");
 }
 
 template <typename Data>
 Data SetVec<Data>::SuccessorNRemove(const Data& value)
 {
-    ulong i_found = 0;
-    bool found = Search(value, &i_found);
-
-    if(!found) throw std::length_error("'value' not found!");
-    if(i_found == size-1) throw std::length_error("Successor not found!");
+    if(size == 0) throw std::length_error("Sucessor not found!");
     
-    Data suc = vector[i_found+1];
-    vector[i_found+1] = vector[size-1];
-    vector.Resize(size-1);
-    size--;
+    for(ulong i = 0; i < size; i++)
+    {
+        if(value < vector[i])
+        {
+            Data data = vector[i];
+            vector[i] = vector[size - 1];
+            vector.Resize(--size);
+            Sort();
+            return data;
+        }
+    }
 
-    Sort();
-    return suc;
+    throw std::length_error("Sucessor not found!");
 }
 
 template <typename Data>
 void SetVec<Data>::RemoveSuccessor(const Data& value)
 {
-    ulong i_found = 0;
-    bool found = Search(value, &i_found);
-
-    if(!found) throw std::length_error("'value' not found!");
-    if(i_found == size-1) throw std::length_error("Successor not found!");
+    if(size == 0) throw std::length_error("Sucessor not found!");
     
-    vector[i_found+1] = vector[size-1];
-    vector.Resize(size-1);
-    size--;
+    for(ulong i = 0; i < size; i++)
+    {
+        if(value < vector[i])
+        {
+            vector[i] = vector[size - 1];
+            vector.Resize(--size);
+            Sort();
+            return;
+        }
+    }
 
-    Sort();
+    throw std::length_error("Sucessor not found!");
 }
 
 template <typename Data>

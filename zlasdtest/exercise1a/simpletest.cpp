@@ -460,7 +460,7 @@ void stestVectorListString(uint & testnum, uint & testerr) {
     Size(loctestnum, loctesterr, vec, true, 3);
     TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
     TraversePreOrder(loctestnum, loctesterr, copvec, true, &TraversePrint<string>);
-    EqualVector(loctestnum, loctesterr, vec, copvec, false);
+    EqualVector(loctestnum, loctesterr, vec, copvec, false); // QUESTO
 
     Size(loctestnum, loctesterr, lst, true, 3);
     TraversePreOrder(loctestnum, loctesterr, lst, true, &TraversePrint<string>);
