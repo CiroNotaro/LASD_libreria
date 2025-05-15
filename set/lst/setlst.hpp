@@ -119,6 +119,12 @@ protected:
   bool Search(const Data& value, ulong* index) const;
   bool Search(Data& value, ulong* index) const;
 
+  void Sort() noexcept;
+
+  void QuickSort(ulong p, ulong r) noexcept;
+
+  ulong Partition(ulong p, ulong r) noexcept;
+
   Node* GetNodeByIndex(const ulong index);
 
 };

@@ -68,7 +68,7 @@ void stestSetInt(lasd::Set<int> & set, uint & testnum, uint & testerr) {
 
     Remove(loctestnum, loctesterr, set, false, 6);
     Remove(loctestnum, loctesterr, set, true, 2);
-
+    
     TraversePreOrder(loctestnum, loctesterr, set, true, &TraversePrint<int>);
     TraversePostOrder(loctestnum, loctesterr, set, true, &TraversePrint<int>);
 
