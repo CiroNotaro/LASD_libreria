@@ -117,7 +117,6 @@ protected:
 
   // Auxiliary functions, if necessary!
   bool Search(const Data& value, ulong* index) const;
-  bool Search(Data& value, ulong* index) const;
 
   void Sort() noexcept;
 

@@ -88,7 +88,7 @@ bool SetLst<Data>::operator!=(const SetLst<Data>& other) const noexcept
 template <typename Data>
 Data SetLst<Data>::Min() const
 {
-    if(size == 0) throw std::length_error("The list is empty!");    
+    if(size == 0) throw std::length_error("The list is empty!");
 
     return this->head->value;
 }
@@ -96,42 +96,35 @@ Data SetLst<Data>::Min() const
 template <typename Data>
 Data SetLst<Data>::MinNRemove()
 {
-    if(size == 0) throw std::length_error("The list is empty!");    
-    if(size == 1)
-    {
-        Data max = this->tail->value;
-        delete this->tail;
-        size--;
-        return max;
-    }
+    if (size == 0)
+        throw std::length_error("The list is empty!");
 
     Data min = this->head->value;
-    Node* newHead = this->head->next;
-    this->head->next = nullptr;
-    delete this->head;
-    this->head = newHead;
-
-    size--;
-
+    RemoveMin();
     return min;
 }
 
 template <typename Data>
 void SetLst<Data>::RemoveMin()
 {
-    if(size == 0) throw std::length_error("The list is empty!");
-    if(size == 1)
+    if (size == 0) 
+        throw std::length_error("The list is empty!");
+
+    // Caso con un solo elemento
+    if (size == 1)
     {
-        delete this->tail;
+        delete this->head;
+        this->head = nullptr;
+        this->tail = nullptr;
         size--;
         return;
     }
 
+    // Caso con più elementi
     Node* newHead = this->head->next;
     this->head->next = nullptr;
     delete this->head;
     this->head = newHead;
-
     size--;
 }
 
@@ -146,44 +139,41 @@ Data SetLst<Data>::Max() const
 template <typename Data>
 Data SetLst<Data>::MaxNRemove()
 {
-    if(size == 0) throw std::length_error("The list is empty!");  
-    if(size == 1)
-    {
-        Data max = this->tail->value;
-        delete this->tail;
-        size--;
-        return max;
-    }  
+    if (size == 0)
+        throw std::length_error("The list is empty!");
 
     Data max = this->tail->value;
-    Node* newTail = GetNodeByIndex(size-2);
-    newTail->next = nullptr;
-    delete this->tail;
-    this->tail = newTail;
-
-    size--;
-
+    RemoveMax();
     return max;
 }
 
 template <typename Data>
 void SetLst<Data>::RemoveMax()
 {
-    if(size == 0) throw std::length_error("The vector is empty!");
-    if(size == 1)
-    {
-        size--;
-        delete this->tail;
-        return;
-    } 
-    
-    Node* newTail = GetNodeByIndex(size-2);
-    newTail->next = nullptr;
-    delete this->tail;
-    this->tail = newTail;
+    if (size == 0)
+        throw std::length_error("The list is empty!");
 
+    // Caso con un solo elemento
+    if (size == 1)
+    {
+        delete this->tail;
+        this->head = nullptr;
+        this->tail = nullptr;
+        size--;
+        return;
+    }
+
+    // Caso con più elementi
+    Node* current = this->head;
+    while (current->next != this->tail) {
+        current = current->next;
+    }
+    delete this->tail;
+    current->next = nullptr;
+    this->tail = current;
     size--;
 }
+
 
 template <typename Data>
 Data SetLst<Data>::Predecessor(const Data& value) const
@@ -203,30 +193,31 @@ Data SetLst<Data>::PredecessorNRemove(const Data& value)
     ulong i_found = 0;
     bool found = Search(value, &i_found);
 
-    if(!found) throw std::length_error("'value' not found!");
-    if(i_found == 0) throw std::length_error("Predecessor not found!");
-    if(i_found == 1) return MinNRemove();
+    if (i_found == 0) 
+        throw std::length_error("Predecessor not found!");
+    if (i_found == 1) 
+        return MinNRemove();
 
     ulong i = 0;
     Node* current = this->head;
-    Data data;
-    while(current != nullptr)
+
+    while (current != nullptr)
     {
-        if(i == i_found-2) 
+        if (i == i_found - 2)
         {
-            data = current->next->value; //value di prec
-            Node* tmp = current->next->next; //prec->next
-            current->next = tmp; //prec di prec (current)
-            delete current->next;
-            break;
+            Node* toDelete = current->next;
+            Data data = toDelete->value;
+            current->next = toDelete->next;
+            toDelete->next = nullptr;
+            delete toDelete;
+            size--;
+            return data;
         }
         current = current->next;
         i++;
     }
 
-    size--;
-
-    return data;
+    throw std::logic_error("Unexpected error in PredecessorNRemove.");
 }
 
 template <typename Data>
@@ -234,27 +225,26 @@ void SetLst<Data>::RemovePredecessor(const Data& value)
 {
     ulong i_found = 0;
     bool found = Search(value, &i_found);
-
-    if(!found) throw std::length_error("'value' not found!");
-    if(i_found == 0) throw std::length_error("Predecessor not found!");
-    if(i_found == 1) {RemoveMin(); return;}
     
+    if (i_found == 0) throw std::length_error("Predecessor not found!");
+    if (i_found == 1) { RemoveMin(); return; }
+
     ulong i = 0;
     Node* current = this->head;
-    while(current != nullptr)
+    while (current != nullptr)
     {
-        if(i == i_found-2) 
+        if (i == i_found - 2)
         {
-            Node* tmp = current->next->next; //prec->next
-            current->next = tmp; //prec di prec (current)
-            delete current->next;
-            break;
+            Node* toDelete = current->next;
+            current->next = toDelete->next;
+            toDelete->next = nullptr;
+            delete toDelete;
+            size--;
+            return;
         }
         current = current->next;
         i++;
     }
-
-    size--;
 }
 
 template <typename Data>
@@ -275,30 +265,34 @@ Data SetLst<Data>::SuccessorNRemove(const Data& value)
     ulong i_found = 0;
     bool found = Search(value, &i_found);
 
-    if(!found) throw std::length_error("'value' not found!");
-    if(i_found == size-1) throw std::length_error("Successor not found!");
-    if(i_found == size-2) return MaxNRemove();
+    if (!found) 
+        throw std::length_error("'value' not found!");
+    if (i_found == size - 1) 
+        throw std::length_error("Successor not found!");
+    if (i_found == size - 2) 
+        return MaxNRemove();
 
     ulong i = 0;
     Node* current = this->head;
-    Data data;
-    while(current != nullptr)
+
+    while (current != nullptr)
     {
-        if(i == i_found) 
+        if (i == i_found) 
         {
-            data = current->next->value;
-            Node* tmp = current->next->next;
-            current->next = tmp;
-            delete current->next;
-            break;
+            Node* toDelete = current->next;
+            Data data = toDelete->value;
+            current->next = toDelete->next;
+            toDelete->next = nullptr;
+            delete toDelete;
+            size--;
+            return data;
         }
         current = current->next;
         i++;
     }
 
-    size--;
-
-    return data;
+    // Non dovrebbe mai arrivare qui
+    throw std::logic_error("Unexpected error in SuccessorNRemove.");
 }
 
 template <typename Data>
@@ -307,26 +301,26 @@ void SetLst<Data>::RemoveSuccessor(const Data& value)
     ulong i_found = 0;
     bool found = Search(value, &i_found);
 
-    if(!found) throw std::length_error("'value' not found!");
-    if(i_found == size-1) throw std::length_error("Successor not found!");
-    if(i_found == size-2) {RemoveMax(); return;}
+    if (!found) throw std::length_error("'value' not found!");
+    if (i_found == size - 1) throw std::length_error("Successor not found!");
+    if (i_found == size - 2) { RemoveMax(); return; }
 
     ulong i = 0;
     Node* current = this->head;
-    while(current != nullptr)
+    while (current != nullptr)
     {
-        if(i == i_found) 
+        if (i == i_found)
         {
-            Node* tmp = current->next->next;
-            current->next = tmp;
-            delete current->next;
-            break;
+            Node* toDelete = current->next;
+            current->next = toDelete->next;
+            toDelete->next = nullptr;
+            delete toDelete;
+            size--;
+            return;
         }
         current = current->next;
         i++;
     }
-
-    size--;
 }
 
 template <typename Data>
@@ -336,27 +330,23 @@ bool SetLst<Data>::Insert(const Data& value) {
 
     Node* node = new typename List<Data>::Node(value);
 
-    // Lista vuota
     if (this->head == nullptr) {
         this->head = this->tail = node;
         return true;
     }
 
-    // Inserimento in testa
     if (value < this->head->value) {
         node->next = this->head;
         this->head = node;
         return true;
     }
 
-    // Inserimento in coda
     if (value > this->tail->value) {
         this->tail->next = node;
         this->tail = node;
         return true;
     }
 
-    // Inserimento in mezzo
     Node* current = this->head->next;
     Node* prec = this->head;
 
@@ -365,43 +355,41 @@ bool SetLst<Data>::Insert(const Data& value) {
         current = current->next;
     }
 
-    // Ora inserisci tra prec e current
     node->next = current;
     prec->next = node;
+
+    if (current == nullptr) {  // Inserito in fondo
+        this->tail = node;
+    }
 
     return true;
 }
 
 
 template <typename Data>
-bool SetLst<Data>::Insert(Data&& value) 
-{
+bool SetLst<Data>::Insert(Data&& value) {
     if (Exists(value)) return false;
     size++;
 
     Node* node = new typename List<Data>::Node(value);
 
-    // Lista vuota
     if (this->head == nullptr) {
         this->head = this->tail = node;
         return true;
     }
 
-    // Inserimento in testa
     if (value < this->head->value) {
         node->next = this->head;
         this->head = node;
         return true;
     }
 
-    // Inserimento in coda
     if (value > this->tail->value) {
         this->tail->next = node;
         this->tail = node;
         return true;
     }
 
-    // Inserimento in mezzo
     Node* current = this->head->next;
     Node* prec = this->head;
 
@@ -410,9 +398,12 @@ bool SetLst<Data>::Insert(Data&& value)
         current = current->next;
     }
 
-    // Ora inserisci tra prec e current
     node->next = current;
     prec->next = node;
+
+    if (current == nullptr) {  // Inserito in fondo
+        this->tail = node;
+    }
 
     return true;
 }
@@ -421,39 +412,34 @@ template <typename Data>
 bool SetLst<Data>::Remove(const Data& value) 
 {
     ulong index = 0;
-    bool found = Search(value, &index);
-
-    if(!found) return false;
+    if (!Search(value, &index)) 
+        return false;
 
     Node* node = GetNodeByIndex(index);
 
-    if(node == this->head)
-    {
+    // Caso 1: nodo da rimuovere è la testa
+    if (node == this->head) {
         RemoveMin();
-
-        return true;
-    }else if(node == this->tail)
-    {
+    }
+    // Caso 2: nodo da rimuovere è la coda
+    else if (node == this->tail) {
         RemoveMax();
-
-        return true;
     }
-
-    Node* current = this->head;
-    Node* prec = nullptr;
-    while(current != nullptr)
-    {
-        if(node == current)
-        {
-            prec->next = current->next;
-            delete current;
-            break;
+    // Caso 3: nodo in mezzo
+    else {
+        Node* current = this->head;
+        while (current->next != nullptr && current->next != node) {
+            current = current->next;
         }
-        prec = current;
-        current = current->next;
+
+        if (current->next == node) {
+            current->next = node->next;
+            node->next = nullptr; ///
+            delete node;
+            --size;
+        }
     }
 
-    size--;
     return true;
 }
 
@@ -489,8 +475,6 @@ bool SetLst<Data>::Exists(const Data& value) const noexcept
 template<typename Data>
 inline void SetLst<Data>::Clear()
 {
-    // TODO DEALLOCA
-
     delete this->head;
     this->head = this->tail = nullptr;
     size = 0;
@@ -498,23 +482,6 @@ inline void SetLst<Data>::Clear()
 
 template<typename Data>
 bool SetLst<Data>::Search(const Data& value, ulong* index) const
-{
-    for(ulong i = 0; i < size; i++)
-    {
-        if(value == operator[](i))
-        {
-            *index = i;
-            return true;
-        }
-    }
-
-    *index = 0;
-    return false;
-}
-
-
-template<typename Data>
-bool SetLst<Data>::Search(Data& value, ulong* index) const
 {
     for(ulong i = 0; i < size; i++)
     {

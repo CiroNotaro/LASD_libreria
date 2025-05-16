@@ -15,6 +15,7 @@ namespace lasd {
     List<Data>::Node::~Node()
     {
         delete next;
+        next = nullptr;
     }
 
     template<typename Data>
