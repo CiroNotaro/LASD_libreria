@@ -36,26 +36,28 @@ namespace lasd
     }
 
     template <typename Data>
-    Vector<Data>::Vector(const Vector<Data>& other)
+    Vector<Data>::Vector(const Vector<Data>& other) : Vector(other.size)
     {
-        size = other.size;
-        buffer = new Data[size];
         std::copy(other.buffer, other.buffer + size, buffer);
     }
 
     template <typename Data>
-    Vector<Data>::Vector(Vector<Data>&& other)
+    Vector<Data>::Vector(Vector<Data>&& other): buffer(other.buffer)
     {
-        std::swap(size, other.size);
-        std::swap(buffer, other.buffer);
+        size = other.size;
+        other.buffer = nullptr;
+        other.size = 0;
     }
 
     template <typename Data>
     Vector<Data>& Vector<Data>::operator=(const Vector<Data>& other)
     {
-        Vector<Data>* tmp = new Vector<Data>(other);
-        std::swap(*tmp, *this);
-        delete tmp;
+        if (this != &other)
+        {
+            Vector<Data>* tmp = new Vector<Data>(other);
+            std::swap(*tmp, *this);
+            delete tmp;
+        }
         return *this;
     }
 

@@ -15,13 +15,13 @@ SetVec<Data>::SetVec(const TraversableContainer<Data>& traversableContainer)
 template <typename Data>
 SetVec<Data>::SetVec(MappableContainer<Data>&& mappableContainer)
 {
-    vector = Vector<Data>(mappableContainer);
+    vector = Vector<Data>(std::move(mappableContainer));
     size = vector.Size();
     Sort();
 }
 
 template <typename Data>
-SetVec<Data>::SetVec(const SetVec<Data>& setvec)
+SetVec<Data>::SetVec(const SetVec<Data>& setvec) : vector(size)
 {
     size = setvec.size;
     for(ulong i = 0; i < size; i++)
@@ -31,13 +31,11 @@ SetVec<Data>::SetVec(const SetVec<Data>& setvec)
 }
 
 template <typename Data>
-SetVec<Data>::SetVec(SetVec<Data>&& setvec)
+SetVec<Data>::SetVec(SetVec<Data>&& setvec) 
+    : vector(std::move(setvec.vector))
 {
     size = setvec.size;
-    for(ulong i = 0; i < size; i++)
-    {
-        vector[i] = std::move(setvec[i]);
-    }
+    setvec.size = 0;
 }
 
 template <typename Data>

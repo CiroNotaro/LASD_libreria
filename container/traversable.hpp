@@ -153,8 +153,8 @@ public:
   /* ************************************************************************ */
 
   // Comparison operators
-  bool operator==(const PostOrderTraversableContainer<Data>& other) const; // Comparison of abstract types might be possible.
-  bool operator!=(const PostOrderTraversableContainer<Data>& other) const; // Comparison of abstract types might be possible.
+  bool operator==(const PostOrderTraversableContainer<Data>& other) const noexcept = delete; // Comparison of abstract types might be possible.
+  bool operator!=(const PostOrderTraversableContainer<Data>& other) const noexcept = delete; // Comparison of abstract types might be possible.
 
   /* ************************************************************************ */
 

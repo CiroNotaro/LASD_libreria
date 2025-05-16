@@ -12,7 +12,7 @@ SetLst<Data>::SetLst(const TraversableContainer<Data>& traversableContainer)
 
 template <typename Data>
 SetLst<Data>::SetLst(MappableContainer<Data>&& mappableContainer)
-    : List<Data>(mappableContainer)
+    : List<Data>(std::move(mappableContainer))
 {
     size = mappableContainer.Size();
     Sort();
