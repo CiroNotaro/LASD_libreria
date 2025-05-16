@@ -113,6 +113,7 @@ void SetLst<Data>::RemoveMin()
     // Caso con un solo elemento
     if (size == 1)
     {
+        this->head->next = nullptr;
         delete this->head;
         this->head = nullptr;
         this->tail = nullptr;
@@ -178,149 +179,179 @@ void SetLst<Data>::RemoveMax()
 template <typename Data>
 Data SetLst<Data>::Predecessor(const Data& value) const
 {
-    ulong i_found = 0;
-    bool found = Search(value, &i_found);
-
-    if(!found) throw std::length_error("'value' not found!");
-    if(i_found == 0) throw std::length_error("Predecessor not found!");
+    if(size == 0) throw std::length_error("Prececessor not found!");
     
-    return operator[](i_found-1);
+    for(ulong i = size-1; i >= 0; i--)
+    {
+        if(value > operator[](i))
+            return operator[](i);
+    }
+
+    throw std::length_error("Prececessor not found!");
 }
 
 template <typename Data>
 Data SetLst<Data>::PredecessorNRemove(const Data& value)
 {
-    ulong i_found = 0;
-    bool found = Search(value, &i_found);
+    if(size == 0) throw std::length_error("Prececessor not found!");
+    if(size == 1) throw std::length_error("Prececessor not found!");
 
-    if (i_found == 0) 
-        throw std::length_error("Predecessor not found!");
-    if (i_found == 1) 
-        return MinNRemove();
-
-    ulong i = 0;
-    Node* current = this->head;
-
-    while (current != nullptr)
+    // Caso N
+    for(ulong i = size-1; i >= 0; i--)
     {
-        if (i == i_found - 2)
+        if(value > operator[](i))
         {
-            Node* toDelete = current->next;
-            Data data = toDelete->value;
-            current->next = toDelete->next;
-            toDelete->next = nullptr;
-            delete toDelete;
+            Node* precNode = GetNodeByIndex(i);
+            Node* precPrec = GetNodeByIndex(i-1);
+            Data prec = precNode->value;
+
+            precPrec->next = precNode->next;
+            precNode->next = nullptr;
+            delete precNode;
             size--;
-            return data;
+            Sort();
+            return prec;
         }
-        current = current->next;
-        i++;
     }
 
-    throw std::logic_error("Unexpected error in PredecessorNRemove.");
+    throw std::length_error("Prececessor not found!");
 }
 
 template <typename Data>
 void SetLst<Data>::RemovePredecessor(const Data& value)
 {
-    ulong i_found = 0;
-    bool found = Search(value, &i_found);
-    
-    if (i_found == 0) throw std::length_error("Predecessor not found!");
-    if (i_found == 1) { RemoveMin(); return; }
+    if(size == 0) throw std::length_error("Prececessor not found!");
+    if(size == 1) throw std::length_error("Prececessor not found!");
 
-    ulong i = 0;
-    Node* current = this->head;
-    while (current != nullptr)
+    // Caso N
+    for(ulong i = size-1; i >= 0; i--)
     {
-        if (i == i_found - 2)
+        if(value > operator[](i))
         {
-            Node* toDelete = current->next;
-            current->next = toDelete->next;
-            toDelete->next = nullptr;
-            delete toDelete;
+            Node* precNode = GetNodeByIndex(i);
+            Node* precPrec = GetNodeByIndex(i-1);
+
+            precPrec->next = precNode->next;
+            precNode->next = nullptr;
+            delete precNode;
             size--;
+            Sort();
             return;
         }
-        current = current->next;
-        i++;
     }
+
+    throw std::length_error("Prececessor not found!");
 }
 
 template <typename Data>
 Data SetLst<Data>::Successor(const Data& value) const
 {
-    ulong i_found = 0;
-    bool found = Search(value, &i_found);
+    if(size == 0) throw std::length_error("Sucessor not found!");
+    
+    for(ulong i = 0; i < size; i++)
+    {
+        if(value < operator[](i))
+            return operator[](i);
+    }
 
-    if(!found) throw std::length_error("'value' not found!");
-    if(i_found == size-1) throw std::length_error("Successor not found!");
-
-    return operator[](i_found+1);
+    throw std::length_error("Sucessor not found!");
 }
 
 template <typename Data>
 Data SetLst<Data>::SuccessorNRemove(const Data& value)
 {
-    ulong i_found = 0;
-    bool found = Search(value, &i_found);
+    if(size == 0) throw std::length_error("Successor not found!");
 
-    if (!found) 
-        throw std::length_error("'value' not found!");
-    if (i_found == size - 1) 
-        throw std::length_error("Successor not found!");
-    if (i_found == size - 2) 
-        return MaxNRemove();
-
-    ulong i = 0;
     Node* current = this->head;
+    Node* prec = nullptr;
 
-    while (current != nullptr)
+    while(current != nullptr)
     {
-        if (i == i_found) 
+        if(value < current->value)
         {
-            Node* toDelete = current->next;
-            Data data = toDelete->value;
-            current->next = toDelete->next;
-            toDelete->next = nullptr;
-            delete toDelete;
-            size--;
-            return data;
+            if(current == this->tail)
+            {
+                prec->next = nullptr;
+                Data ret = this->tail->value;
+                delete this->tail;
+                this->tail = prec;
+                size--;
+                Sort();
+                return ret;
+            }else if(current == this->head)
+            {
+                Data ret = this->head->value;
+                Node* oldHead = this->head;
+
+                this->head = this->head->next;
+                oldHead->next = nullptr;
+                delete oldHead;
+                size--;
+                Sort();
+                return ret;
+            }else{
+                Data ret = current->value;
+                prec->next = current->next;
+                current->next = nullptr;
+                delete current;
+                size--;
+                Sort();
+                return ret;
+            }
         }
-        current = current->next;
-        i++;
+
+        prec = current;
+        current = prec->next;
     }
 
-    // Non dovrebbe mai arrivare qui
-    throw std::logic_error("Unexpected error in SuccessorNRemove.");
+    throw std::length_error("Successor not found!");
 }
 
 template <typename Data>
 void SetLst<Data>::RemoveSuccessor(const Data& value)
 {
-    ulong i_found = 0;
-    bool found = Search(value, &i_found);
+    if(size == 0) throw std::length_error("Successor not found!");
 
-    if (!found) throw std::length_error("'value' not found!");
-    if (i_found == size - 1) throw std::length_error("Successor not found!");
-    if (i_found == size - 2) { RemoveMax(); return; }
-
-    ulong i = 0;
     Node* current = this->head;
-    while (current != nullptr)
+    Node* prec = nullptr;
+
+    while(current != nullptr)
     {
-        if (i == i_found)
+        if(value < current->value)
         {
-            Node* toDelete = current->next;
-            current->next = toDelete->next;
-            toDelete->next = nullptr;
-            delete toDelete;
-            size--;
-            return;
+            if(current == this->tail)
+            {
+                prec->next = nullptr;
+                delete this->tail;
+                this->tail = prec;
+                size--;
+                Sort();
+                return;
+            }else if(current == this->head)
+            {
+                Node* oldHead = this->head;
+
+                this->head = this->head->next;
+                oldHead->next = nullptr;
+                delete oldHead;
+                size--;
+                Sort();
+                return;
+            }else{
+                prec->next = current->next;
+                current->next = nullptr;
+                delete current;
+                size--;
+                Sort();
+                return;
+            }
         }
-        current = current->next;
-        i++;
+
+        prec = current;
+        current = prec->next;
     }
+
+    throw std::length_error("Successor not found!");
 }
 
 template <typename Data>
