@@ -252,7 +252,7 @@ void stestListInt(uint & testnum, uint & testerr) {
   }
   catch (...) {
     loctestnum++; loctesterr++;
-    cout << endl << "Unmanaged error!" << endl;
+    cout << endl << "Unmanaged error! " << endl;
   }
   cout << "End of List<int> Test! (Errors/Tests: " << loctesterr << "/" << loctestnum << ")" << endl;
   testnum += loctestnum;
@@ -460,7 +460,7 @@ void stestVectorListString(uint & testnum, uint & testerr) {
     Size(loctestnum, loctesterr, vec, true, 3);
     TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
     TraversePreOrder(loctestnum, loctesterr, copvec, true, &TraversePrint<string>);
-    EqualVector(loctestnum, loctesterr, vec, copvec, false); // QUESTO
+    EqualVector(loctestnum, loctesterr, vec, copvec, false);
 
     Size(loctestnum, loctesterr, lst, true, 3);
     TraversePreOrder(loctestnum, loctesterr, lst, true, &TraversePrint<string>);
