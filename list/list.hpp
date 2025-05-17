@@ -41,6 +41,8 @@ protected:
       this->next = nullptr;
     }
 
+    Node(Data && data);
+
     /* ********************************************************************** */
 
     // Copy constructor

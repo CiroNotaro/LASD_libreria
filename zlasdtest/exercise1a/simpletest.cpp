@@ -252,7 +252,7 @@ void stestListInt(uint & testnum, uint & testerr) {
   }
   catch (...) {
     loctestnum++; loctesterr++;
-    cout << endl << "Unmanaged error! " << endl;
+    cout << endl << "Unmanaged error!" << endl;
   }
   cout << "End of List<int> Test! (Errors/Tests: " << loctesterr << "/" << loctestnum << ")" << endl;
   testnum += loctestnum;

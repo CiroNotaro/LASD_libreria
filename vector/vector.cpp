@@ -52,12 +52,9 @@ namespace lasd
     template <typename Data>
     Vector<Data>& Vector<Data>::operator=(const Vector<Data>& other)
     {
-        if (this != &other)
-        {
-            Vector<Data>* tmp = new Vector<Data>(other);
-            std::swap(*tmp, *this);
-            delete tmp;
-        }
+        Vector<Data>* tmp = new Vector<Data>(other);
+        std::swap(*tmp, *this);
+        delete tmp;
         return *this;
     }
 
@@ -98,7 +95,7 @@ namespace lasd
     Data& Vector<Data>::operator[](const ulong index) 
     {
         if(index >= size)
-            throw std::out_of_range("index >= size");
+            throw std::out_of_range("index >= size Vector<Data>");
 
         return buffer[index];
     }

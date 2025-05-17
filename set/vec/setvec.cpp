@@ -21,7 +21,7 @@ SetVec<Data>::SetVec(MappableContainer<Data>&& mappableContainer)
 }
 
 template <typename Data>
-SetVec<Data>::SetVec(const SetVec<Data>& setvec) : vector(size)
+SetVec<Data>::SetVec(const SetVec<Data>& setvec) : vector(setvec.size)
 {
     size = setvec.size;
     for(ulong i = 0; i < size; i++)
@@ -232,6 +232,8 @@ Data SetVec<Data>::PredecessorNRemove(const Data& value)
             Sort();
             return prec;
         }
+
+        if(i == 0) break;
     }
 
     throw std::length_error("Prececessor not found!");
@@ -244,13 +246,14 @@ void SetVec<Data>::RemovePredecessor(const Data& value)
     
     for(ulong i = size-1; i >= 0; i--)
     {
-        if(value < vector[i])
+        if(value > vector[i])
         {
             vector[i] = vector[size - 1];
             vector.Resize(--size);
             Sort();
             return;
         }
+        if(i == 0) break;
     }
 
     throw std::length_error("Prececessor not found!");

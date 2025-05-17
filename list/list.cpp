@@ -5,6 +5,12 @@
 namespace lasd {
 
     template<typename Data>
+    List<Data>::Node::Node(Data && data) 
+    {
+        std::swap(value, data);
+    }
+
+    template<typename Data>
     List<Data>::Node::Node(Node&& node)
     {
         std::swap(value, node.value);
@@ -15,7 +21,6 @@ namespace lasd {
     List<Data>::Node::~Node()
     {
         delete next;
-        next = nullptr;
     }
 
     template<typename Data>
@@ -53,18 +58,9 @@ namespace lasd {
     template<typename Data>
     List<Data>::List(const List<Data>& other)
     {
-        if (other.head != nullptr) {
-            head = new Node(other.head->value);
-            Node* curr = head;
-            Node* otherCurr = other.head->next;
-        
-            while (otherCurr != nullptr) {
-                curr->next = new Node(otherCurr->value);
-                curr = curr->next;
-                otherCurr = otherCurr->next;
-            }
-        
-            tail = curr;
+        if (other.tail != nullptr) {
+            tail = new Node(*other.tail);
+            head = other.head->Clone(tail);
             size = other.size;
         }
     }

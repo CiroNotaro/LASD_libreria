@@ -191,6 +191,7 @@ void stestSetInt(uint & testnum, uint & testerr) {
     /* ********************************************************************** */
 
     setlst.InsertAll(vec);
+
     lasd::SetLst<int> setlst1(setlst);
 
     EqualSetLst(loctestnum, loctesterr, setlst, setlst1, true);
@@ -204,7 +205,6 @@ void stestSetInt(uint & testnum, uint & testerr) {
     EqualSetLst(loctestnum, loctesterr, setlst, setlst1, true);
 
     lasd::SetLst<int> setlst2 = setlst1;
-
     EqualSetLst(loctestnum, loctesterr, setlst1, setlst2, true);
 
     RemovePredecessor(loctestnum, loctesterr, setlst1, true, 9);
@@ -244,7 +244,7 @@ void stestSetInt(uint & testnum, uint & testerr) {
   }
   catch (...) {
     loctestnum++; loctesterr++;
-    cout << endl << "Unmanaged error! " << endl;
+    cout << endl << "Unmanaged error!" << endl;
   }
   cout << "End of Set<int> Test! (Errors/Tests: " << loctesterr << "/" << loctestnum << ")" << endl;
   testnum += loctestnum;
@@ -320,6 +320,7 @@ void stestSetFloat(uint & testnum, uint & testerr) {
     InsertC(loctestnum, loctesterr, setlst2, true, 5.3);
     InsertC(loctestnum, loctesterr, setlst2, true, 4.0);
 
+    TraversePreOrder(loctestnum, loctesterr, setlst2, true, &TraversePrint<double>);
 
     EqualSetLst(loctestnum, loctesterr, setlst1, setlst2, true);
     NonEqualSetLst(loctestnum, loctesterr, setlst1, setlst2, false);
@@ -346,7 +347,7 @@ void stestSetFloat(uint & testnum, uint & testerr) {
   }
   catch (...) {
     loctestnum++; loctesterr++;
-    cout << endl << "Unmanaged error! " << endl;
+    cout << endl << "Unmanaged error!" << endl;
   }
   cout << "End of Set<double> Test! (Errors/Tests: " << loctesterr << "/" << loctestnum << ")" << endl;
   testnum += loctestnum;
