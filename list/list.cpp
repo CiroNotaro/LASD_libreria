@@ -74,6 +74,11 @@ namespace lasd {
     }
 
     template<typename Data>
+    List<Data>::~List() {
+        delete head;
+    }
+
+    template<typename Data>
     List<Data>& List<Data>::operator=(const List<Data>& other)
     {
         if(this != &other)
