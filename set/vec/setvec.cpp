@@ -363,13 +363,13 @@ const Data& SetVec<Data>::operator[](const ulong index) const
 template <typename Data>
 const Data& SetVec<Data>::Front() const
 {
-    vector.Front();
+    return vector.Front();
 }
 
 template <typename Data>
 const Data& SetVec<Data>::Back() const
 {
-    vector.Back();
+    return vector.Back();
 }
 
 template <typename Data>

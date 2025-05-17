@@ -525,10 +525,12 @@ const Data& SetLst<Data>::operator[](const ulong index) const
     while(current != nullptr)
     {
         if(i == index) 
-            return current->value;
+            break;
         current = current->next;
         i++;
     }
+
+    return current->value;
 }
 
 template <typename Data>

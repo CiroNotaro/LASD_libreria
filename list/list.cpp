@@ -258,14 +258,15 @@ namespace lasd {
 
         ulong i = 0;
         Node* current = head;
-
         while(current != nullptr)
         {
             if(i == index) 
-                return current->value;
+                break;
             current = current->next;
             i++;
         }
+
+        return current->value;
     }
 
     template<typename Data>
