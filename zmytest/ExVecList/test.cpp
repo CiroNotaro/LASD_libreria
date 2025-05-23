@@ -49,6 +49,48 @@ void mystestVectorInt(uint & testnum, uint & testerr)
 
       }
 
+      // CASO VEC 1
+      {
+        lasd::SortableVector<int> vec(1);
+        Empty(loctestnum, loctesterr, vec, false);
+        Size(loctestnum, loctesterr, vec, true, 1);
+
+        SetAt(loctestnum, loctesterr, vec, true, 0, 5);
+        SetAt(loctestnum, loctesterr, vec, false, 1, 3);
+
+        TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<int>);
+        TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<int>);
+
+        GetFront(loctestnum, loctesterr, vec, true, 5);
+        GetBack(loctestnum, loctesterr, vec, true, 5);
+
+        FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldAdd<int>, 0, 5);
+        FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldAdd<int>, 0, 5);
+
+        vec.Sort();
+
+        TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<int>);
+        TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<int>);
+
+        GetFront(loctestnum, loctesterr, vec, true, 5);
+        GetBack(loctestnum, loctesterr, vec, true, 5);
+
+        lasd::SortableVector<int> vec2(1);
+        Empty(loctestnum, loctesterr, vec2, false);
+        Size(loctestnum, loctesterr, vec2, true, 1);
+
+        SetAt(loctestnum, loctesterr, vec2, true, 0, 1);
+
+        TraversePreOrder(loctestnum, loctesterr, vec2, true, &TraversePrint<int>);
+        TraversePostOrder(loctestnum, loctesterr, vec2, true, &TraversePrint<int>);
+
+        FoldPreOrder(loctestnum, loctesterr, vec2, true, &FoldAdd<int>, 0, 1);
+        FoldPostOrder(loctestnum, loctesterr, vec2, true, &FoldAdd<int>, 0, 1);
+
+        EqualVector(loctestnum, loctesterr, vec, vec2, false);
+        
+      }
+
       // CASO VEC N
       {
         lasd::SortableVector<int> vec(5);
@@ -67,6 +109,9 @@ void mystestVectorInt(uint & testnum, uint & testerr)
         GetFront(loctestnum, loctesterr, vec, true, 5);
         GetBack(loctestnum, loctesterr, vec, true, 1);
 
+        FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldAdd<int>, 0, 15);
+        FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldAdd<int>, 0, 15);
+
         vec.Sort();
 
         TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<int>);
@@ -84,6 +129,9 @@ void mystestVectorInt(uint & testnum, uint & testerr)
 
         TraversePreOrder(loctestnum, loctesterr, vec2, true, &TraversePrint<int>);
         TraversePostOrder(loctestnum, loctesterr, vec2, true, &TraversePrint<int>);
+
+        FoldPreOrder(loctestnum, loctesterr, vec2, true, &FoldAdd<int>, 0, 3);
+        FoldPostOrder(loctestnum, loctesterr, vec2, true, &FoldAdd<int>, 0, 3);
 
         EqualVector(loctestnum, loctesterr, vec, vec2, false);
         
@@ -128,6 +176,48 @@ void mystestVectorDouble(uint & testnum, uint & testerr)
 
       }
 
+      // CASO VEC 1
+      {
+        lasd::SortableVector<double> vec(1);
+        Empty(loctestnum, loctesterr, vec, false);
+        Size(loctestnum, loctesterr, vec, true, 1);
+
+        SetAt(loctestnum, loctesterr, vec, true, 0, 5.4);
+        SetAt(loctestnum, loctesterr, vec, false, 1, 3.2);
+
+        TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<double>);
+        TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<double>);
+
+        GetFront(loctestnum, loctesterr, vec, true, 5.4);
+        GetBack(loctestnum, loctesterr, vec, true, 5.4);
+
+        FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldAdd<double>, 0.0, 5.4);
+        FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldAdd<double>, 0.0, 5.4);
+
+        vec.Sort();
+
+        TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<double>);
+        TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<double>);
+
+        GetFront(loctestnum, loctesterr, vec, true, 5.4);
+        GetBack(loctestnum, loctesterr, vec, true, 5.4);
+
+        lasd::SortableVector<double> vec2(1);
+        Empty(loctestnum, loctesterr, vec2, false);
+        Size(loctestnum, loctesterr, vec2, true, 1);
+
+        SetAt(loctestnum, loctesterr, vec2, true, 0, 1.1);
+
+        TraversePreOrder(loctestnum, loctesterr, vec2, true, &TraversePrint<double>);
+        TraversePostOrder(loctestnum, loctesterr, vec2, true, &TraversePrint<double>);
+
+        FoldPreOrder(loctestnum, loctesterr, vec2, true, &FoldAdd<double>, 0.0, 1.1);
+        FoldPostOrder(loctestnum, loctesterr, vec2, true, &FoldAdd<double>, 0.0, 1.1);
+
+        EqualVector(loctestnum, loctesterr, vec, vec2, false);
+        
+      }
+
       // CASO VEC N
       {
         lasd::SortableVector<double> vec(5);
@@ -146,6 +236,9 @@ void mystestVectorDouble(uint & testnum, uint & testerr)
         GetFront(loctestnum, loctesterr, vec, true, 5.4);
         GetBack(loctestnum, loctesterr, vec, true, 1.0);
 
+        FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldAdd<double>, 0.0, 48.7);
+        FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldAdd<double>, 0.0, 48.7);
+
         vec.Sort();
 
         TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<double>);
@@ -163,6 +256,9 @@ void mystestVectorDouble(uint & testnum, uint & testerr)
 
         TraversePreOrder(loctestnum, loctesterr, vec2, true, &TraversePrint<double>);
         TraversePostOrder(loctestnum, loctesterr, vec2, true, &TraversePrint<double>);
+
+        FoldPreOrder(loctestnum, loctesterr, vec2, true, &FoldAdd<double>, 0.0, 3.44);
+        FoldPostOrder(loctestnum, loctesterr, vec2, true, &FoldAdd<double>, 0.0, 3.44);
 
         EqualVector(loctestnum, loctesterr, vec, vec2, false);
         
