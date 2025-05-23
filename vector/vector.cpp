@@ -6,7 +6,10 @@ namespace lasd
     Vector<Data>::Vector(const ulong size)
     {
         this->size = size;
-        buffer = new Data[size];
+        if(size == 0)
+            buffer = nullptr;
+        else
+            buffer = new Data[size];
     }
 
     template <typename Data>

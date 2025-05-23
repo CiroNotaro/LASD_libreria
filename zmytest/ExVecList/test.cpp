@@ -13,6 +13,8 @@
 
 #include "../../zlasdtest/list/list.hpp"
 
+#include "../utils.hpp"
+
 /* ************************************************************************** */
 
 using namespace std;
@@ -26,6 +28,7 @@ void mystestVectorInt(uint & testnum, uint & testerr)
     try {
       // CASO VEC VUOTO
       {
+        print_section("0 ELEMENT");
         lasd::SortableVector<int> vec;
         lasd::SortableVector<int> vec2;
         Empty(loctestnum, loctesterr, vec, true);
@@ -51,6 +54,7 @@ void mystestVectorInt(uint & testnum, uint & testerr)
 
       // CASO VEC 1
       {
+        print_section("1 ELEMENT");
         lasd::SortableVector<int> vec(1);
         Empty(loctestnum, loctesterr, vec, false);
         Size(loctestnum, loctesterr, vec, true, 1);
@@ -93,6 +97,7 @@ void mystestVectorInt(uint & testnum, uint & testerr)
 
       // CASO VEC N
       {
+        print_section("N ELEMENTS");
         lasd::SortableVector<int> vec(5);
         Empty(loctestnum, loctesterr, vec, false);
         Size(loctestnum, loctesterr, vec, true, 5);
@@ -112,6 +117,7 @@ void mystestVectorInt(uint & testnum, uint & testerr)
         FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldAdd<int>, 0, 15);
         FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldAdd<int>, 0, 15);
 
+        print_subsection("SORT");
         vec.Sort();
 
         TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<int>);
@@ -153,6 +159,7 @@ void mystestVectorDouble(uint & testnum, uint & testerr)
     try {
       // CASO VEC VUOTO
       {
+        print_section("0 ELEMENT");
         lasd::SortableVector<double> vec;
         lasd::SortableVector<double> vec2;
         Empty(loctestnum, loctesterr, vec, true);
@@ -178,6 +185,7 @@ void mystestVectorDouble(uint & testnum, uint & testerr)
 
       // CASO VEC 1
       {
+        print_section("1 ELEMENT");
         lasd::SortableVector<double> vec(1);
         Empty(loctestnum, loctesterr, vec, false);
         Size(loctestnum, loctesterr, vec, true, 1);
@@ -220,6 +228,7 @@ void mystestVectorDouble(uint & testnum, uint & testerr)
 
       // CASO VEC N
       {
+        print_section("N ELEMENTS");
         lasd::SortableVector<double> vec(5);
         Empty(loctestnum, loctesterr, vec, false);
         Size(loctestnum, loctesterr, vec, true, 5);
@@ -277,44 +286,115 @@ void mystestVectorString(uint & testnum, uint & testerr) {
     uint loctestnum = 0, loctesterr = 0;
     cout << endl << "Begin of Vector<string> Test:" << endl;
     try {
-      lasd::SortableVector<string> vec(2);
-  
-      Empty(loctestnum, loctesterr, vec, false);
-      Size(loctestnum, loctesterr, vec, true, 2);
-  
-      SetAt(loctestnum, loctesterr, vec, true, 0, string("A"));
-      SetAt(loctestnum, loctesterr, vec, true, 1, string("B"));
-  
-      GetFront(loctestnum, loctesterr, vec, true, string("A"));
-      GetBack(loctestnum, loctesterr, vec, true, string("B"));
-  
-      Exists(loctestnum, loctesterr, vec, true, string("A"));
-  
-      MapPreOrder(loctestnum, loctesterr, vec, true, [](string & str) { MapStringAppend(str, string(" ")); });
-      TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
-      FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldStringConcatenate, string("X"), string("XA B "));
-      FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldStringConcatenate, string("X"), string("XB A "));
-  
-      Exists(loctestnum, loctesterr, vec, false, string("A"));
-  
-      lasd::SortableVector<string> copvec(vec);
-      EqualVector(loctestnum, loctesterr, vec, copvec, true);
-      MapPreOrder(loctestnum, loctesterr, vec, true, [](string & str) { MapStringAppend(str, string("!")); });
-      NonEqualVector(loctestnum, loctesterr, vec, copvec, true);
-  
-      copvec = move(vec);
-      FoldPreOrder(loctestnum, loctesterr, copvec, true, &FoldStringConcatenate, string("?"), string("?A !B !"));
-  
-      lasd::SortableVector<string> movvec(move(vec));
-      FoldPreOrder(loctestnum, loctesterr, movvec, true, &FoldStringConcatenate, string("?"), string("?A B "));
-      movvec.Sort();
-      FoldPreOrder(loctestnum, loctesterr, movvec, true, &FoldStringConcatenate, string("?"), string("?A B "));
-      SetAt(loctestnum, loctesterr, vec, false, 1, string(""));
-      vec.Resize(1);
-      SetAt(loctestnum, loctesterr, vec, true, 0, string("X"));
-  
-      movvec.Clear();
-      Empty(loctestnum, loctesterr, movvec, true);
+      
+      // CASO 0
+      {
+        print_section("0 ELEMENT");
+        lasd::SortableVector<string> vec(0);
+    
+        Empty(loctestnum, loctesterr, vec, true);
+        Size(loctestnum, loctesterr, vec, true, 0);
+    
+        GetFront(loctestnum, loctesterr, vec, false, string(""));
+        GetBack(loctestnum, loctesterr, vec, false, string(""));
+
+        SetAt(loctestnum, loctesterr, vec, false, 0, string("COBOL"));
+        GetAt(loctestnum, loctesterr, vec, false, 0, string("COBOL"));
+
+        TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
+        TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
+        
+        FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldStringConcatenate, string("X"), string("X"));
+        FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldStringConcatenate, string("X"), string("X"));
+
+        TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
+        TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
+      }
+
+      // CASO 1
+      {
+        print_section("1 ELEMENT");
+        lasd::SortableVector<string> vec(1);
+    
+        Empty(loctestnum, loctesterr, vec, false);
+        Size(loctestnum, loctesterr, vec, true, 1);
+    
+        SetAt(loctestnum, loctesterr, vec, true, 0, string("COBOL"));
+        GetAt(loctestnum, loctesterr, vec, true, 0, string("COBOL"));
+        GetAt(loctestnum, loctesterr, vec, false, 1, string("C++"));
+
+        GetFront(loctestnum, loctesterr, vec, true, string("COBOL"));
+        GetBack(loctestnum, loctesterr, vec, true, string("COBOL"));
+
+        TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
+        TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
+        
+        FoldPreOrder(loctestnum, loctesterr, vec, false, &FoldStringConcatenate, string(""), string(""));
+        FoldPostOrder(loctestnum, loctesterr, vec, false, &FoldStringConcatenate, string(""), string(""));
+
+        Exists(loctestnum, loctesterr, vec, true, string("COBOL"));
+
+        print_subsection("RESIZE 0");
+        vec.Resize(0);
+
+        Empty(loctestnum, loctesterr, vec, true);
+        Size(loctestnum, loctesterr, vec, true, 0);
+
+        SetAt(loctestnum, loctesterr, vec, false, 0, string("COBOL"));
+        GetAt(loctestnum, loctesterr, vec, false, 0, string("COBOL"));
+        GetAt(loctestnum, loctesterr, vec, false, 1, string("C++"));
+
+        Exists(loctestnum, loctesterr, vec, false, string("COBOL"));
+
+      }
+      
+      {
+        print_section("N ELEMENTS");
+        lasd::SortableVector<string> vec(3);
+        
+        Empty(loctestnum, loctesterr, vec, false);
+        Size(loctestnum, loctesterr, vec, true, 3);
+    
+        SetAt(loctestnum, loctesterr, vec, true, 0, string("C"));
+        SetAt(loctestnum, loctesterr, vec, true, 1, string("C++"));
+        SetAt(loctestnum, loctesterr, vec, true, 2, string("Java"));
+        SetAt(loctestnum, loctesterr, vec, false, 3, string("COBOL"));
+    
+        GetFront(loctestnum, loctesterr, vec, true, string("C"));
+        GetBack(loctestnum, loctesterr, vec, true, string("Java"));
+    
+        Exists(loctestnum, loctesterr, vec, true, string("Java"));
+        Exists(loctestnum, loctesterr, vec, false, string("COBOL"));
+    
+        TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
+        TraversePostOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
+
+        MapPreOrder(loctestnum, loctesterr, vec, true, [](string & str) { MapStringAppend(str, string("?")); });
+        
+        TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
+
+        FoldPreOrder(loctestnum, loctesterr, vec, true, &FoldStringConcatenate, string("X"), string("XC?C++?Java?"));
+        FoldPostOrder(loctestnum, loctesterr, vec, true, &FoldStringConcatenate, string("X"), string("XJava?C++?C?"));
+    
+        Exists(loctestnum, loctesterr, vec, false, string("Java"));
+    
+        print_subsection("COPY");
+        lasd::SortableVector<string> copvec(vec);
+        EqualVector(loctestnum, loctesterr, vec, copvec, true);
+        MapPreOrder(loctestnum, loctesterr, copvec, true, [](string & str) { MapStringAppend(str, string("!")); });
+
+        TraversePreOrder(loctestnum, loctesterr, copvec, true, &TraversePrint<string>);
+    
+        Empty(loctestnum, loctesterr, vec, false);
+
+        print_subsection("MOVE");
+        lasd::SortableVector<string> movvec(move(vec));
+        Empty(loctestnum, loctesterr, vec, true);
+        Empty(loctestnum, loctesterr, movvec, false);
+
+        TraversePreOrder(loctestnum, loctesterr, vec, true, &TraversePrint<string>);
+        TraversePreOrder(loctestnum, loctesterr, movvec, true, &TraversePrint<string>);
+      }
     }
     catch (...) {
       loctestnum++; loctesterr++;
