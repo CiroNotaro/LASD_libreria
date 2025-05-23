@@ -1,464 +1,589 @@
-#include "setvec.hpp"
-
 #include <stdexcept>
 
-namespace lasd {
+#include "setvec.hpp"
 
-template <typename Data>
-SetVec<Data>::SetVec(const TraversableContainer<Data>& traversableContainer)
+namespace lasd 
 {
-    vector = Vector<Data>(traversableContainer);
-    size = vector.Size();
-    Sort();
+
+template<typename Data>
+SetVec<Data>::SetVec(const TraversableContainer<Data>& traversableContainer) 
+{
+  vector = Vector<Data>(traversableContainer);
+  size = vector.Size();
+  capacity = size;
+  Sort();
 }
 
-template <typename Data>
-SetVec<Data>::SetVec(MappableContainer<Data>&& mappableContainer)
+template<typename Data>
+SetVec<Data>::SetVec(MappableContainer<Data>&& mappableContainer) 
 {
     vector = Vector<Data>(std::move(mappableContainer));
     size = vector.Size();
+    capacity = size;
     Sort();
 }
 
-template <typename Data>
-SetVec<Data>::SetVec(const SetVec<Data>& setvec) : vector(setvec.size)
+template<typename Data>
+SetVec<Data>::SetVec(const SetVec<Data>& other) : vector(other.size)
 {
-    size = setvec.size;
-    for(ulong i = 0; i < size; i++)
-    {
-        vector[i] = setvec[i];
-    }
+  capacity = other.capacity;
+  size = other.size;
+  head = other.head;
+
+  for(ulong i = 0; i < size; i++)
+  {
+    vector[i] = other[i];
+  }
 }
 
-template <typename Data>
-SetVec<Data>::SetVec(SetVec<Data>&& setvec) 
-    : vector(std::move(setvec.vector))
+template<typename Data>
+SetVec<Data>::SetVec(SetVec<Data>&& other) 
 {
-    size = setvec.size;
-    setvec.size = 0;
+  std::swap(size, other.size);
+  std::swap(capacity, other.capacity);
+  std::swap(head, other.head);
+  std::swap(vector, other.vector);
 }
 
-template <typename Data>
-SetVec<Data>::~SetVec()
+template<typename Data>
+SetVec<Data>::~SetVec() 
 {
-    vector.Clear();
-    size = 0;
+  vector.Clear();
+  size = 0;
 }
 
-template <typename Data>
-SetVec<Data>& SetVec<Data>::operator=(const SetVec<Data>& other)
+template<typename Data>
+SetVec<Data>& SetVec<Data>::operator=(const SetVec<Data>& other) 
 {
-    if(this != &other)
-    {
-        vector = other.vector;
-        size = other.size;
-    }
-
-    return *this;
+  std::swap(*this, other);
+  return *this;
 }
 
-template <typename Data>
-SetVec<Data>& SetVec<Data>::operator=(SetVec<Data>&& other)
+template<typename Data>
+SetVec<Data>& SetVec<Data>::operator=(SetVec<Data>&& other) 
 {
-    if(this != &other)
-    {
-        vector = std::move(other.vector);
-        size = other.size;
-        other.size = 0;
-    }
-
-    return *this;
+  std::swap(size, other.size);
+  std::swap(capacity, other.capacity);
+  std::swap(head, other.head);
+  std::swap(vector, other.vector);
+  return *this;
 }
 
-template <typename Data>
-bool SetVec<Data>::operator==(const SetVec<Data>& other) const noexcept
+template<typename Data>
+bool SetVec<Data>::operator==(const SetVec<Data>& other) const 
 {
-    return (size == other.size) && (vector == other.vector);
+  if (size != other.size) 
+  {
+      return false;
+  }
+
+  for (ulong i = 0; i < size; ++i) 
+  {
+      if (vector[(head+i)%capacity] != other.vector[(other.head+i)%other.capacity]) 
+      {
+          return false;
+      }
+  }
+  return true;
 }
 
-template <typename Data>
-bool SetVec<Data>::operator!=(const SetVec<Data>& other) const noexcept
+template<typename Data>
+bool SetVec<Data>::operator!=(const SetVec<Data>& other) const 
 {
-    return !(*this == other);
+  return !(*this == other);
 }
 
-template <typename Data>
-Data SetVec<Data>::Min() const
+template<typename Data>
+const Data& SetVec<Data>::operator[](ulong index) const 
 {
-    if(size == 0) throw std::length_error("The vector is empty!");    
-
-    Data min = vector[0];
-    for(ulong i = 1; i < size; i++)
-    {
-        if(vector[i] < min)
-        {
-            min = vector[i];
-        }
-    }
-
-    return min;
+  if(size == 0) throw std::length_error("The set-vector is empty!");
+  if (index >= size) 
+  {
+      throw std::out_of_range("SetVec<Data> operator[] out of range!");
+  }
+  return vector[(head + index)%capacity];
 }
 
-template <typename Data>
-Data SetVec<Data>::MinNRemove()
-{
-    if(size == 0) throw std::length_error("The vector is empty!");    
-
-    Data min = vector[0];
-    ulong index = 0;
-    for(ulong i = 1; i < size; i++)
-    {
-        if(vector[i] < min)
-        {
-            min = vector[i];
-            index = i;
-        }
-    }
-
-    vector[index] = vector[size-1];
-    vector.Resize(--size);
-
-    return min;
-}
-
-template <typename Data>
-void SetVec<Data>::RemoveMin()
-{
-    if(size == 0) throw std::length_error("The vector is empty!");    
-
-    Data min = vector[0];
-    ulong index = 0;
-    for(ulong i = 1; i < size; i++)
-    {
-        if(vector[i] < min)
-        {
-            min = vector[i];
-            index = i;
-        }
-    }
-
-    vector[index] = vector[size-1];
-    vector.Resize(--size);
-}
-
-template <typename Data>
-Data SetVec<Data>::Max() const
-{
-    if(size == 0) throw std::length_error("The vector is empty!");    
-
-    Data max = vector[0];
-    for(ulong i = 1; i < size; i++)
-    {
-        if(vector[i] > max)
-        {
-            max = vector[i];
-        }
-    }
-
-    return max;
-}
-
-template <typename Data>
-Data SetVec<Data>::MaxNRemove()
-{
-    if(size == 0) throw std::length_error("The vector is empty!");    
-
-    Data max = vector[0];
-    ulong index = 0;
-    for(ulong i = 1; i < size; i++)
-    {   
-        if(vector[i] > max)
-        {
-            max = vector[i];
-           index = i;
-        }
-    }
-
-    vector[index] = vector[size-1];
-    vector.Resize(--size);
-
-    Sort();
-    return max;
-}
-
-template <typename Data>
-void SetVec<Data>::RemoveMax()
-{
-    if(size == 0) throw std::length_error("The vector is empty!");    
-
-    Data max = vector[0];
-    ulong index = 0;
-    for(ulong i = 1; i < size; i++)
-    {
-        if(vector[i] > max)
-        {
-            max = vector[i];
-            index = i;
-        }
-    }
-
-    vector[index] = vector[size-1];
-    vector.Resize(--size);
-
-    Sort();
-}
-
-template <typename Data>
-Data SetVec<Data>::Predecessor(const Data& value) const
-{
-    if(size == 0) throw std::length_error("Prececessor not found!");
-    
-    for(ulong i = size-1; i >= 0; i--)
-    {
-        if(value > vector[i])
-            return vector[i];
-    }
-
-    throw std::length_error("Prececessor not found!");
-}
-
-template <typename Data>
-Data SetVec<Data>::PredecessorNRemove(const Data& value)
-{
-    if(size == 0) throw std::length_error("Prececessor not found!");
-    
-    for(ulong i = size-1; i >= 0; i--)
-    {
-        if(value > vector[i])
-        {
-            Data prec = vector[i];
-            vector[i] = vector[size - 1];
-            vector.Resize(--size);
-            Sort();
-            return prec;
-        }
-
-        if(i == 0) break;
-    }
-
-    throw std::length_error("Prececessor not found!");
-}
-
-template <typename Data>
-void SetVec<Data>::RemovePredecessor(const Data& value)
-{
-    if(size == 0) throw std::length_error("Prececessor not found!");
-    
-    for(ulong i = size-1; i >= 0; i--)
-    {
-        if(value > vector[i])
-        {
-            vector[i] = vector[size - 1];
-            vector.Resize(--size);
-            Sort();
-            return;
-        }
-        if(i == 0) break;
-    }
-
-    throw std::length_error("Prececessor not found!");
-}
-
-template <typename Data>
-Data SetVec<Data>::Successor(const Data& value) const
-{
-    if(size == 0) throw std::length_error("Sucessor not found!");
-    
-    for(ulong i = 0; i < size; i++)
-    {
-        if(value < vector[i])
-            return vector[i];
-    }
-
-    throw std::length_error("Sucessor not found!");
-}
-
-template <typename Data>
-Data SetVec<Data>::SuccessorNRemove(const Data& value)
-{
-    if(size == 0) throw std::length_error("Sucessor not found!");
-    
-    for(ulong i = 0; i < size; i++)
-    {
-        if(value < vector[i])
-        {
-            Data data = vector[i];
-            vector[i] = vector[size - 1];
-            vector.Resize(--size);
-            Sort();
-            return data;
-        }
-    }
-
-    throw std::length_error("Sucessor not found!");
-}
-
-template <typename Data>
-void SetVec<Data>::RemoveSuccessor(const Data& value)
-{
-    if(size == 0) throw std::length_error("Sucessor not found!");
-    
-    for(ulong i = 0; i < size; i++)
-    {
-        if(value < vector[i])
-        {
-            vector[i] = vector[size - 1];
-            vector.Resize(--size);
-            Sort();
-            return;
-        }
-    }
-
-    throw std::length_error("Sucessor not found!");
-}
-
-template <typename Data>
-bool SetVec<Data>::Insert(const Data& value)
-{
-    if(Exists(value)) return false;
-
-    size++;
-    vector.Resize(size);
-    vector[size-1] = value;
-    Sort();
-
-    return true;
-}
-
-template <typename Data>
-bool SetVec<Data>::Insert(Data&& value) 
-{
-    if(Exists(value)) return false;
-
-    size++;
-    vector.Resize(size);
-    vector[size-1] = value;
-    Sort();
-
-    return true;
-}
-
-template <typename Data>
-bool SetVec<Data>::Remove(const Data& value) 
-{
-    ulong index = 0;
-    bool found = Search(value, &index);
-
-    if(!found) return false;
-
-    vector[index] = vector[size-1];
-    vector.Resize(size-1);
-    size--;
-    Sort();
-    return true;
-}
-
-template <typename Data>
-const Data& SetVec<Data>::operator[](const ulong index) const
-{
-    if(index >= size) throw std::out_of_range("Index is out of range!");
-    return vector[index];
-}
-
-template <typename Data>
+template<typename Data>
 const Data& SetVec<Data>::Front() const
 {
-    return vector.Front();
+    if (size == 0)
+    {
+        throw std::length_error("The set-vector is empty!");
+    }
+    return vector[head];
 }
 
-template <typename Data>
+template<typename Data>
 const Data& SetVec<Data>::Back() const
 {
-    return vector.Back();
-}
-
-template <typename Data>
-bool SetVec<Data>::Exists(const Data& value) const noexcept
-{
-    for(ulong i = 0; i < size; i++)
+    if (size == 0) 
     {
-        if(value == vector[i])
-            return true;
+        throw std::length_error("The set-vector is empty!");
     }
-    return false;
+    return vector[(head + size-1)%capacity];
+}
+
+template<typename Data>
+Data SetVec<Data>::Min() const 
+{
+  if (size == 0) 
+  {
+      throw std::length_error("The set-vector is empty!");
+  }
+  return vector[head];
 }
 
 template <typename Data>
-inline void SetVec<Data>::Clear()
+Data SetVec<Data>::MinNRemove() 
 {
+  Data min = Min();
+  RemoveMin();        
+  return min;            
+}
+
+template <typename Data>
+void SetVec<Data>::RemoveMin() 
+{
+  if (size == 0) 
+  {
+      throw std::length_error("The set-vector is empty!");
+  }
+
+  head = (head + 1) % capacity;
+  size--;
+}
+
+template<typename Data>
+Data SetVec<Data>::Max() const 
+{
+  if (size == 0) 
+  {
+      throw std::length_error("The set-vector is empty!");
+  }
+  return vector[(head + size-1)%capacity];
+}
+
+template<typename Data>
+Data SetVec<Data>::MaxNRemove() 
+{
+  Data max = Max();      
+  RemoveMax();           
+  return max;            
+}
+
+template <typename Data>
+void SetVec<Data>::RemoveMax() 
+{
+  if (size == 0) 
+  {
+      throw std::length_error("The set-vector is empty!");
+  }
+  size--;
+}
+
+template<typename Data>
+Data SetVec<Data>::Predecessor(const Data& data) const 
+{
+  ulong predecessorIndex = BinarySearchPredecessor(data);
+  return vector[predecessorIndex];
+}
+
+template<typename Data>
+Data SetVec<Data>::PredecessorNRemove(const Data& data) 
+{
+  Data prec = Predecessor(data);
+  RemovePredecessor(data);
+  return prec;
+}
+
+template<typename Data>
+void SetVec<Data>::RemovePredecessor(const Data& data)
+{
+  ulong predecessorIndex = BinarySearchPredecessor(data);
+
+  ulong numLeft = (predecessorIndex >= head)
+                                ? (predecessorIndex - head)
+                                : (predecessorIndex + capacity - head);
+  ulong numRight = size-1 - numLeft;
+
+  if (numLeft < numRight) 
+  {
+      for (ulong i = predecessorIndex; i != head; i = (i + capacity-1)%capacity) 
+      {
+          vector[i] = std::move(vector[(i + capacity-1)%capacity]);
+      }
+      head = (head + 1)%capacity;
+  }
+   else 
+  {
+      for (ulong i = predecessorIndex; i != (head + size-1)%capacity; i = (i + 1)%capacity)
+      {
+          vector[i] = std::move(vector[(i + 1)%capacity]);
+      }
+  }
+  size--;
+}
+
+template<typename Data>
+Data SetVec<Data>::Successor(const Data& data) const 
+{
+  ulong successorIndex = BinarySearchSuccessor(data);
+  return vector[successorIndex];
+}
+
+template<typename Data>
+Data SetVec<Data>::SuccessorNRemove(const Data& data) 
+{
+  Data succ = Successor(data);
+  RemoveSuccessor(data);
+  return succ;
+}
+
+template<typename Data>
+void SetVec<Data>::RemoveSuccessor(const Data& data) 
+{
+  ulong successorIndex = BinarySearchSuccessor(data);
+
+  ulong numLeft = (successorIndex >= head)
+                                ? (successorIndex - head)
+                                : (successorIndex + capacity - head);
+  ulong numRight = size-1 - numLeft;
+
+  if (numLeft < numRight) 
+  {
+      for (ulong i = successorIndex; i != head; i = (i + capacity-1)%capacity)
+      {
+          vector[i] = std::move(vector[(i + capacity-1)%capacity]);
+      }
+      head = (head + 1)%capacity;
+  } 
+  else 
+  {
+      for (ulong i = successorIndex; i != (head + size-1)%capacity; i = (i + 1)%capacity) 
+      {
+          vector[i] = std::move(vector[(i + 1)%capacity]);
+      }
+  }
+  size--;
+}
+
+template<typename Data>
+bool SetVec<Data>::Insert(const Data& data) 
+{
+  if (vector.Empty())
+  {
+      capacity = 1;
+      vector = Vector<Data>(capacity);
+      head = 0;
+      vector[0] = data;
+      size = 1;
+      return true;
+  }
+
+  if(BinarySearch(data) == true) return false;
+
+  if (size == capacity) 
+  {
+      ulong newCapacity = capacity * 2;
+      Vector<Data> newvector = Vector<Data>(newCapacity);
+
+      for (ulong i = 0; i < size; ++i) 
+      {
+          ulong currentIndex = (head + i) % capacity;
+          newvector[i] = std::move(vector[currentIndex]);
+      }
+      vector.Clear();
+      vector = newvector;
+      capacity = newCapacity;
+      head = 0;
+  }
+
+  ulong insertIndex = size;
+  for (ulong i = 0; i < size; ++i) 
+  {
+      ulong currentIndex = (head + i) % capacity;
+      if (data < vector[currentIndex]) 
+      {
+          insertIndex = i;
+          break;
+      }
+  }
+
+  for (ulong i = size; i > insertIndex; --i) 
+  {
+      vector[(head + i) % capacity] = std::move(vector[(head + i - 1) % capacity]);
+  }
+     
+  ulong newIndex = (head + insertIndex) % capacity;
+  vector[newIndex] = data;
+  size++;
+  return true;
+}
+
+template <typename Data>
+bool SetVec<Data>::Insert(Data&& data) 
+{
+  if (vector.Empty()) 
+  {
+      capacity = 1;
+      vector = Vector<Data>(capacity);
+      head = 0;
+      vector[0] = std::move(data);
+      size = 1;
+      return true;
+  }
+
+  if(BinarySearch(data) == true) return false;
+
+  if (size == capacity) 
+  {
+      ulong newCapacity = capacity * 2;
+      Vector<Data> newvector = Vector<Data>(newCapacity);
+
+      for (ulong i = 0; i < size; ++i) 
+      {
+          ulong currentIndex = (head + i) % capacity;
+          newvector[i] = std::move(vector[currentIndex]);
+      }
+      vector.Clear();
+      vector = newvector;
+      capacity = newCapacity;
+      head = 0;
+  }
+
+  ulong insertIndex = size;
+  for (ulong i = 0; i < size; ++i) 
+  {
+      ulong currentIndex = (head + i) % capacity;
+      if (data < vector[currentIndex]) 
+      {
+          insertIndex = i;
+          break;
+      }
+  }
+
+  for (ulong i = size; i > insertIndex; --i) 
+  {
+      vector[(head + i) % capacity] = std::move(vector[(head + i - 1) % capacity]);
+  }  
+  
+  ulong newIndex = (head + insertIndex) % capacity;
+  vector[newIndex] = std::move(data);
+  size++;
+  return true;
+}
+
+template <typename Data>
+bool SetVec<Data>::Remove(const Data& data) 
+{
+  ulong left = 0;
+  ulong right = size;
+  ulong removeIndex;
+  bool found = false;
+
+  while (left < right) 
+  {
+      ulong mid = (left + right)/2;
+      ulong midIndex = (head + mid)%capacity;
+      if (vector[midIndex] == data) 
+      {
+          found = true;
+          removeIndex = midIndex;
+          break;
+      } 
+      else if (vector[midIndex] < data) 
+      {
+          left = mid + 1;
+      } 
+      else 
+      {
+          right = mid;
+      }
+  } 
+  if(!found) return false; 
+
+  ulong numLeft = (removeIndex >= head)
+                                ? (removeIndex - head)
+                                : (removeIndex + capacity - head);
+  ulong numRight = size-1 - numLeft;
+
+  if (numLeft < numRight) 
+  {
+      for (ulong i = removeIndex; i != head; i = (i + capacity-1)%capacity) 
+      {
+          vector[i] = std::move(vector[(i + capacity-1)%capacity]);
+      }
+      head = (head + 1)%capacity;
+  } else {
+      for (ulong i = removeIndex; i != (head + size-1)%capacity; i = (i + 1)%capacity) 
+      {
+          vector[i] = std::move(vector[(i + 1)%capacity]);
+      }
+  }
+  size--;
+  return true;
+}
+
+template <typename Data>
+bool SetVec<Data>::Exists(const Data& data) const noexcept 
+{
+  return BinarySearch(data);
+}
+
+template<typename Data>
+void SetVec<Data>::Clear() 
+{
+  vector.Clear();
+  size = 0;
+  capacity = 0;
+  head = 0;
+}
+
+template <typename Data>
+void SetVec<Data>::Resize(ulong newCapacity) 
+{
+    Vector<Data> newvector = Vector<Data>(newCapacity);
+    ulong vectorToCopy = (size < newCapacity) ? size : newCapacity;
+    for (ulong i = 0; i < vectorToCopy; ++i) 
+    {
+        ulong srcIndex = (head + i) % capacity;
+        newvector[i] = std::move(vector[srcIndex]);
+    }
     vector.Clear();
-    size = 0;
+    vector = newvector;
+    capacity = newCapacity;
+    head = 0;
+    size = vectorToCopy;
+}
+
+/* ************************************************************************** */
+
+template<typename Data>
+bool SetVec<Data>::BinarySearch(const Data& data) const 
+{
+  ulong left = 0;
+  ulong right = size;
+
+  while (left < right) 
+  {
+      ulong mid = (left + right)/2;
+      ulong midIndex = (head + mid)%capacity;
+      if (vector[midIndex] == data) 
+      {
+          return true;
+      } 
+      else if (vector[midIndex] < data)
+      {
+          left = mid + 1;
+      } 
+      else
+      {
+          right = mid;
+      }
+  }
+  return false;
+}
+
+template<typename Data>
+ulong SetVec<Data>::BinarySearchPredecessor(const Data& data) const 
+{
+  ulong left = 0;
+  ulong right = size;
+  ulong predecessorIndex;
+  bool found = false;
+
+  while (left < right) 
+  {
+      ulong mid = (left + right) / 2;
+      ulong midIndex = (head + mid) % capacity;
+
+      if (vector[midIndex] < data) 
+      {
+          predecessorIndex = midIndex;
+          found = true;
+          left = mid + 1;
+      } 
+      else 
+      {
+          right = mid;
+      }
+  }
+  
+  if(!found) throw std::length_error("Predecessor not found!");
+
+  return predecessorIndex;
+}
+
+template<typename Data>
+ulong SetVec<Data>::BinarySearchSuccessor(const Data& data) const 
+{
+  ulong left = 0;
+  ulong right = size;
+  ulong successorIndex;
+  bool found = false;
+
+  while (left < right) 
+  {
+      ulong mid = (left + right) / 2;
+      ulong midIndex = (head + mid) % capacity;
+
+      if (vector[midIndex] > data) 
+      {
+          successorIndex = midIndex;
+          found = true;
+          right = mid;
+      } 
+      else 
+      {
+          left = mid + 1;
+      }
+  }
+  
+  if(!found) throw std::length_error("Successor not found!");
+
+  return successorIndex;
 }
 
 template <typename Data>
-void SetVec<Data>::Resize(ulong size)
+void SetVec<Data>::Sort() 
 {
-  vector.Resize(size);
+    if (size > 1) {
+        QuickSort(0, size - 1);
+    }
 }
 
 template <typename Data>
-bool SetVec<Data>::Search(const Data& value, ulong* index) const
+void SetVec<Data>::QuickSort(ulong left, ulong right) 
 {
-    for(ulong i = 0; i < size; i++)
+    if (left < right) 
     {
-        if(value == vector[i])
+        ulong pivotIndex = Partition(left, right);
+        if (pivotIndex > 0) QuickSort(left, pivotIndex - 1); 
+        QuickSort(pivotIndex + 1, right);
+    }
+}
+
+template <typename Data>
+ulong SetVec<Data>::Partition(ulong left, ulong right) 
+{
+    Data pivot = vector[(head + right) % capacity];
+    ulong i = left;
+
+    for (ulong j = left; j < right; ++j) 
+    {
+        ulong jIndex = (head + j) % capacity;
+        ulong iIndex = (head + i) % capacity;
+
+        if (vector[jIndex] < pivot) 
         {
-            *index = i;
-            return true;
+            std::swap(vector[iIndex], vector[jIndex]);
+            ++i;
         }
     }
 
-    *index = 0;
-    return false;
-}
-
-template <typename Data>
-bool SetVec<Data>::Search(Data&& value, ulong* index) const
-{
-    for(ulong i = 0; i < size; i++)
-    {
-        if(value == vector[i])
-        {
-            *index = i;
-            return true;
-        }
-    }
-
-    *index = 0;
-    return false;
-}
-
-template<typename Data>
-void SetVec<Data>::Sort() noexcept 
-{
-  QuickSort(0, size - 1);
-}
-
-template<typename Data>
-void SetVec<Data>::QuickSort(ulong p, ulong r) noexcept 
-{
-  if (p < r) {
-    ulong q = Partition(p, r);
-    QuickSort(p, q);
-    QuickSort(q + 1, r);
-  }
-}
-
-template<typename Data>
-ulong SetVec<Data>::Partition(ulong p, ulong r) noexcept 
-{
-  Data x = vector[p];
-  ulong i = p - 1;
-  ulong j = r + 1;
-  do {
-    do { j--; }
-    while (x < vector[j]);
-    do { i++; }
-    while (x > vector[i]);
-    if (i < j) { std::swap(vector[i], vector[j]); }
-  }
-  while (i < j);
-  return j;
+    std::swap(vector[(head + i) % capacity], vector[(head + right) % capacity]);
+    return i;
 }
 
 }
