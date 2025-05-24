@@ -5,7 +5,7 @@
 namespace lasd {
 
     template<typename Data>
-    List<Data>::Node::Node(Data && data) 
+    List<Data>::Node::Node(Data && data)
     {
         std::swap(value, data);
     }
@@ -156,43 +156,49 @@ namespace lasd {
     template<typename Data>
     void List<Data>::RemoveFromFront()
     {
-        if(size == 0) throw std::length_error("The list is empty!");
-        if(size == 1)
+        if (size == 0) throw std::length_error("The list is empty!");
+    
+        if (size == 1)
         {
+            head->next = nullptr;
             delete head;
             head = nullptr;
-            size--;
+            tail = nullptr;
+            size = 0;
             return;
         }
-
-        Node* newHead = head->next;
+    
+        Node* nHead = head->next;
         head->next = nullptr;
         delete head;
-        head = newHead;
+        head = nHead;
         size--;
-    }
+    }    
 
     template<typename Data>
     Data List<Data>::FrontNRemove()
     {
-        if(size == 0) throw std::length_error("The list is empty!");
-        if(size == 1)
+        if (size == 0) throw std::length_error("The list is empty!");
+    
+        Data data = head->value;
+    
+        if (size == 1)
         {
-            Data data = head->value;
             head->next = nullptr;
             delete head;
             head = nullptr;
-            size--;
+            tail = nullptr;
+            size = 0;
             return data;
         }
-        Data data = head->value;
-        Node* newHead = head->next;
+    
+        Node* nHead = head->next;
         head->next = nullptr;
         delete head;
-        head = newHead;
+        head = nHead;
         size--;
         return data;
-    }
+    } 
 
     template<typename Data>
     void List<Data>::InsertAtBack(const Data& value)
@@ -225,30 +231,59 @@ namespace lasd {
     template<typename Data>
     void List<Data>::RemoveFromBack()
     {
-        if(tail == nullptr){ throw std::length_error("Empty list!");}
-
+        if (size == 0) {
+            throw std::length_error("The list is empty!");
+        }
+    
+        if (size == 1) {
+            delete tail;
+            head = nullptr;
+            tail = nullptr;
+            size = 0;
+            return;
+        }
+    
         Node* current = head;
-        while(current->next != tail)
+    
+        while (current != nullptr && current->next != tail)
+        {
             current = current->next;
-        
+        }
+    
         delete tail;
-        current->next = nullptr;
+        tail = current;
+        tail->next = nullptr;
         size--;
     }
 
     template<typename Data>
     Data List<Data>::BackNRemove()
     {
-        if(tail == nullptr){ throw std::length_error("Empty list!");}
-
-        Data data = tail->value;
-
+        if (size == 0) {
+            throw std::length_error("The list is empty!");
+        }
+    
+        Data data;
+        if (size == 1) {
+            data = tail->value;
+            delete tail;
+            head = nullptr;
+            tail = nullptr;
+            size = 0;
+            return data;
+        }
+    
         Node* current = head;
-        while(current->next != tail)
+    
+        while (current != nullptr && current->next != tail)
+        {
             current = current->next;
-        
+        }
+    
+        data = tail->value;
         delete tail;
-        current->next = nullptr;
+        tail = current;
+        tail->next = nullptr;
         size--;
         return data;
     }

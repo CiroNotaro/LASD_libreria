@@ -240,23 +240,19 @@ void SetLst<Data>::RemovePredecessor(const Data& value)
         throw std::length_error("Predecessor not found!");
     }
 
-    // Caso speciale: il primo elemento è già >= value → nessun predecessore
     if (!(operator[](0) < value)) {
         throw std::length_error("Predecessor not found!");
     }
 
-    // Scorri per trovare l'elemento più grande < value
     ulong i = 1;
     while (i < size && !(operator[](i) >= value)) {
         i++;
     }
 
-    // i è la posizione del primo >= value
     ulong indexToRemove = i - 1;
 
-    // Rimozione nodo in posizione indexToRemove
-    if (indexToRemove == 0) {
-        // Rimuovi testa
+    if (indexToRemove == 0) 
+    {
         Node* toDelete = this->head;
         this->head = this->head->next;
         toDelete->next = nullptr;
@@ -421,7 +417,7 @@ bool SetLst<Data>::Insert(const Data& value) {
     node->next = current;
     prec->next = node;
 
-    if (current == nullptr) {  // Inserito in fondo
+    if (current == nullptr) {
         this->tail = node;
     }
 
@@ -464,7 +460,7 @@ bool SetLst<Data>::Insert(Data&& value) {
     node->next = current;
     prec->next = node;
 
-    if (current == nullptr) {  // Inserito in fondo
+    if (current == nullptr) {
         this->tail = node;
     }
 
@@ -473,7 +469,7 @@ bool SetLst<Data>::Insert(Data&& value) {
 
 template <typename Data>
 bool SetLst<Data>::Remove(const Data& value) {
-    if (this->head == nullptr) // Lista vuota
+    if (this->head == nullptr)
     {
         return false;
     }
@@ -481,28 +477,25 @@ bool SetLst<Data>::Remove(const Data& value) {
     Node* current = this->head;
     Node* prev = nullptr;
 
-    // Scorri la lista finché trovi un nodo >= value
     while (current != nullptr && current->value < value) {
         prev = current;
         current = current->next;
     }
 
-    // Se non trovato o non corrisponde al valore esatto
     if (current == nullptr || current->value != value)
         return false;
 
-    // Caso 1: nodo da rimuovere è la testa
     if (current == this->head) {
         this->head = this->head->next;
         if (this->tail == current)
             this->tail = nullptr;
     }
-    // Caso 2: nodo da rimuovere è la coda
+
     else if (current == this->tail) {
         this->tail = prev;
         prev->next = nullptr;
     }
-    // Caso 3: nodo in mezzo
+
     else {
         prev->next = current->next;
     }

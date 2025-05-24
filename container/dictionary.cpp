@@ -25,7 +25,7 @@ namespace lasd {
         
         container.Map(
             [&](Data& value){
-                flag &= Insert(value);
+                flag &= Insert(std::move(value));
             }
         );
         
@@ -67,7 +67,7 @@ namespace lasd {
         
         container.Map(
             [&](Data& value){
-                flag |= Insert(value);
+                flag |= Insert(std::move(value));
             }
         );
         
