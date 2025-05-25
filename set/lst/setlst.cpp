@@ -124,7 +124,6 @@ void SetLst<Data>::RemoveMin()
     if (size == 0) 
         throw std::length_error("The list is empty!");
 
-    // Caso con un solo elemento
     if (size == 1)
     {
         this->head->next = nullptr;
@@ -135,7 +134,6 @@ void SetLst<Data>::RemoveMin()
         return;
     }
 
-    // Caso con più elementi
     Node* newHead = this->head->next;
     this->head->next = nullptr;
     delete this->head;
@@ -168,7 +166,6 @@ void SetLst<Data>::RemoveMax()
     if (size == 0)
         throw std::length_error("The list is empty!");
 
-    // Caso con un solo elemento
     if (size == 1)
     {
         delete this->tail;
@@ -178,7 +175,6 @@ void SetLst<Data>::RemoveMax()
         return;
     }
 
-    // Caso con più elementi
     Node* current = this->head;
     while (current->next != this->tail) {
         current = current->next;
@@ -195,7 +191,7 @@ Data SetLst<Data>::Predecessor(const Data& value) const
 {
     if(size == 0) throw std::length_error("Prececessor not found!");
     
-    for(ulong i = size-1; i >= 0; i--)
+    for(ulong i = size-1; i > 0; i--)
     {
         if(value > operator[](i))
             return operator[](i);
@@ -210,8 +206,7 @@ Data SetLst<Data>::PredecessorNRemove(const Data& value)
     if(size == 0) throw std::length_error("Prececessor not found!");
     if(size == 1) throw std::length_error("Prececessor not found!");
 
-    // Caso N
-    for(ulong i = size-1; i >= 0; i--)
+    for(ulong i = size-1; i > 0; i--)
     {
         if(value > operator[](i))
         {

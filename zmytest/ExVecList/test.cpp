@@ -13,9 +13,7 @@
 
 #include "../../zlasdtest/list/list.hpp"
 
-
 #include "../utils.hpp"
-
 /* ************************************************************************** */
 
 using namespace std;
