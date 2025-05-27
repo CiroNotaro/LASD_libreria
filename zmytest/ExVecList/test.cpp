@@ -27,7 +27,7 @@ void mystestVectorInt(uint & testnum, uint & testerr)
     try {
       // CASO VEC VUOTO
       {
-        print_section("0 ELEMENT");
+        print_section("0 ELEMENTS");
         lasd::SortableVector<int> vec;
         lasd::SortableVector<int> vec2;
         Empty(loctestnum, loctesterr, vec, true);
@@ -53,7 +53,7 @@ void mystestVectorInt(uint & testnum, uint & testerr)
 
       // CASO VEC 1
       {
-        print_section("1 ELEMENT");
+        print_section("1 ELEMENTS");
         lasd::SortableVector<int> vec(1);
         Empty(loctestnum, loctesterr, vec, false);
         Size(loctestnum, loctesterr, vec, true, 1);
@@ -157,7 +157,7 @@ void mystestVectorDouble(uint & testnum, uint & testerr)
     try {
       // CASO VEC VUOTO
       {
-        print_section("0 ELEMENT");
+        print_section("0 ELEMENTS");
         lasd::SortableVector<double> vec;
         lasd::SortableVector<double> vec2;
         Empty(loctestnum, loctesterr, vec, true);
@@ -183,7 +183,7 @@ void mystestVectorDouble(uint & testnum, uint & testerr)
 
       // CASO VEC 1
       {
-        print_section("1 ELEMENT");
+        print_section("1 ELEMENTS");
         lasd::SortableVector<double> vec(1);
         Empty(loctestnum, loctesterr, vec, false);
         Size(loctestnum, loctesterr, vec, true, 1);
@@ -288,7 +288,7 @@ void mystestVectorString(uint & testnum, uint & testerr)
     
     // CASO 0
     {
-      print_section("0 ELEMENT");
+      print_section("0 ELEMENTS");
       lasd::SortableVector<string> vec(0);
   
       Empty(loctestnum, loctesterr, vec, true);
@@ -312,7 +312,7 @@ void mystestVectorString(uint & testnum, uint & testerr)
 
     // CASO 1
     {
-      print_section("1 ELEMENT");
+      print_section("1 ELEMENTS");
       lasd::SortableVector<string> vec(1);
   
       Empty(loctestnum, loctesterr, vec, false);
@@ -411,7 +411,7 @@ void mystestListInt(uint & testnum, uint & testerr) {
   try {
     // CASO 0
     {
-      print_section("0 ELEMENT");
+      print_section("0 ELEMENTS");
       lasd::List<int> lst;
       Empty(loctestnum, loctesterr, lst, true);
       Size(loctestnum, loctesterr, lst, true, 0);
@@ -438,7 +438,7 @@ void mystestListInt(uint & testnum, uint & testerr) {
 
     // CASO 1
     {
-      print_section("1 ELEMENT");
+      print_section("1 ELEMENTS");
       lasd::List<int> lst;
       Empty(loctestnum, loctesterr, lst, true);
       Size(loctestnum, loctesterr, lst, true, 0);
@@ -581,7 +581,7 @@ void mystestListDouble(uint & testnum, uint & testerr) {
   try {
     // CASO 0
     {
-      print_section("0 ELEMENT");
+      print_section("0 ELEMENTS");
       lasd::List<double> lst;
       Empty(loctestnum, loctesterr, lst, true);
       Size(loctestnum, loctesterr, lst, true, 0.0);
@@ -608,7 +608,7 @@ void mystestListDouble(uint & testnum, uint & testerr) {
 
     // CASO 1
     {
-      print_section("1 ELEMENT");
+      print_section("1 ELEMENTS");
       lasd::List<double> lst;
       Empty(loctestnum, loctesterr, lst, true);
       Size(loctestnum, loctesterr, lst, true, 0.0);
@@ -748,7 +748,7 @@ void mystestListString(uint & testnum, uint & testerr) {
   try {
     // CASO 0
     {
-      print_section("0 ELEMENT");
+      print_section("0 ELEMENTS");
       lasd::List<string> lst;
       Empty(loctestnum, loctesterr, lst, true);
       Size(loctestnum, loctesterr, lst, true, 0);
@@ -765,7 +765,7 @@ void mystestListString(uint & testnum, uint & testerr) {
 
     // CASO 1
     {
-      print_section("1 ELEMENT");
+      print_section("1 ELEMENTS");
       lasd::List<string> lst;
 
       InsertAtFront(loctestnum, loctesterr, lst, true, string("One"));
@@ -864,7 +864,7 @@ void myTestVectorListInt(uint & testnum, uint & testerr) {
   try {
     // CASO 0
     {
-      print_section("0 ELEMENT");
+      print_section("0 ELEMENTS");
       lasd::SortableVector<int> vec0(0);
       lasd::List<int> lst0;
       EqualLinear(loctestnum, loctesterr, vec0, lst0, true);
@@ -872,7 +872,7 @@ void myTestVectorListInt(uint & testnum, uint & testerr) {
 
     // CASO 1
     {
-      print_section("1 ELEMENT");
+      print_section("1 ELEMENTS");
       lasd::SortableVector<int> vec1(1);
       SetAt(loctestnum, loctesterr, vec1, true, 0, 99);
 
@@ -929,7 +929,7 @@ void myTestVectorListDouble(uint & testnum, uint & testerr) {
   try {
     // CASO 0
     {
-      print_section("0 ELEMENT");
+      print_section("0 ELEMENTS");
       lasd::SortableVector<double> vec0(0);
       lasd::List<double> lst0;
       EqualLinear(loctestnum, loctesterr, vec0, lst0, true);
@@ -937,7 +937,7 @@ void myTestVectorListDouble(uint & testnum, uint & testerr) {
 
     // CASO 1
     {
-      print_section("1 ELEMENT");
+      print_section("1 ELEMENTS");
       lasd::SortableVector<double> vec1(1);
       SetAt(loctestnum, loctesterr, vec1, true, 0, 0.2);
 
@@ -994,7 +994,7 @@ void myTestVectorListString(uint & testnum, uint & testerr) {
   try {
     // CASO 0
     {
-      print_section("0 ELEMENT");
+      print_section("0 ELEMENTS");
       lasd::SortableVector<string> vec0(0);
       lasd::List<string> lst0;
       EqualLinear(loctestnum, loctesterr, vec0, lst0, true);
@@ -1002,7 +1002,7 @@ void myTestVectorListString(uint & testnum, uint & testerr) {
 
     // CASO 1
     {
-      print_section("1 ELEMENT");
+      print_section("1 ELEMENTS");
       lasd::SortableVector<string> vec1(1);
       SetAt(loctestnum, loctesterr, vec1, true, 0, string("X"));
 

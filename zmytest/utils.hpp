@@ -1,9 +1,9 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
-void print_section(const std::string& msg)
-{
-  std::cout << " --- " << msg << " ---\n";
-}
+#include <iostream>
+#include <string>
+
+void print_section(const std::string& msg);
 
 #endif

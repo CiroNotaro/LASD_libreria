@@ -15,7 +15,7 @@
 #include "../../set/lst/setlst.hpp"
 #include "../../set/vec/setvec.hpp"
 
-void print_section(const std::string& msg);
+#include "../utils.hpp"
 
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void mystestSetInt(lasd::Set<int> & set, uint & testnum, uint & testerr)
     {
         {
             // CASO 0
-            print_section("0 ELEMENT");
+            print_section("0 ELEMENTS");
             Empty(loctestnum, loctesterr, set, true);
             Size(loctestnum, loctesterr, set, true, 0);
             Predecessor(loctestnum, loctesterr, set, false, 18, 0);
@@ -44,7 +44,7 @@ void mystestSetInt(lasd::Set<int> & set, uint & testnum, uint & testerr)
 
         {
             // CASO 1
-            print_section("1 ELEMENT");
+            print_section("1 ELEMENTS");
             InsertC(loctestnum, loctesterr, set, true, 18);
             Size(loctestnum, loctesterr, set, true, 1);
             Exists(loctestnum, loctesterr, set, true, 18);
@@ -220,7 +220,7 @@ void mystestSetDouble(uint & testnum, uint & testerr)
     {
         // CASO 0
         {
-            print_section("0 ELEMENT");
+            print_section("0 ELEMENTS");
             lasd::SetVec<double> emptyVec;
             lasd::SetLst<double> emptyLst;
             
@@ -238,7 +238,7 @@ void mystestSetDouble(uint & testnum, uint & testerr)
 
         // CASO 1
         {
-            print_section("1 ELEMENT");
+            print_section("1 ELEMENTS");
             lasd::SetVec<double> singleVec;
             InsertC(loctestnum, loctesterr, singleVec, true, 9.9);
             
@@ -333,7 +333,7 @@ void mystestSetString(lasd::Set<string> & set, uint & testnum, uint & testerr)
     {
         // CASO 0
         {
-            print_section("0 ELEMENT");
+            print_section("0 ELEMENTS");
             Size(loctestnum, loctesterr, set, true, 0);
             Empty(loctestnum, loctesterr, set, true);
          
@@ -344,7 +344,7 @@ void mystestSetString(lasd::Set<string> & set, uint & testnum, uint & testerr)
 
         // CASO 1
         {
-            print_section("1 ELEMENT");
+            print_section("1 ELEMENTS");
             InsertC(loctestnum, loctesterr, set, true, string("C"));
 
             Size(loctestnum, loctesterr, set, true, 1);
