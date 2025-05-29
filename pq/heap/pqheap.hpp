@@ -29,10 +29,8 @@ public:
   /* ************************************************************************ */
 
   // Specific constructors
-  template <typename TraversableContainer>
-  PQHeap(const TraversableContainer& container);// A priority queue obtained from a TraversableContainer
-  template <typename MappableContainer>
-  PQHeap(MappableContainer&& container);  // A priority queue obtained from a MappableContainer
+  PQHeap(const TraversableContainer<Data>& container);// A priority queue obtained from a TraversableContainer
+  PQHeap(MappableContainer<Data>&& container);  // A priority queue obtained from a MappableContainer
 
   /* ************************************************************************ */
 

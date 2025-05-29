@@ -7,12 +7,10 @@ namespace lasd
 
 
   template <typename Data>
-  template <typename TraversableContainer>
-  PQHeap<Data>::PQHeap(const TraversableContainer& container) : HeapVec<Data>(container) {}
+  PQHeap<Data>::PQHeap(const TraversableContainer<Data>& container) : HeapVec<Data>(container) {}
 
   template <typename Data>
-  template <typename MappableContainer>
-  PQHeap<Data>::PQHeap(MappableContainer&& container) : HeapVec<Data>(std::move(container)) {}
+  PQHeap<Data>::PQHeap(MappableContainer<Data>&& container) : HeapVec<Data>(std::move(container)) {}
 
   template <typename Data>
   PQHeap<Data>::PQHeap(const PQHeap<Data>& other)
