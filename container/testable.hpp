@@ -34,7 +34,7 @@ public:
   TestableContainer<Data>& operator=(const TestableContainer<Data>&) = delete; // Copy assignment of abstract types is not possible.
 
   // Move assignment
-  TestableContainer<Data>& operator=(TestableContainer<Data>&&) = delete;; // Move assignment of abstract types is not possible.
+  TestableContainer<Data>& operator=(TestableContainer<Data>&&) = delete; // Move assignment of abstract types is not possible.
 
   /* ************************************************************************ */
 
