@@ -120,7 +120,7 @@ void mystestPQInt(uint & testnum, uint & testerr) {
       TraversePreOrder(loctestnum, loctesterr, pq3, true, &TraversePrint<int>);
       TraversePostOrder(loctestnum, loctesterr, pq3, true, &TraversePrint<int>);
       
-      Change(loctestnum, loctesterr, pq3, 1, 10);
+      Change(loctestnum, loctesterr, pq3, true, 1, 10);
 
       Traverse(loctestnum, loctesterr, pq3, true, &TraversePrint<int>);
       
@@ -167,10 +167,8 @@ void mystestPQInt(uint & testnum, uint & testerr) {
       TraversePreOrder(loctestnum, loctesterr, pq, true, &TraversePrint<int>);
       TraversePostOrder(loctestnum, loctesterr, pq, true, &TraversePrint<int>);
       
-      Change(loctestnum, loctesterr, pq, 0, 0);
-      Change(loctestnum, loctesterr, pq, 1, 7);
-
-      
+      Change(loctestnum, loctesterr, pq, true, 0, 0);
+      Change(loctestnum, loctesterr, pq, true, 1, 7);
       
       FoldPreOrder(loctestnum, loctesterr, pq, true, &FoldAdd<int>, 0, 19);
       FoldPostOrder(loctestnum, loctesterr, pq, true, &FoldAdd<int>, 0, 19);
@@ -303,7 +301,7 @@ void mystestPQDouble(uint & testnum, uint & testerr) {
       TraversePreOrder(loctestnum, loctesterr, pq3, true, &TraversePrint<double>);
       TraversePostOrder(loctestnum, loctesterr, pq3, true, &TraversePrint<double>);
 
-      Change(loctestnum, loctesterr, pq3, 1, 10.1);
+      Change(loctestnum, loctesterr, pq3, true, 1, 10.1);
 
       Traverse(loctestnum, loctesterr, pq3, true, &TraversePrint<double>);
 
@@ -349,8 +347,8 @@ void mystestPQDouble(uint & testnum, uint & testerr) {
       TraversePreOrder(loctestnum, loctesterr, pq, true, &TraversePrint<double>);
       TraversePostOrder(loctestnum, loctesterr, pq, true, &TraversePrint<double>);
 
-      Change(loctestnum, loctesterr, pq, 0, 0.0);
-      Change(loctestnum, loctesterr, pq, 1, 7.7);
+      Change(loctestnum, loctesterr, pq, true, 0, 0.0);
+      Change(loctestnum, loctesterr, pq, true, 1, 7.7);
 
       TraversePreOrder(loctestnum, loctesterr, pq, true, &TraversePrint<double>);
 
@@ -484,7 +482,7 @@ void mystestPQString(uint & testnum, uint & testerr) {
       TraversePreOrder(loctestnum, loctesterr, pq3, true, &TraversePrint<string>);
       TraversePostOrder(loctestnum, loctesterr, pq3, true, &TraversePrint<string>);
 
-      Change(loctestnum, loctesterr, pq3, 1, string("G"));
+      Change(loctestnum, loctesterr, pq3, true, 1, string("G"));
 
       Traverse(loctestnum, loctesterr, pq3, true, &TraversePrint<string>);
 
@@ -553,7 +551,7 @@ void mystestPQString(uint & testnum, uint & testerr) {
       FoldPreOrder(loctestnum, loctesterr, pq, true, &FoldStringConcatenate, string("?"), string("?IHGEDFBAACDF"));
       FoldPostOrder(loctestnum, loctesterr, pq, true, &FoldStringConcatenate, string("?"), string("?FDCAABFDEGHI"));
   
-      Change(loctestnum, loctesterr, pq, 4, string("X"));
+      Change(loctestnum, loctesterr, pq, true, 4, string("X"));
   
       TraversePreOrder(loctestnum, loctesterr, pq, true, &TraversePrint<string>);
       TraversePostOrder(loctestnum, loctesterr, pq, true, &TraversePrint<string>);
@@ -561,7 +559,7 @@ void mystestPQString(uint & testnum, uint & testerr) {
       FoldPreOrder(loctestnum, loctesterr, pq, true, &FoldStringConcatenate, string("?"), string("?XIGEHFBAACDF"));
       FoldPostOrder(loctestnum, loctesterr, pq, true, &FoldStringConcatenate, string("?"), string("?FDCAABFHEGIX"));
   
-      Change(loctestnum, loctesterr, pq, 1, string("A"));
+      Change(loctestnum, loctesterr, pq, true, 1, string("A"));
   
       TraversePreOrder(loctestnum, loctesterr, pq, true, &TraversePrint<string>);
       TraversePostOrder(loctestnum, loctesterr, pq, true, &TraversePrint<string>);
@@ -569,7 +567,7 @@ void mystestPQString(uint & testnum, uint & testerr) {
       FoldPreOrder(loctestnum, loctesterr, pq, true, &FoldStringConcatenate, string("?"), string("?XHGEDFBAACAF"));
       FoldPostOrder(loctestnum, loctesterr, pq, true, &FoldStringConcatenate, string("?"), string("?FACAABFDEGHX"));
   
-      Change(loctestnum, loctesterr, pq, 2, string("B"));
+      Change(loctestnum, loctesterr, pq, true, 2, string("B"));
   
       TraversePreOrder(loctestnum, loctesterr, pq, true, &TraversePrint<string>);
       TraversePostOrder(loctestnum, loctesterr, pq, true, &TraversePrint<string>);
