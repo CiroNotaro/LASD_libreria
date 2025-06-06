@@ -1,6 +1,6 @@
 
 cc = g++
-cflags = -Wall -pedantic -O3 -std=c++20 -fsanitize=address
+cflags = -Wall -pedantic -Wno-sequence-point -O3 -std=c++20 -fsanitize=address
 
 objects = main.o test.o mytest.o container.o exc1as.o exc1af.o exc1bs.o exc1bf.o exc2as.o exc2af.o exc2bs.o exc2bf.o myutils.o mytest1.o mytest2.o mytest3.o mytest4.o
 
@@ -8,9 +8,9 @@ libcon = container/container.hpp container/testable.hpp container/traversable.hp
 
 libexc = $(libcon) zlasdtest/container/container.hpp zlasdtest/container/testable.hpp zlasdtest/container/traversable.hpp zlasdtest/container/mappable.hpp zlasdtest/container/dictionary.hpp zlasdtest/container/linear.hpp
 
-libexc1a = $(libexc) vector/vector.hpp vector/vector.cpp list/list.hpp list/list.cpp
+libexc1a = $(libexc) vector/vector.hpp vector/vector.cpp list/list.hpp list/list.cpp zlasdtest/vector/vector.hpp zlasdtest/list/list.hpp
 
-libexc1b = $(libexc1a) set/set.hpp set/lst/setlst.hpp set/lst/setlst.cpp set/vec/setvec.hpp set/vec/setvec.cpp
+libexc1b = $(libexc1a) set/set.hpp set/lst/setlst.hpp set/lst/setlst.cpp set/vec/setvec.hpp set/vec/setvec.cpp zlasdtest/set/set.hpp
 
 libexc2a = $(libexc) heap/heap.hpp heap/vec/heapvec.hpp heap/vec/heapvec.cpp zlasdtest/heap/heap.hpp
 
