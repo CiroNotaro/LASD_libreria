@@ -4,40 +4,39 @@ namespace lasd {
 
 template <typename Data>
 SetLst<Data>::SetLst(const TraversableContainer<Data>& container)
-    : List<Data>(container) 
 {
-  size = container.Size();
-  Sort();
+  container.Traverse([&](const Data& data) 
+  {
+    Insert(data);
+  });
 }
 
 template <typename Data>
 SetLst<Data>::SetLst(MappableContainer<Data>&& container)
-    : List<Data>(std::move(container)) 
 {
-  size = container.Size();
-  Sort();
+  container.Map([&](Data& data) 
+  {
+    Insert(std::move(data));
+  });
 }
 
 template <typename Data>
 SetLst<Data>::SetLst(const SetLst<Data>& other) 
 {
-  for (ulong i = 0; i < other.size; ++i) 
+  if (other.tail != nullptr) 
   {
-    Insert(other[i]);
+    this->tail = new Node(*other.tail);
+    this->head = other.head->Clone(this->tail);
+    size = other.size;
   }
-  size = other.size;
 }
 
 template <typename Data>
 SetLst<Data>::SetLst(SetLst<Data>&& other) 
 {
-  this->head = other.head;
-  this->tail = other.tail;
-  size = other.size;
-
-  other.head = nullptr;
-  other.tail = nullptr;
-  other.size = 0;
+  std::swap(this->head, other.head);
+  std::swap(this->tail, other.tail);
+  std::swap(size, other.size);
 }
 
 template <typename Data>
@@ -49,15 +48,36 @@ SetLst<Data>::~SetLst()
 template <typename Data>
 SetLst<Data>& SetLst<Data>::operator=(const SetLst<Data>& other) 
 {
-  if (this != &other) 
-  {
-    Clear();
-    for (ulong i = 0; i < other.size; ++i) 
-    {
-      Insert(other[i]);
+  if (size <= other.size) {
+    if (this->tail == nullptr) {
+      List<Data>* tmplist = new List<Data>(other);
+      std::swap(*tmplist, *this);
+      delete tmplist;
+    } else {
+      Node* ocur = other.head;
+      for (Node* ncur = this->head; ncur != nullptr; ncur = ncur->next, ocur = ocur->next) {
+        ncur->value = ocur->value;
+      }
+      if (ocur != nullptr) {
+        Node* newtail = new Node(*other.tail);
+        this->tail->next = ocur->Clone(newtail);
+        this->tail = newtail;
+      }
     }
-    size = other.size;
+  } else {
+    if (other.tail == nullptr) {
+      delete this->head;
+      this->head = this->tail = nullptr;
+    } else {
+      Node* ncur = this->head;
+      for (Node* ocur = other.head; ocur != nullptr; ocur = ocur->next, this->tail = ncur, ncur = ncur->next) {
+        ncur->value = ocur->value;
+      }
+      delete ncur;
+      this->tail->next = nullptr;
+    }
   }
+  size = other.size;
   return *this;
 }
 
@@ -99,10 +119,13 @@ bool SetLst<Data>::operator!=(const SetLst<Data>& other) const noexcept
 template <typename Data>
 Data SetLst<Data>::Min() const 
 {
-  if (size == 0)
-    throw std::length_error("Empty set");
+  if (this->head == nullptr) 
+  {
+      throw std::length_error("Empty Set");
+  }
   return this->head->value;
 }
+
 
 template <typename Data>
 Data SetLst<Data>::MinNRemove() 
@@ -115,22 +138,24 @@ Data SetLst<Data>::MinNRemove()
 template <typename Data>
 void SetLst<Data>::RemoveMin() 
 {
-  if (size == 0)
-    throw std::length_error("Empty set");
+  if (this->head == nullptr) throw std::length_error("Empty Set");
 
-  Node* temp = this->head;
-  this->head = this->head->next;
-  temp->next = nullptr;
-  delete temp;
-  if (--size == 0)
-  this->tail = nullptr;
+    Node* tmp = this->head;
+    this->head = this->head->next;
+    tmp->next = nullptr;
+    delete tmp;
+    --size;
+    if (this->head == nullptr)
+        this->tail = nullptr;
 }
 
 template <typename Data>
 Data SetLst<Data>::Max() const 
 {
-  if (size == 0)
-    throw std::length_error("Empty set");
+  if (this->tail == nullptr) 
+  {
+    throw std::length_error("Empty Set");
+  }
   return this->tail->value;
 }
 
@@ -145,23 +170,20 @@ Data SetLst<Data>::MaxNRemove()
 template <typename Data>
 void SetLst<Data>::RemoveMax() 
 {
-  if (size == 0)
-    throw std::length_error("Empty set");
+	if (this->head == nullptr) throw std::length_error("Empty Set");
 
-  if (size == 1) 
-  {
-    delete this->head;
-    this->head = this->tail = nullptr;
-    size = 0;
-    return;
+  if (this->head == this->tail) {
+      delete this->head;
+      this->head = this->tail = nullptr;
+      size = 0;
+      return;
   }
 
   Node* current = this->head;
   while (current->next != this->tail) 
   {
-    current = current->next;
+      current = current->next;
   }
-  this->tail->next = nullptr; 
   delete this->tail;
   this->tail = current;
   this->tail->next = nullptr;
@@ -171,120 +193,143 @@ void SetLst<Data>::RemoveMax()
 template <typename Data>
 Data SetLst<Data>::Predecessor(const Data& value) const 
 {
-  for (ulong i = size - 1; i > 0; --i) 
+  if (this->head == nullptr || this->head->value >= value) 
   {
-    if (operator[](i) < value)
-      return operator[](i);
+    throw std::length_error("Predecessor not found!");
   }
-  throw std::length_error("No predecessor found");
+
+  Node* current = this->head;
+  Node* predecessor = nullptr;
+  while (current != nullptr && current->value < value) 
+  {
+      predecessor = current;
+      current = current->next;
+  }
+
+  if (predecessor == nullptr) 
+  {
+      throw std::length_error("Predecessor not found!");
+  }
+
+  return predecessor->value;
 }
 
 template <typename Data>
 Data SetLst<Data>::PredecessorNRemove(const Data& value) 
 {
-  for (ulong i = size - 1; i > 0; --i) 
-  {
-    if (operator[](i) < value) {
-      Data result = operator[](i);
-      Node* node = GetNodeByIndex(i);
-      Node* prev = (i > 0) ? GetNodeByIndex(i - 1) : nullptr;
-
-      if (prev)
-        prev->next = node->next;
-      else
-      this->head = node->next;
-
-      if (node == this->tail)
-      this->tail = prev;
-
-      node->next = nullptr;
-      delete node;
-      --size;
-      return result;
-    }
-  }
-  throw std::length_error("No predecessor to remove");
+  Data pred = Predecessor(value);
+  RemovePredecessor(value);
+  return pred;
 }
 
 template <typename Data>
 void SetLst<Data>::RemovePredecessor(const Data& value) 
 {
-  PredecessorNRemove(value);
+  if (this->head == nullptr || this->head->value >= value) throw std::length_error("Predecessor not found!");
+    Node* prev = nullptr;
+    Node* current = this->head;
+    Node* beforePrev = nullptr;
+
+    while (current != nullptr && current->value < value) {
+        beforePrev = prev;
+        prev = current;
+        current = current->next;
+    }  
+    if (prev == nullptr) throw std::length_error("Predecessor not found!");
+
+    if (beforePrev != nullptr) {
+        beforePrev->next = current;
+    } else {
+        this->head = current;
+    }
+    if (prev == this->tail) {
+        this->tail = beforePrev;
+    }
+    prev->next = nullptr;
+    delete prev;
+    --size;
 }
 
 template <typename Data>
 Data SetLst<Data>::Successor(const Data& value) const 
 {
-  for (ulong i = 0; i < size; ++i) 
+  if (this->head == nullptr || this->tail->value <= value) 
   {
-    if (operator[](i) > value)
-      return operator[](i);
+    throw std::length_error("Successor not found!");
   }
-  throw std::length_error("No successor found");
+  Node* current = this->head;
+  while (current != nullptr && current->value <= value) 
+  {
+      current = current->next;
+  }
+  if (current == nullptr) 
+  {
+      throw std::length_error("Successor not found!");
+  }
+  return current->value;
 }
 
 template <typename Data>
 Data SetLst<Data>::SuccessorNRemove(const Data& value) 
 {
-  Node* current = this->head;
-  Node* prev = nullptr;
-
-  while (current != nullptr) {
-    if (current->value > value) 
-    {
-      Data result = current->value;
-      if (current == this->head) 
-      {
-        this->head = this->head->next;
-      } else 
-      {
-        prev->next = current->next;
-      }
-      if (current == this->tail)
-      this->tail = prev;
-
-      current->next = nullptr;
-      delete current;
-      --size;
-      return result;
-    }
-    prev = current;
-    current = current->next;
-  }
-
-  throw std::length_error("No successor to remove");
+  Data succ = Successor(value);
+  RemoveSuccessor(value);
+  return succ;
 }
 
 template <typename Data>
 void SetLst<Data>::RemoveSuccessor(const Data& value) 
 {
-  SuccessorNRemove(value);
+  if (this->head == nullptr) throw std::length_error("Successor not found!");
+
+    Node* current = this->head;
+    Node* prev = nullptr;
+    while (current != nullptr && current->value <= value) {
+    	prev = current;
+        current = current->next;
+    }
+    if (current == nullptr) throw std::length_error("Successor not found!");
+    Node* toDelete = current;
+    if (prev == nullptr) {
+        this->head = current->next;
+    } else {
+        prev->next = current->next;
+    }
+    if (current == this->tail) {
+        this->tail = prev;
+    }
+    toDelete->next = nullptr;
+    delete toDelete;
+    --size;
 }
 
 template <typename Data>
 bool SetLst<Data>::Insert(const Data& value) 
 {
-  if (Exists(value))
-    return false;
-
-  Node* node = new Node(value);
-
-  if (!this->head) {
-    this->head = this->tail = node;
-  } else if (value < this->head->value) {
-    node->next = this->head;
-    this->head = node;
-  } else if (value > this->tail->value) {
-    this->tail->next = node;
-    this->tail = node;
-  } else {
-    Node* current = this->head;
-    while (current->next && current->next->value < value)
+  Node* current = this->head;
+  Node* prev = nullptr;
+  while (current != nullptr && current->value < value) {
+      prev = current;
       current = current->next;
-    node->next = current->next;
-    current->next = node;
   }
+    
+  if ((current != nullptr && current->value == value)) {
+      return false;
+  }
+  Node* newNode = new Node;
+  newNode->value = value;
+  newNode->next = nullptr;
 
+  if (prev == nullptr) {
+      newNode->next = this->head;
+      this->head = newNode;
+      if (this->tail == nullptr) this->tail = newNode;
+  }
+  else {
+      newNode->next = current;
+      prev->next = newNode;
+      if (current == nullptr) this->tail = newNode;
+  }
   ++size;
   return true;
 }
@@ -292,33 +337,56 @@ bool SetLst<Data>::Insert(const Data& value)
 template <typename Data>
 bool SetLst<Data>::Insert(Data&& value) 
 {
-  return Insert(static_cast<const Data&>(value));
+  Node* current = this->head;
+  Node* prev = nullptr;
+  while (current != nullptr && current->value < value) {
+      prev = current;
+      current = current->next;
+  }
+    
+  if ((current != nullptr && current->value == value)) {
+      return false;
+  }
+  Node* newNode = new Node;
+  newNode->value = std::move(value);
+  newNode->next = nullptr;
+
+  if (prev == nullptr) {
+      newNode->next = this->head;
+      this->head = newNode;
+      if (this->tail == nullptr) this->tail = newNode;
+  }
+  else {
+      newNode->next = current;
+      prev->next = newNode;
+      if (current == nullptr) this->tail = newNode;
+  }
+  ++size;
+  return true;
 }
 
 template <typename Data>
 bool SetLst<Data>::Remove(const Data& value) 
 {
+  if (this->head == nullptr) return false;
+
   Node* current = this->head;
   Node* prev = nullptr;
-
-  while (current && current->value < value) {
-    prev = current;
-    current = current->next;
+  while (current != nullptr && current->value != value) {
+      prev = current;
+      current = current->next;
   }
+  if (current == nullptr) return false;
 
-  if (!current || current->value != value)
-    return false;
-
-  if (current == this->head) {
-    this->head = this->head->next;
-    if (this->tail == current)
-    this->tail = nullptr;
+  if (prev != nullptr) {
+      prev->next = current->next;
   } else {
-    prev->next = current->next;
-    if (current == this->tail)
-    this->tail = prev;
+      this->head = current->next;
   }
 
+  if (current == this->tail) {
+      this->tail = prev;
+  }
   current->next = nullptr;
   delete current;
   --size;
@@ -328,38 +396,29 @@ bool SetLst<Data>::Remove(const Data& value)
 template <typename Data>
 const Data& SetLst<Data>::operator[](const ulong index) const 
 {
-  if (index >= size)
-    throw std::length_error("Index out of range");
-
-  Node* current = this->head;
-  for (ulong i = 0; i < index; ++i)
-    current = current->next;
-
-  return current->value;
+  if (index < size) {
+    Node* cur = this->head;
+    for (unsigned long idx = 0; idx < index; ++idx, cur = cur->next) {}
+    return cur->value;
+  } else {
+    throw std::out_of_range("Invalid address");
+  }
 }
 
 template <typename Data>
 bool SetLst<Data>::Exists(const Data& value) const noexcept 
 {
-  Node* current = this->head;
-  while (current) {
-    if (current->value == value)
-      return true;
-    current = current->next;
+  Node* curr = this->head;
+  while (curr != nullptr && curr->value < value) {
+      curr = curr->next;
   }
-  return false;
+  return (curr != nullptr && curr->value == value);
 }
 
 template <typename Data>
 void SetLst<Data>::Clear() 
 {
-  while (this->head != nullptr) 
-  {
-    Node* temp = this->head;
-    this->head = this->head->next;
-    temp->next = nullptr;
-    delete temp;
-  }
+  delete this->head;
   this->head = this->tail = nullptr;
   size = 0;
 }
